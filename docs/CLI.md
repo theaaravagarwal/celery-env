@@ -53,7 +53,7 @@ Add a script:
 ```json
 {
   "scripts": {
-    "env:generate": "celery-env generate --schema env.schema.mjs --out src/env.mjs --types src/env.d.ts --example .env.example --minify"
+    "env:generate": "celery-env generate --schema env.schema.mjs --out src/env.mjs --types src/env.d.ts --example .env.example --minify --force"
   }
 }
 ```

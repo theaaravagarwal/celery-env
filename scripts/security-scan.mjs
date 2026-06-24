@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 
 const pkg = JSON.parse(await readFile("package.json", "utf8"));
-const expectedPrepublishOnly = "npm test && npm run size && npm run validate:publish";
+const expectedPrepublishOnly = "npm test && npm run size && npm run validate:publish && npm run smoke:pack";
 
 for (const field of ["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"]) {
   assert.deepEqual(pkg[field] || {}, {}, `${field} must stay empty in the published package`);

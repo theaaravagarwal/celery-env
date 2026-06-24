@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <strong>Environment validation that compiles to tiny standalone JavaScript.</strong>
+  <strong>Type-safe process.env validation that compiles to tiny standalone JavaScript.</strong>
 </p>
 
 <p align="center">
@@ -22,8 +22,16 @@ messages, and fast startup.
 
 ## Install
 
+Generated mode:
+
 ```sh
 npm install -D celery-env
+```
+
+Runtime mode:
+
+```sh
+npm install celery-env
 ```
 
 Other package managers:
@@ -73,6 +81,9 @@ import { loadEnv } from "./env.mjs";
 
 export const env = loadEnv(process.env);
 ```
+
+Celery validates the env object you pass. Load `.env` with your platform,
+shell, or `dotenv` before calling `loadEnv`.
 
 That is the main path: write `env.schema.mjs`, generate `src/env.mjs`, and use
 the typed result everywhere else.

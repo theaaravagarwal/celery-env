@@ -7,7 +7,7 @@ import { tmpdir } from "node:os";
 
 const pkg = JSON.parse(await readFile("package.json", "utf8"));
 const emptyDependencyFields = ["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"];
-const expectedPrepublishOnly = "npm test && npm run size && npm run validate:publish";
+const expectedPrepublishOnly = "npm test && npm run size && npm run validate:publish && npm run smoke:pack";
 const binPath = typeof pkg.bin === "string" ? pkg.bin : pkg.bin?.["celery-env"];
 
 for (const field of emptyDependencyFields) {

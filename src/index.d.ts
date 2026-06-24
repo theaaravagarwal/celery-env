@@ -7,7 +7,7 @@ export type Spec<T> = { readonly [specBrand]: T };
 export type InferSpec<T> = T extends Spec<infer V> ? V : never;
 export type InferEnv<T extends Record<string, Spec<unknown>>> = { readonly [K in keyof T]: InferSpec<T[K]> };
 export type EnvResult<T extends Record<string, Spec<unknown>>> = InferEnv<T>;
-type Output<T, O> = O extends { default: infer D } ? D : O extends { optional: true } ? T | undefined : T;
+type Output<T, O> = O extends { default: unknown } | { devDefault: unknown } | { testDefault: unknown } ? T : O extends { optional: true } ? T | undefined : T;
 export function defineEnv<T extends Record<string, Spec<unknown>>>(schema: T): Readonly<T>;
 export function str<O extends StringOptions | undefined = undefined>(options?: O): Spec<Output<string, O>>;
 export function int<O extends NumberOptions | undefined = undefined>(options?: O): Spec<Output<number, O>>;

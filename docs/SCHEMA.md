@@ -41,8 +41,8 @@ options describe defaults, examples, and environment-specific behavior.
 | `example` | Example value used in generated `.env.example`. |
 | `docs` | Longer documentation text for generated metadata. |
 
-`testDefault` wins over `devDefault`, and `default` applies in every
-environment.
+`testDefault` wins over `devDefault`, and both env-specific defaults win over
+`default`.
 
 ## Missing Values
 
@@ -70,8 +70,9 @@ int({ min: 1, max: 65535 })
 num({ min: 0, max: 1 })
 ```
 
-By default, numeric parsing follows JavaScript `Number()`. Use `strict: true`
-to reject values such as hex and exponent notation:
+By default, numeric parsing follows JavaScript `Number()`. For ports, limits,
+rates, and other config values, prefer `strict: true` to reject values such as
+hex and exponent notation:
 
 ```js
 int({ strict: true })
