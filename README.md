@@ -118,7 +118,7 @@ export const env = parseEnv(schema, process.env);
 
 ## Benchmarks
 
-Current local report: Node v26.3.0, macOS arm64, Apple M3.
+Current report: Node v26.3.0, macOS arm64, Apple M3.
 
 | Metric | Result |
 | --- | ---: |

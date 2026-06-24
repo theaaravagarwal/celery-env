@@ -1,24 +1,12 @@
 # Benchmarks
 
-Benchmarks are maintained in a local `sandbox/bench` lab so competitor
-dependencies never enter the root package or public source tree.
-
-## Run The Report
-
-```sh
-cd sandbox/bench
-npm install
-npm run report
-```
-
-The local report writes:
-
-- `sandbox/bench/artifacts/report.md`
-- `sandbox/bench/artifacts/report.json`
+Benchmark dependencies are kept out of the root package so `celery-env` stays
+dependency-free. The public package ships the headline report and claim rules,
+not the local benchmark lab.
 
 ## Current Headline
 
-Current local report: Node v26.3.0, macOS arm64, Apple M3.
+Current report: Node v26.3.0, macOS arm64, Apple M3.
 
 | Metric | Result |
 | --- | ---: |

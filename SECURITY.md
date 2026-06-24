@@ -25,19 +25,11 @@ Run the local hardening checks before publishing:
 npm run security:scan
 ```
 
-The benchmark workspace has separate development dependencies. Audit them with:
-
-```sh
-npm run local:audit:bench
-```
-
 The root package intentionally has no lockfile because it has no dependencies.
 `npm audit` requires a lockfile, so root-package supply-chain checks are covered
 by `scripts/security-scan.mjs` and `scripts/validate-publish.mjs`.
 
-CI runs the same root hardening scan on Node 18, 20, 22, and 26. Local
-benchmark and migration labs can be audited separately before changing public
-claims.
+CI runs the same root hardening scan on Node 18, 20, 22, and 26.
 
 ## Hardening Findings
 

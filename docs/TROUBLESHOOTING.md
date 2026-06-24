@@ -1,14 +1,5 @@
 # Troubleshooting
 
-## `celery-env` Is Not Found On npm
-
-Before the first public publish, npm returns `E404` for `celery-env`. After
-publish, this should work:
-
-```sh
-npm view celery-env version
-```
-
 ## The CLI Refuses To Overwrite A File
 
 Generation does not overwrite existing files unless you pass `--force`.

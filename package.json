@@ -54,8 +54,6 @@
     "test": "node --test test/*.mjs",
     "size": "node scripts/size.mjs",
     "security:scan": "node scripts/security-scan.mjs && npm run prepublishOnly",
-    "local:audit:bench": "npm --prefix sandbox/bench audit",
-    "local:compare:env-tools": "npm --prefix project run install:variants && npm --prefix project run compare:env-tools:verify",
     "validate:publish": "node scripts/validate-publish.mjs",
     "prepublishOnly": "npm test && npm run size && npm run validate:publish",
     "demo:generate": "node src/cli.js --schema examples/env.schema.mjs --out .tmp/generated/env.mjs --types .tmp/generated/env.d.ts"

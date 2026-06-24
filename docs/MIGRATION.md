@@ -17,6 +17,8 @@ The goal is one central module that reads env and exports validated config.
 Keep schema keys close to actual env var names:
 
 ```js
+import { defineEnv, int, oneOf, url } from "celery-env";
+
 export default defineEnv({
   NODE_ENV: oneOf(["development", "test", "production"], { default: "development" }),
   DATABASE_URL: url({ protocols: ["postgres"] }),
@@ -50,13 +52,3 @@ export function loadConfig(source = process.env) {
 ## Step 5. Remove Direct Env Reads
 
 Use the validated config everywhere else.
-
-## Local Fixture
-
-This working copy may include a local ignored `project/` fixture comparing
-Celery against Zod, Valibot, Envalid, Envsafe, env-var, and T3 Env Core. It is
-kept out of the public source tree so the package repository stays focused.
-
-```sh
-npm --prefix project run compare:env-tools:verify
-```

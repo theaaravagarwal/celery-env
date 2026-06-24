@@ -34,6 +34,8 @@ env.DATABASE_URL;
 ## Optional Values
 
 ```js
+import { defineEnv, url } from "celery-env";
+
 export default defineEnv({
   SENTRY_DSN: url({ optional: true })
 });
@@ -49,6 +51,8 @@ env.SENTRY_DSN;
 ## Defaults Remove Undefined
 
 ```js
+import { defineEnv, int } from "celery-env";
+
 export default defineEnv({
   PORT: int({ default: 3000 })
 });
@@ -78,6 +82,8 @@ Generated declarations type `json()` values as `unknown`, because Celery only
 validates JSON syntax.
 
 ```js
+import { defineEnv, json } from "celery-env";
+
 const schema = defineEnv({
   RATE_LIMIT_JSON: json()
 });

@@ -13,8 +13,3 @@ Start here if you are new to Celery or new to typed env validation.
 7. [Troubleshooting](TROUBLESHOOTING.md): common setup and generation issues.
 8. [Migration Guide](MIGRATION.md): add Celery to an existing project.
 9. [Benchmarks](BENCHMARKS.md): what is measured and what claims are safe.
-
-## Maintainer Docs
-
-- [Release Checklist](RELEASE.md)
-- [Launch Narrative](LAUNCH.md)
