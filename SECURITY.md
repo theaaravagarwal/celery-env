@@ -75,5 +75,9 @@ secrets in schema defaults or examples that you plan to publish.
 
 ## Reporting
 
-Report security issues privately to the package maintainer. Include a minimal
-reproduction and the affected version when possible.
+Report security issues privately through GitHub Security Advisories:
+
+https://github.com/theaaravagarwal/celery-env/security/advisories/new
+
+Include a minimal reproduction, the affected version, and whether the issue
+affects runtime validation, generated validators, or CLI generation.

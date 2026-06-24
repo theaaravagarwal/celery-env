@@ -1,7 +1,7 @@
 # celery-env
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/theaaravagarwal/celery-env/main/docs/assets/celery-mark.svg" alt="celery-env" width="96" height="96">
+  <img src="docs/assets/celery-mark.svg" alt="celery-env" width="96" height="96">
 </p>
 
 <p align="center">
@@ -178,11 +178,13 @@ See [SECURITY.md](SECURITY.md) for the trust boundary and hardening notes.
 
 ## Documentation
 
-- [Benchmark Notes](BENCHMARK.md)
-- [Performance Summary](PERFORMANCE_SUMMARY.md)
-- [Migration Fixture](project/README.md)
-- [Launch Narrative](docs/LAUNCH.md)
-- [Contributing](CONTRIBUTING.md)
+Full repository docs:
+
+- [Benchmark Notes](https://github.com/theaaravagarwal/celery-env/blob/main/BENCHMARK.md)
+- [Performance Summary](https://github.com/theaaravagarwal/celery-env/blob/main/PERFORMANCE_SUMMARY.md)
+- [Migration Fixture](https://github.com/theaaravagarwal/celery-env/blob/main/project/README.md)
+- [Launch Narrative](https://github.com/theaaravagarwal/celery-env/blob/main/docs/LAUNCH.md)
+- [Contributing](https://github.com/theaaravagarwal/celery-env/blob/main/CONTRIBUTING.md)
 
 ## License
 

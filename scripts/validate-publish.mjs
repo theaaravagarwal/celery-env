@@ -8,6 +8,7 @@ import { tmpdir } from "node:os";
 const pkg = JSON.parse(await readFile("package.json", "utf8"));
 const emptyDependencyFields = ["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"];
 const expectedPrepublishOnly = "npm test && npm run size && npm run validate:publish";
+const binPath = typeof pkg.bin === "string" ? pkg.bin : pkg.bin?.["celery-env"];
 
 for (const field of emptyDependencyFields) {
   assert.deepEqual(pkg[field] || {}, {}, `${field} must stay empty in the root package`);
@@ -23,6 +24,7 @@ const expectedFiles = new Set([
   "package/README.md",
   "package/SECURITY.md",
   "package/package.json",
+  "package/docs/assets/celery-mark.svg",
   "package/src/cli.js",
   "package/src/compiler.d.ts",
   "package/src/compiler.js",
@@ -32,7 +34,7 @@ const expectedFiles = new Set([
 
 for (const path of [
   pkg.types,
-  pkg.bin["celery-env"],
+  binPath,
   pkg.exports["."].import,
   pkg.exports["."].types,
   pkg.exports["./compiler"].import,
@@ -62,7 +64,7 @@ const [pack] = JSON.parse(output);
 const actualFiles = new Set(pack.files.map((file) => `package/${file.path}`));
 
 assert.deepEqual(actualFiles, expectedFiles, "npm package contents changed unexpectedly");
-assert.ok(pack.size < 17000, `packed tarball is too large: ${pack.size}`);
-assert.ok(pack.unpackedSize < 66000, `unpacked package is too large: ${pack.unpackedSize}`);
+assert.ok(pack.size < 18000, `packed tarball is too large: ${pack.size}`);
+assert.ok(pack.unpackedSize < 68000, `unpacked package is too large: ${pack.unpackedSize}`);
 
 console.log(`publish validation ok: ${pack.files.length} files, ${pack.size} packed bytes`);

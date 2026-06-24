@@ -18,7 +18,7 @@
     }
   },
   "bin": {
-    "celery-env": "./src/cli.js"
+    "celery-env": "src/cli.js"
   },
   "repository": {
     "type": "git",
@@ -34,13 +34,14 @@
     "src/index.d.ts",
     "src/compiler.d.ts",
     "src/cli.js",
+    "docs/assets/celery-mark.svg",
     "SECURITY.md",
     "README.md",
     "LICENSE"
   ],
   "scripts": {
     "ci": "npm run security:scan && npm run security:audit:bench && npm --prefix project run install:variants && npm --prefix project run compare:env-tools:verify",
-    "test": "node --test",
+    "test": "node --test test/*.mjs",
     "size": "node scripts/size.mjs",
     "security:scan": "node scripts/security-scan.mjs && npm run prepublishOnly",
     "security:audit:bench": "npm --prefix sandbox/bench audit",

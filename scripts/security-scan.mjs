@@ -19,6 +19,7 @@ assert.deepEqual(new Set(pkg.files), new Set([
   "src/index.d.ts",
   "src/compiler.d.ts",
   "src/cli.js",
+  "docs/assets/celery-mark.svg",
   "SECURITY.md",
   "README.md",
   "LICENSE"
