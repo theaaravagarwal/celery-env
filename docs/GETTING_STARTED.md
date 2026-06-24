@@ -126,6 +126,21 @@ For most apps, commit all of these:
 Committing generated files keeps deployments simple because production does not
 need to run the generator.
 
+## Keep Generated Files In Sync
+
+Regenerate after changing `env.schema.mjs`:
+
+```sh
+npm run env:generate
+```
+
+In CI, verify generated files are current:
+
+```sh
+npm run env:generate
+git diff --exit-code src/env.mjs src/env.d.ts .env.example
+```
+
 ## Next Steps
 
 - Read [Schema API](SCHEMA.md) when adding validators.

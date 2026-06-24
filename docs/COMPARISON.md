@@ -3,6 +3,16 @@
 Celery is not a replacement for general validation libraries. It is a focused
 tool for environment configuration.
 
+## Quick Decision Guide
+
+| Choose | When |
+| --- | --- |
+| Celery generated mode | You want a committed standalone validator, generated TypeScript declarations, generated `.env.example`, no production dependency, or lower cold-start cost. |
+| Celery runtime mode | You like Celery's schema API but cannot add generation yet. |
+| Zod | You already need general object validation, nested data validation, or shared schemas beyond `process.env`. |
+| Envalid / Envsafe / env-var | You want a mature runtime-only env validator with no generated files or build step. |
+| Stay with your current tool | Env validation is not on the startup path and generated artifacts would add workflow friction. |
+
 ## Celery vs Zod
 
 Zod is excellent for general TypeScript validation: forms, API payloads,
@@ -38,15 +48,41 @@ Celery's main difference is generated mode:
 - TypeScript declarations can be generated from the same schema;
 - `.env.example` can be generated from schema metadata.
 
-## Choosing A Mode
+## Generated vs Runtime Mode
 
-| Use Case | Recommended Mode |
+| Question | Generated mode | Runtime mode |
+| --- | --- | --- |
+| Production dependency on `celery-env` | No | Yes |
+| Build or generate step | Yes | No |
+| Startup cost | Lowest | Schema parsed at runtime |
+| Generated `.d.ts` | Yes | Use `InferEnv` |
+| Generated `.env.example` | Yes | Only if you run the CLI |
+| Best fit | Services, serverless, production apps | Scripts, prototypes, no-build projects |
+
+## Choose Another Tool When
+
+| Need | Better Fit |
 | --- | --- |
-| Production app or service | Generated |
-| Serverless or cold-start-sensitive app | Generated |
-| CLI script or small internal tool | Runtime |
-| Prototype before deciding schema shape | Runtime |
-| App with no build/generate step allowed | Runtime |
+| General object, form, API, or nested JSON validation | Zod |
+| Runtime-only env validation with no generated artifacts | Envalid / Envsafe / env-var |
+| Built-in `.env` file loading | dotenv plus a validator |
+| Maximum ecosystem maturity | Zod or established env validators |
+| No schema execution during build or generation | A static config format or runtime-only validator |
+
+## Package Footprint
+
+This table is npm package metadata, not benchmark speed:
+
+| Package | Version Checked | Runtime Deps | Unpacked npm Size | Files |
+| --- | ---: | ---: | ---: | ---: |
+| `celery-env` | 0.1.0 | 0 | 81.9 kB | 20 |
+| `zod` | 4.4.3 | 0 | 4.56 MB | 718 |
+| `valibot` | 1.4.1 | 0 | 1.84 MB | 9 |
+| `envalid` | 8.2.0 | 1 | 88.8 kB | 39 |
+| `envsafe` | 2.0.3 | 0 | 91.4 kB | 27 |
+| `env-var` | 7.5.0 | 0 | 42.9 kB | 30 |
+
+Checked with `npm view` on 2026-06-24.
 
 ## What Celery Does Not Do
 

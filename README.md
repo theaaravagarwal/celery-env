@@ -91,6 +91,15 @@ If you already use Zod for forms, API payloads, or general data validation,
 keep using it there. Celery is for the narrower `process.env` problem where
 defaults, examples, generated files, and startup cost matter.
 
+## Quick Comparison
+
+| Choose | When |
+| --- | --- |
+| Celery generated mode | You want a committed standalone validator, generated TypeScript declarations, generated `.env.example`, no production dependency, or lower cold-start cost. |
+| Celery runtime mode | You like Celery's schema API but cannot add generation yet. |
+| Zod | You need general object, form, API, or nested data validation. |
+| Envalid / Envsafe / env-var | You want mature runtime-only env validation with no generated files. |
+
 ## Why Use It
 
 - **Generated validator**: no schema walk during app startup.
@@ -118,20 +127,37 @@ export const env = parseEnv(schema, process.env);
 
 ## Benchmarks
 
-Current report: Node v26.3.0, macOS arm64, Apple M3.
+Snapshot: Node v26.3.0, macOS arm64, Apple M3, generated on 2026-06-24. Higher
+ops/sec is better; lower milliseconds and bytes are better. Generated-mode
+numbers exclude compile/generation cost.
 
-| Metric | Result |
-| --- | ---: |
-| Valid real-schema geometric mean | 1.50x over best external competitor |
-| Real `process.env` geometric mean | 1.14x over best external competitor |
-| Invalid real-schema geometric mean | 1.32x over best external competitor |
-| Cold first validation | 2.42x faster than best external competitor |
-| Generated validator size | 526 gzip bytes |
-| Smallest external bundle gap | 2.15x smaller |
+| Tool / mode | Real schemas ops/sec | Real `process.env` ops/sec | Invalid ops/sec | Cold first validation | Gzip snapshot |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Celery generated | 1,411,473 | 228,570 | 112,361 | 1.849 ms | 526 B |
+| Celery runtime | 776,241 | 185,124 | 96,846 | 2.598 ms | 2,779 B |
+| Zod | 516,820 | 141,126 | 39,760 | 33.999 ms | 20,894 B |
+| Valibot | 454,925 | 109,584 | 84,841 | 6.925 ms | 2,055 B |
+| Envalid | 125,202 | 85,436 | 16,731 | 9.598 ms | 7,318 B |
+| Envsafe | 940,564 | 184,818 | 19,359 | 5.694 ms | 3,292 B |
+| env-var | 51,287 | 44,727 | 31,922 | 7.679 ms | 2,969 B |
+| T3 Env Core | 316,627 | 168,740 | 10,264 | 32.366 ms | 19,531 B |
 
-Competitors measured include Zod, Valibot, Envalid, Envsafe, env-var, T3 Env
-Core, Valienv, env-schema, env-type-validator, safe-env-vars, and Convict where
-the benchmark applies. The claim is specific to this env-validation corpus.
+The benchmark corpus includes realistic API, web, worker, list-heavy, and
+JSON-heavy env schemas. Results are workload-specific; real `process.env` access
+narrows some gaps compared with frozen plain env objects.
+
+Current npm package metadata:
+
+| Package | Version checked | Runtime deps | Unpacked npm size | Files |
+| --- | ---: | ---: | ---: | ---: |
+| `celery-env` | 0.1.0 | 0 | 81.9 kB | 20 |
+| `zod` | 4.4.3 | 0 | 4.56 MB | 718 |
+| `valibot` | 1.4.1 | 0 | 1.84 MB | 9 |
+| `envalid` | 8.2.0 | 1 | 88.8 kB | 39 |
+| `envsafe` | 2.0.3 | 0 | 91.4 kB | 27 |
+| `env-var` | 7.5.0 | 0 | 42.9 kB | 30 |
+
+Metadata checked with `npm view` on 2026-06-24.
 
 ## Documentation
 
