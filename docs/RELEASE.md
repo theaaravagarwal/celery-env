@@ -6,8 +6,7 @@ Use this checklist before making the repository public or publishing to npm.
 
 - Replace `docs/assets/celery-mark.svg` with the final logo if desired.
 - Add screenshots or terminal captures under `docs/assets/`.
-- Review README badges and switch the private pre-release badge to the npm
-  version badge after publish.
+- Confirm the README badges point at the public npm package and CI workflow.
 - Confirm the GitHub repository is public only when launch-ready.
 - Confirm repository topics and description are still accurate.
 
@@ -48,6 +47,5 @@ npm publish --access public
 
 After publish:
 
-- Update README status badge to npm version.
 - Create a GitHub release for the published tag.
 - Re-run `gh repo view` and verify homepage/topics.

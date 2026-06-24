@@ -252,7 +252,7 @@ This project optimizes for startup validation in serverless and microservice env
 - `npm run prepublishOnly` passes.
 - Runtime gzip size: 3,120 bytes.
 - Compiler gzip size: 6,910 bytes.
-- Publish dry-run: 10 files, 17,207 packed bytes.
+- Publish dry-run: 18 files, 20,191 packed bytes.
 - Generated validator is fastest in the local benchmark matrix.
 - Cold first-validation from the latest `npm run report`: generated 1.825 ms, runtime 2.454 ms, Zod 31.879 ms.
 - Generated-size scaling median from `generated-size.split-array-prealloc.json`: small 1.811 ms total, medium 4.287 ms, large 12.316 ms.

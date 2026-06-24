@@ -24,6 +24,14 @@ const expectedFiles = new Set([
   "package/README.md",
   "package/SECURITY.md",
   "package/package.json",
+  "package/docs/BENCHMARKS.md",
+  "package/docs/CLI.md",
+  "package/docs/GETTING_STARTED.md",
+  "package/docs/MIGRATION.md",
+  "package/docs/README.md",
+  "package/docs/RUNTIME.md",
+  "package/docs/SCHEMA.md",
+  "package/docs/TYPESCRIPT.md",
   "package/docs/assets/celery-mark.svg",
   "package/src/cli.js",
   "package/src/compiler.d.ts",
@@ -64,7 +72,7 @@ const [pack] = JSON.parse(output);
 const actualFiles = new Set(pack.files.map((file) => `package/${file.path}`));
 
 assert.deepEqual(actualFiles, expectedFiles, "npm package contents changed unexpectedly");
-assert.ok(pack.size < 18000, `packed tarball is too large: ${pack.size}`);
-assert.ok(pack.unpackedSize < 68000, `unpacked package is too large: ${pack.unpackedSize}`);
+assert.ok(pack.size < 28000, `packed tarball is too large: ${pack.size}`);
+assert.ok(pack.unpackedSize < 98000, `unpacked package is too large: ${pack.unpackedSize}`);
 
 console.log(`publish validation ok: ${pack.files.length} files, ${pack.size} packed bytes`);
