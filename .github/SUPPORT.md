@@ -10,4 +10,4 @@ Please include:
 - The env input, with secrets redacted.
 - Whether the issue is in generated mode, runtime mode, or CLI generation.
 
-For security reports, use the private reporting guidance in `SECURITY.md`.
+For security reports, use the private reporting guidance in [`SECURITY.md`](../SECURITY.md).
