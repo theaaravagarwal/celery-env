@@ -11,6 +11,10 @@ export default defineEnv({
 });
 ```
 
+Think of the schema as executable documentation for your configuration. The key
+is the env var name, the validator describes the accepted string format, and
+options describe defaults, examples, and environment-specific behavior.
+
 ## Validators
 
 | Validator | Output | Use For |
@@ -39,6 +43,17 @@ export default defineEnv({
 
 `testDefault` wins over `devDefault`, and `default` applies in every
 environment.
+
+## Missing Values
+
+Empty strings are treated as missing. If a value is missing, Celery checks
+options in this order:
+
+1. `testDefault` when `NODE_ENV` is `test`.
+2. `devDefault` when `NODE_ENV` is not `production`.
+3. `default`.
+4. `optional`.
+5. Otherwise, the variable is required.
 
 ## Strings
 

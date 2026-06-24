@@ -8,6 +8,9 @@ The CLI creates schemas and generated validator files.
 npx celery-env init --target node --schema env.schema.mjs
 ```
 
+Use `init` when starting from scratch. It writes a small schema with common
+Node app variables.
+
 Targets:
 
 | Target | Use For |
@@ -25,6 +28,8 @@ npx celery-env generate \
   --types src/env.d.ts \
   --example .env.example
 ```
+
+Use `generate` after editing `env.schema.mjs`.
 
 ## Flags
 
@@ -58,3 +63,6 @@ Run it whenever the schema changes:
 ```sh
 npm run env:generate
 ```
+
+Generated files are regular source files. Commit them when you want production
+deployments to run without the generator.

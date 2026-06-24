@@ -32,7 +32,7 @@ are zero-dependency in the root package.
 | Celery runtime bundle | 2,779 gzip bytes |
 | Root runtime source | 3,120 gzip bytes |
 | Root compiler source | 6,910 gzip bytes |
-| Published package dry-run | 20,241 packed bytes |
+| Published package dry-run | 22,098 packed bytes |
 
 The generated output is the important number for app bundles: the measured
 standalone validator is only 526 gzip bytes.

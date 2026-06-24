@@ -9,6 +9,12 @@ environment variables.
 npm install -D celery-env
 ```
 
+```sh
+pnpm add -D celery-env
+yarn add -D celery-env
+bun add -d celery-env
+```
+
 Use a dev dependency when you generate validators. The generated output has no
 runtime dependency on `celery-env`.
 
@@ -65,6 +71,16 @@ This creates:
 | `src/env.d.ts` | Types for editors and TypeScript. |
 | `.env.example` | Documented env template. |
 
+Add the command to `package.json` so the workflow is repeatable:
+
+```json
+{
+  "scripts": {
+    "env:generate": "celery-env generate --schema env.schema.mjs --out src/env.mjs --types src/env.d.ts --example .env.example --minify"
+  }
+}
+```
+
 ## 4. Load Env Once
 
 ```js
@@ -109,3 +125,10 @@ For most apps, commit all of these:
 
 Committing generated files keeps deployments simple because production does not
 need to run the generator.
+
+## Next Steps
+
+- Read [Schema API](SCHEMA.md) when adding validators.
+- Read [TypeScript](TYPESCRIPT.md) if editor types do not look right.
+- Read [Troubleshooting](TROUBLESHOOTING.md) if generation or URL validation
+  fails.

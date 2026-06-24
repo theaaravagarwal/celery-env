@@ -28,7 +28,7 @@ The local report is written to `sandbox/bench/artifacts/report.md` and `sandbox/
 - Runtime: Node v26.3.0, V8 14.6.202.34-node.20, darwin/arm64, Apple M3
 - Root runtime size: `src/index.js` is 3,120 gzip bytes
 - Root compiler size: `src/compiler.js` is 6,910 gzip bytes
-- Publish dry-run: 18 files, 20,241 packed bytes
+- Publish dry-run: 20 files, 22,098 packed bytes
 
 Real-schema hot validation from `npm run report`:
 

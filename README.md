@@ -26,6 +26,14 @@ messages, and fast startup.
 npm install -D celery-env
 ```
 
+Other package managers:
+
+```sh
+pnpm add -D celery-env
+yarn add -D celery-env
+bun add -d celery-env
+```
+
 ## 60-Second Setup
 
 Create a schema:
@@ -68,6 +76,20 @@ export const env = loadEnv(process.env);
 
 That is the main path: write `env.schema.mjs`, generate `src/env.mjs`, and use
 the typed result everywhere else.
+
+## When To Use Celery
+
+Use Celery when you want env validation to be:
+
+- focused on app configuration instead of general object validation;
+- generated once and cheap at startup;
+- dependency-free in production;
+- typed without hand-written config types;
+- strict about missing production secrets without printing secret values.
+
+If you already use Zod for forms, API payloads, or general data validation,
+keep using it there. Celery is for the narrower `process.env` problem where
+defaults, examples, generated files, and startup cost matter.
 
 ## Why Use It
 
@@ -118,6 +140,8 @@ the benchmark applies. The claim is specific to this env-validation corpus.
 - [CLI](docs/CLI.md)
 - [TypeScript](docs/TYPESCRIPT.md)
 - [Runtime Mode](docs/RUNTIME.md)
+- [Comparison](docs/COMPARISON.md)
+- [Troubleshooting](docs/TROUBLESHOOTING.md)
 - [Benchmarks](docs/BENCHMARKS.md)
 - [Migration Guide](docs/MIGRATION.md)
 - [Security](SECURITY.md)
