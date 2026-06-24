@@ -14,6 +14,11 @@ Use this checklist before making the repository public or publishing to npm.
 
 ```sh
 npm run ci
+```
+
+If the local benchmark lab is present, refresh benchmark reports separately:
+
+```sh
 cd sandbox/bench
 npm run report
 ```
@@ -32,7 +37,8 @@ npm pack --dry-run
 ```
 
 The root package must stay dependency-free, and the packed file list should stay
-limited to package source, declarations, CLI, README, SECURITY, and LICENSE.
+limited to package source, declarations, CLI, docs, README, SECURITY, and
+LICENSE.
 
 ## Publish
 

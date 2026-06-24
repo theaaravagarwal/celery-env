@@ -1,7 +1,7 @@
 # Benchmarks
 
-Benchmarks live in `sandbox/bench` so competitor dependencies never enter the
-root package.
+Benchmarks are maintained in a local `sandbox/bench` lab so competitor
+dependencies never enter the root package or public source tree.
 
 ## Run The Report
 
@@ -11,7 +11,7 @@ npm install
 npm run report
 ```
 
-The report writes:
+The local report writes:
 
 - `sandbox/bench/artifacts/report.md`
 - `sandbox/bench/artifacts/report.json`

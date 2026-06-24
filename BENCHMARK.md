@@ -1,6 +1,6 @@
 # Benchmark Notes
 
-Benchmarks live in `sandbox/bench` so competitor dependencies never enter the root package.
+Benchmarks live in the local `sandbox/bench` lab so competitor dependencies never enter the root package or public source tree.
 
 ```sh
 cd sandbox/bench
@@ -20,7 +20,7 @@ npm run report -- --time 150 --warmup 75 --cold-runs 7
 npm run report:full
 ```
 
-The artifact-backed public report is written to `sandbox/bench/artifacts/report.md` and `sandbox/bench/artifacts/report.json`. It now includes a scorecard, synthetic hot matrix, valid real-schema rows, real `process.env` rows, invalid real-schema rows, cold-start medians, shipped bundle size, and claim guidance.
+The local report is written to `sandbox/bench/artifacts/report.md` and `sandbox/bench/artifacts/report.json`. It includes a scorecard, synthetic hot matrix, valid real-schema rows, real `process.env` rows, invalid real-schema rows, cold-start medians, shipped bundle size, and claim guidance.
 
 ## Current Local Report
 
@@ -28,7 +28,7 @@ The artifact-backed public report is written to `sandbox/bench/artifacts/report.
 - Runtime: Node v26.3.0, V8 14.6.202.34-node.20, darwin/arm64, Apple M3
 - Root runtime size: `src/index.js` is 3,120 gzip bytes
 - Root compiler size: `src/compiler.js` is 6,910 gzip bytes
-- Publish dry-run: 18 files, 20,191 packed bytes
+- Publish dry-run: 18 files, 20,241 packed bytes
 
 Real-schema hot validation from `npm run report`:
 

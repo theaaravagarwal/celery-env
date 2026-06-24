@@ -1,9 +1,11 @@
 # Celery Performance Summary
 
-This is the readable version of the benchmark story. Raw artifacts are in
-`final-hot-bench-20260622.json` and `sandbox/bench/artifacts/report.json`.
+This is the readable version of the benchmark story. The raw benchmark labs and
+JSON artifacts are local-only so the public repository stays focused on the
+package source.
 
-To regenerate the full benchmark report:
+To regenerate the full benchmark report in a working copy that has the local
+benchmark lab:
 
 ```sh
 cd sandbox/bench
@@ -30,15 +32,15 @@ are zero-dependency in the root package.
 | Celery runtime bundle | 2,779 gzip bytes |
 | Root runtime source | 3,120 gzip bytes |
 | Root compiler source | 6,910 gzip bytes |
-| Published package dry-run | 20,191 packed bytes |
+| Published package dry-run | 20,241 packed bytes |
 
 The generated output is the important number for app bundles: the measured
 standalone validator is only 526 gzip bytes.
 
 ## Migration / DX Comparison
 
-The fixture in `project/` ports the same realistic service to Celery and the
-popular alternatives. Each variant preserves the same env vars, defaults,
+The local fixture in `project/` ports the same realistic service to Celery and
+the popular alternatives. Each variant preserves the same env vars, defaults,
 conditional secrets, URL/list/JSON parsing, secret-safe errors, and centralized
 own-property env reads. Regenerate the verified artifact with:
 

@@ -38,12 +38,13 @@ Avoid this framing:
 - Replace the README placeholder mark if desired.
 - Confirm package metadata points at the final GitHub URL.
 - Run `npm run ci`.
-- Run `npm --prefix sandbox/bench run report` before changing benchmark claims.
+- If the local benchmark lab is present, run `npm --prefix sandbox/bench run report`
+  before changing benchmark claims.
 - Publish from a clean git commit.
 
 ## Screenshot Ideas
 
 - Terminal screenshot of `npx celery-env generate`.
-- Before/after config migration in `project/`.
-- Benchmark scorecard from `sandbox/bench/artifacts/report.md`.
+- Before/after config migration from the local `project/` fixture.
+- Benchmark scorecard from the local `sandbox/bench` report.
 - Generated `src/env.mjs` beside the authored `env.schema.mjs`.

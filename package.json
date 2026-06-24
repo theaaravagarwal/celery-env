@@ -48,14 +48,15 @@
     "LICENSE"
   ],
   "scripts": {
-    "ci": "npm run security:scan && npm run security:audit:bench && npm --prefix project run install:variants && npm --prefix project run compare:env-tools:verify",
+    "ci": "npm run security:scan",
     "test": "node --test test/*.mjs",
     "size": "node scripts/size.mjs",
     "security:scan": "node scripts/security-scan.mjs && npm run prepublishOnly",
-    "security:audit:bench": "npm --prefix sandbox/bench audit",
+    "local:audit:bench": "npm --prefix sandbox/bench audit",
+    "local:compare:env-tools": "npm --prefix project run install:variants && npm --prefix project run compare:env-tools:verify",
     "validate:publish": "node scripts/validate-publish.mjs",
     "prepublishOnly": "npm test && npm run size && npm run validate:publish",
-    "demo:generate": "node src/cli.js --schema examples/env.schema.mjs --out sandbox/generated/env.mjs --types sandbox/generated/env.d.ts"
+    "demo:generate": "node src/cli.js --schema examples/env.schema.mjs --out .tmp/generated/env.mjs --types .tmp/generated/env.d.ts"
   },
   "keywords": [
     "env",

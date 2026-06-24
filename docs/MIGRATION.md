@@ -51,10 +51,11 @@ export function loadConfig(source = process.env) {
 
 Use the validated config everywhere else.
 
-## Fixture
+## Local Fixture
 
-The repository includes `project/`, a realistic migration fixture comparing
-Celery against Zod, Valibot, Envalid, Envsafe, env-var, and T3 Env Core.
+This working copy may include a local ignored `project/` fixture comparing
+Celery against Zod, Valibot, Envalid, Envsafe, env-var, and T3 Env Core. It is
+kept out of the public source tree so the package repository stays focused.
 
 ```sh
 npm --prefix project run compare:env-tools:verify

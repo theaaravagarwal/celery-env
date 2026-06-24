@@ -10,14 +10,15 @@ npm run size
 npm run validate:publish
 ```
 
-The full release gate is:
+The release gate is:
 
 ```sh
 npm run ci
 ```
 
-Benchmark dependencies live under `sandbox/bench` so the root package stays
-dependency-free.
+Local benchmark and competitor-migration labs live under `sandbox/` and
+`project/`. They are intentionally ignored so the public repository stays
+focused on source, docs, tests, and release metadata.
 
 ## Development Rules
 
@@ -25,20 +26,31 @@ dependency-free.
 - Do not add install, pack, or unexpected publish lifecycle hooks.
 - Keep generated validators standalone.
 - Add tests for runtime and generated behavior when changing parsing semantics.
-- Keep benchmark claims tied to checked-in artifacts.
+- Keep benchmark claims tied to reproducible local reports and record the
+  exact machine/runtime when updating numbers.
 - Treat schemas and `requiredWhen` predicates as trusted application code.
+
+## Branch Workflow
+
+- `main` is the releasable branch.
+- Use `feature/<short-name>` for normal feature work.
+- Use `fix/<short-name>` for focused bug fixes.
+- Use `perf/<short-name>` for benchmark-driven optimization work.
+- Use `docs/<short-name>` for documentation-only changes.
+- Keep local benchmark artifacts, generated variants, and competitor fixtures
+  out of commits.
 
 ## Benchmark Updates
 
-Regenerate the public benchmark artifact with:
+Regenerate local benchmark reports with:
 
 ```sh
 cd sandbox/bench
 npm run report
 ```
 
-Only update README ratios from `sandbox/bench/artifacts/report.md` or
-`sandbox/bench/artifacts/report.json`.
+Only update README ratios from fresh local reports, and include the runtime,
+OS, CPU, and command in the commit or PR notes.
 
 ## Pull Requests
 

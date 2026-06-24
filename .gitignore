@@ -3,6 +3,28 @@ node_modules/
 *.log
 *.tgz
 checkpoints/
+
+# Local benchmark and experiment output.
+*.bench.json
+*-202*.json
+bench-*.json
+final-hot-bench-*.json
+generated-*.json
+list-*.json
+missing-defaults-*.json
+process-env-*.json
+runtime-*.json
+source-byte-*.json
+split-*.json
+strict-*.json
+enum-*.json
+
+# Local-only labs. Keep these on disk for experiments, but do not publish the
+# source repository with competitor fixtures, generated variants, or artifacts.
+sandbox/
+project/
+.tmp/
+
 sandbox/bench/node_modules/
 sandbox/bench/bundle-out/
 sandbox/bench/generated/
