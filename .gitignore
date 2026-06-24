@@ -1,0 +1,9 @@
+node_modules/
+.DS_Store
+*.log
+*.tgz
+checkpoints/
+sandbox/bench/node_modules/
+sandbox/bench/bundle-out/
+sandbox/bench/generated/
+project/variants/*/node_modules/

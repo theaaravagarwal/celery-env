@@ -1,0 +1,22 @@
+declare const specBrand: unique symbol;
+export type BaseOptions<T> = { default?: T; devDefault?: T; testDefault?: T; optional?: boolean; requiredWhen?: (env: Record<string, string | undefined>) => boolean; desc?: string; example?: T | string; docs?: string };
+export type StringOptions<T = string> = BaseOptions<T> & { min?: number; max?: number; startsWith?: string; includes?: string };
+export type NumberOptions<T = number> = BaseOptions<T> & { min?: number; max?: number; strict?: boolean };
+export type BoolOptions<T = boolean> = BaseOptions<T>;
+export type Spec<T> = { readonly [specBrand]: T };
+export type InferSpec<T> = T extends Spec<infer V> ? V : never;
+export type InferEnv<T extends Record<string, Spec<unknown>>> = { readonly [K in keyof T]: InferSpec<T[K]> };
+export type EnvResult<T extends Record<string, Spec<unknown>>> = InferEnv<T>;
+type Output<T, O> = O extends { default: infer D } ? D : O extends { optional: true } ? T | undefined : T;
+export function defineEnv<T extends Record<string, Spec<unknown>>>(schema: T): Readonly<T>;
+export function str<O extends StringOptions | undefined = undefined>(options?: O): Spec<Output<string, O>>;
+export function int<O extends NumberOptions | undefined = undefined>(options?: O): Spec<Output<number, O>>;
+export function num<O extends NumberOptions | undefined = undefined>(options?: O): Spec<Output<number, O>>;
+export function bool<O extends BoolOptions | undefined = undefined>(options?: O): Spec<Output<boolean, O>>;
+export function oneOf<const T extends readonly [string | number | boolean, ...(string | number | boolean)[]], O extends BaseOptions<T[number]> | undefined = undefined>(values: T, options?: O): Spec<Output<T[number], O>>;
+export function url<O extends (StringOptions & { protocols?: readonly string[] }) | undefined = undefined>(options?: O): Spec<Output<string, O>>;
+export function json<T = unknown, O extends BaseOptions<T> | undefined = undefined>(options?: O): Spec<Output<T, O>>;
+export function list<T, O extends BaseOptions<readonly T[]> & { separator?: string; trim?: boolean } | undefined = undefined>(item: Spec<T>, options?: O): Spec<Output<readonly T[], O>>;
+export function parseEnv<T extends Record<string, Spec<unknown>>>(schema: T, env?: Record<string, string | undefined>): EnvResult<T>;
+export function isCelerySpec(value: unknown): value is Spec<unknown>;
+export class EnvError extends Error { readonly errors: readonly string[]; constructor(errors: readonly string[]); }

@@ -1,0 +1,126 @@
+{
+  "schema": "celery-runtime-parity/1",
+  "generatedAt": "2026-06-22T17:33:50.188Z",
+  "runtimes": [
+    "node",
+    "bun"
+  ],
+  "rows": [
+    {
+      "target": "node",
+      "passed": true,
+      "output": {
+        "generatedValid": {
+          "ok": true,
+          "value": {
+            "NODE_ENV": "development",
+            "PORT": 3000,
+            "DEBUG": false,
+            "DATABASE_URL": "https://db.example.com",
+            "API_KEY": "abcd",
+            "FLAGS": [
+              true,
+              false,
+              true,
+              false
+            ],
+            "IDS": [
+              1,
+              2,
+              3
+            ]
+          }
+        },
+        "runtimeValid": {
+          "ok": true,
+          "value": {
+            "NODE_ENV": "development",
+            "PORT": 3000,
+            "DEBUG": false,
+            "DATABASE_URL": "https://db.example.com",
+            "API_KEY": "abcd",
+            "FLAGS": [
+              true,
+              false,
+              true,
+              false
+            ],
+            "IDS": [
+              1,
+              2,
+              3
+            ]
+          }
+        },
+        "generatedInvalid": {
+          "ok": false,
+          "name": "Error",
+          "message": "Invalid environment:\n- PORT must be >= 1\n- DATABASE_URL must use protocol https\n- API_KEY must have length >= 4\n- FLAGS item must be a boolean\n- IDS item must be <= 1000\n- IDS item must be a strict integer"
+        },
+        "runtimeInvalid": {
+          "ok": false,
+          "name": "EnvError",
+          "message": "Invalid environment:\n- PORT must be >= 1\n- DATABASE_URL must use protocol https\n- API_KEY must have length >= 4\n- FLAGS[1] must be a boolean\n- IDS[1] must be <= 1000\n- IDS[2] must be a strict integer"
+        }
+      }
+    },
+    {
+      "target": "bun",
+      "passed": true,
+      "output": {
+        "generatedValid": {
+          "ok": true,
+          "value": {
+            "NODE_ENV": "development",
+            "PORT": 3000,
+            "DEBUG": false,
+            "DATABASE_URL": "https://db.example.com",
+            "API_KEY": "abcd",
+            "FLAGS": [
+              true,
+              false,
+              true,
+              false
+            ],
+            "IDS": [
+              1,
+              2,
+              3
+            ]
+          }
+        },
+        "runtimeValid": {
+          "ok": true,
+          "value": {
+            "NODE_ENV": "development",
+            "PORT": 3000,
+            "DEBUG": false,
+            "DATABASE_URL": "https://db.example.com",
+            "API_KEY": "abcd",
+            "FLAGS": [
+              true,
+              false,
+              true,
+              false
+            ],
+            "IDS": [
+              1,
+              2,
+              3
+            ]
+          }
+        },
+        "generatedInvalid": {
+          "ok": false,
+          "name": "Error",
+          "message": "Invalid environment:\n- PORT must be >= 1\n- DATABASE_URL must use protocol https\n- API_KEY must have length >= 4\n- FLAGS item must be a boolean\n- IDS item must be <= 1000\n- IDS item must be a strict integer"
+        },
+        "runtimeInvalid": {
+          "ok": false,
+          "name": "EnvError",
+          "message": "Invalid environment:\n- PORT must be >= 1\n- DATABASE_URL must use protocol https\n- API_KEY must have length >= 4\n- FLAGS[1] must be a boolean\n- IDS[1] must be <= 1000\n- IDS[2] must be a strict integer"
+        }
+      }
+    }
+  ]
+}

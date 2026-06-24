@@ -1,0 +1,96 @@
+{
+  "schema": "celery-split-v2/1",
+  "generatedAt": "2026-06-22T19:50:36.706Z",
+  "rows": [
+    {
+      "count": 160,
+      "name": "unsplit 160",
+      "raw_bytes": 177198,
+      "gzip_bytes": 14474,
+      "hz": 10919,
+      "mean_us": 94.28,
+      "rme": "0.49%"
+    },
+    {
+      "count": 160,
+      "name": "split-512-chunk-16 160",
+      "raw_bytes": 179249,
+      "gzip_bytes": 13131,
+      "hz": 18259,
+      "mean_us": 57.05,
+      "rme": "0.6%"
+    },
+    {
+      "count": 160,
+      "name": "split-512-chunk-32 160",
+      "raw_bytes": 177789,
+      "gzip_bytes": 12954,
+      "hz": 22111,
+      "mean_us": 45.45,
+      "rme": "0.14%"
+    },
+    {
+      "count": 160,
+      "name": "split-512-chunk-64 160",
+      "raw_bytes": 177059,
+      "gzip_bytes": 12890,
+      "hz": 22832,
+      "mean_us": 43.97,
+      "rme": "0.13%"
+    },
+    {
+      "count": 160,
+      "name": "split-512-chunk-128 160",
+      "raw_bytes": 176704,
+      "gzip_bytes": 13026,
+      "hz": 22853,
+      "mean_us": 43.94,
+      "rme": "0.12%"
+    },
+    {
+      "count": 320,
+      "name": "unsplit 320",
+      "raw_bytes": 357468,
+      "gzip_bytes": 28666,
+      "hz": 6176,
+      "mean_us": 162.25,
+      "rme": "0.18%"
+    },
+    {
+      "count": 320,
+      "name": "split-512-chunk-16 320",
+      "raw_bytes": 361199,
+      "gzip_bytes": 25701,
+      "hz": 10123,
+      "mean_us": 106.18,
+      "rme": "0.88%"
+    },
+    {
+      "count": 320,
+      "name": "split-512-chunk-32 320",
+      "raw_bytes": 358279,
+      "gzip_bytes": 25355,
+      "hz": 10021,
+      "mean_us": 108.33,
+      "rme": "0.99%"
+    },
+    {
+      "count": 320,
+      "name": "split-512-chunk-64 320",
+      "raw_bytes": 356819,
+      "gzip_bytes": 25232,
+      "hz": 9370,
+      "mean_us": 117.25,
+      "rme": "1.17%"
+    },
+    {
+      "count": 320,
+      "name": "split-512-chunk-128 320",
+      "raw_bytes": 356089,
+      "gzip_bytes": 25566,
+      "hz": 7304,
+      "mean_us": 148.28,
+      "rme": "1.41%"
+    }
+  ]
+}

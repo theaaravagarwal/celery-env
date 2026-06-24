@@ -1,0 +1,879 @@
+{
+  "schema": "celery-bench-artifact/1",
+  "generatedAt": "2026-06-23T01:56:41.421Z",
+  "command": "node /Users/aa/Documents/coding/ideas/celery/sandbox/bench/bench.mjs --artifact-out bench-process-env-large-20260622.json",
+  "metadata": {
+    "runtimeName": "node",
+    "runtimeVersion": "v26.3.0",
+    "nodeCompatVersion": "v26.3.0",
+    "v8Version": "14.6.202.34-node.20",
+    "platform": "darwin",
+    "arch": "arm64",
+    "execPath": "/opt/homebrew/Cellar/node/26.3.0/bin/node",
+    "nodeVersion": "v26.3.0",
+    "cpuModel": "Apple M3",
+    "benchTimeMs": 100,
+    "benchWarmupMs": 50
+  },
+  "benchmarks": [
+    {
+      "name": "noop",
+      "suite": "noop",
+      "scenario": "unknown",
+      "scope": "valid",
+      "hz": 26538627,
+      "latencyUs": {
+        "mean": 0.03,
+        "p75": 0.04,
+        "p99": 0.04
+      },
+      "rmePercent": 0.02,
+      "slowdownVsGenerated": 1,
+      "passed": true
+    },
+    {
+      "name": "celery generated small",
+      "suite": "celery-generated",
+      "scenario": "small",
+      "scope": "valid",
+      "hz": 11123988,
+      "latencyUs": {
+        "mean": 0.09,
+        "p75": 0.08,
+        "p99": 0.13
+      },
+      "rmePercent": 0.03,
+      "slowdownVsGenerated": 1,
+      "passed": true
+    },
+    {
+      "name": "celery runtime small",
+      "suite": "celery-runtime",
+      "scenario": "small",
+      "scope": "valid",
+      "hz": 3988501,
+      "latencyUs": {
+        "mean": 0.25,
+        "p75": 0.25,
+        "p99": 0.29
+      },
+      "rmePercent": 0.02,
+      "slowdownVsGenerated": 2.79,
+      "passed": true
+    },
+    {
+      "name": "celery generated process.env explicit small",
+      "suite": "celery-generated",
+      "scenario": "small",
+      "scope": "valid",
+      "hz": 649010,
+      "latencyUs": {
+        "mean": 1.54,
+        "p75": 1.54,
+        "p99": 1.62
+      },
+      "rmePercent": 0.02,
+      "slowdownVsGenerated": 17.14,
+      "passed": true
+    },
+    {
+      "name": "celery runtime process.env explicit small",
+      "suite": "celery-runtime",
+      "scenario": "small",
+      "scope": "valid",
+      "hz": 521341,
+      "latencyUs": {
+        "mean": 1.92,
+        "p75": 1.92,
+        "p99": 2
+      },
+      "rmePercent": 0.02,
+      "slowdownVsGenerated": 21.34,
+      "passed": true
+    },
+    {
+      "name": "celery generated process.env small",
+      "suite": "celery-generated",
+      "scenario": "small",
+      "scope": "valid",
+      "hz": 647435,
+      "latencyUs": {
+        "mean": 1.55,
+        "p75": 1.54,
+        "p99": 1.62
+      },
+      "rmePercent": 0.02,
+      "slowdownVsGenerated": 17.18,
+      "passed": true
+    },
+    {
+      "name": "celery runtime process.env small",
+      "suite": "celery-runtime",
+      "scenario": "small",
+      "scope": "valid",
+      "hz": 522263,
+      "latencyUs": {
+        "mean": 1.92,
+        "p75": 1.92,
+        "p99": 2
+      },
+      "rmePercent": 0.02,
+      "slowdownVsGenerated": 21.3,
+      "passed": true
+    },
+    {
+      "name": "zod small",
+      "suite": "zod",
+      "scenario": "small",
+      "scope": "valid",
+      "hz": 2044428,
+      "latencyUs": {
+        "mean": 0.57,
+        "p75": 0.5,
+        "p99": 1.17
+      },
+      "rmePercent": 0.05,
+      "slowdownVsGenerated": 5.44,
+      "passed": true
+    },
+    {
+      "name": "valibot small",
+      "suite": "valibot",
+      "scenario": "small",
+      "scope": "valid",
+      "hz": 1134551,
+      "latencyUs": {
+        "mean": 0.89,
+        "p75": 0.88,
+        "p99": 0.96
+      },
+      "rmePercent": 0.02,
+      "slowdownVsGenerated": 9.8,
+      "passed": true
+    },
+    {
+      "name": "envalid small",
+      "suite": "envalid",
+      "scenario": "small",
+      "scope": "valid",
+      "hz": 154866,
+      "latencyUs": {
+        "mean": 6.48,
+        "p75": 6.5,
+        "p99": 6.92
+      },
+      "rmePercent": 0.05,
+      "slowdownVsGenerated": 71.83,
+      "passed": true
+    },
+    {
+      "name": "envsafe small",
+      "suite": "envsafe",
+      "scenario": "small",
+      "scope": "valid",
+      "hz": 2984410,
+      "latencyUs": {
+        "mean": 0.34,
+        "p75": 0.33,
+        "p99": 0.42
+      },
+      "rmePercent": 0.02,
+      "slowdownVsGenerated": 3.73,
+      "passed": true
+    },
+    {
+      "name": "valienv small",
+      "suite": "valienv",
+      "scenario": "small",
+      "scope": "valid",
+      "hz": 3114942,
+      "latencyUs": {
+        "mean": 0.33,
+        "p75": 0.33,
+        "p99": 0.58
+      },
+      "rmePercent": 0.03,
+      "slowdownVsGenerated": 3.57,
+      "passed": true
+    },
+    {
+      "name": "env-var small",
+      "suite": "env-var",
+      "scenario": "small",
+      "scope": "valid",
+      "hz": 55336,
+      "latencyUs": {
+        "mean": 18.53,
+        "p75": 18.21,
+        "p99": 31.17
+      },
+      "rmePercent": 0.29,
+      "slowdownVsGenerated": 201.03,
+      "passed": true
+    },
+    {
+      "name": "safe-env-vars small",
+      "suite": "safe-env-vars",
+      "scenario": "small",
+      "scope": "valid",
+      "hz": 445823,
+      "latencyUs": {
+        "mean": 2.26,
+        "p75": 2.21,
+        "p99": 3.17
+      },
+      "rmePercent": 0.07,
+      "slowdownVsGenerated": 24.95,
+      "passed": true
+    },
+    {
+      "name": "env-type-validator small",
+      "suite": "env-type-validator",
+      "scenario": "small",
+      "scope": "valid",
+      "hz": 312098,
+      "latencyUs": {
+        "mean": 3.25,
+        "p75": 3.25,
+        "p99": 3.58
+      },
+      "rmePercent": 0.04,
+      "slowdownVsGenerated": 35.64,
+      "passed": true
+    },
+    {
+      "name": "t3-env core small",
+      "suite": "t3-env",
+      "scenario": "small",
+      "scope": "valid",
+      "hz": 1010516,
+      "latencyUs": {
+        "mean": 1.09,
+        "p75": 1,
+        "p99": 2.38
+      },
+      "rmePercent": 0.07,
+      "slowdownVsGenerated": 11.01,
+      "passed": true
+    },
+    {
+      "name": "env-schema small",
+      "suite": "env-schema",
+      "scenario": "small",
+      "scope": "valid",
+      "hz": 410,
+      "latencyUs": {
+        "mean": 2444.04,
+        "p75": 2466.54,
+        "p99": 2885.74
+      },
+      "rmePercent": 0.84,
+      "slowdownVsGenerated": 27151.57,
+      "passed": true
+    },
+    {
+      "name": "convict small",
+      "suite": "convict",
+      "scenario": "small",
+      "scope": "valid",
+      "hz": 39742,
+      "latencyUs": {
+        "mean": 26.6,
+        "p75": 25.87,
+        "p99": 35.72
+      },
+      "rmePercent": 0.26,
+      "slowdownVsGenerated": 279.9,
+      "passed": true
+    },
+    {
+      "name": "celery generated medium",
+      "suite": "celery-generated",
+      "scenario": "medium",
+      "scope": "valid",
+      "hz": 241605,
+      "latencyUs": {
+        "mean": 4.3,
+        "p75": 4.21,
+        "p99": 6.67
+      },
+      "rmePercent": 0.11,
+      "slowdownVsGenerated": 1,
+      "passed": true
+    },
+    {
+      "name": "celery runtime medium",
+      "suite": "celery-runtime",
+      "scenario": "medium",
+      "scope": "valid",
+      "hz": 107285,
+      "latencyUs": {
+        "mean": 9.59,
+        "p75": 9.33,
+        "p99": 12.17
+      },
+      "rmePercent": 0.11,
+      "slowdownVsGenerated": 2.25,
+      "passed": true
+    },
+    {
+      "name": "celery generated process.env explicit medium",
+      "suite": "celery-generated",
+      "scenario": "medium",
+      "scope": "valid",
+      "hz": 12414,
+      "latencyUs": {
+        "mean": 80.69,
+        "p75": 81.58,
+        "p99": 84.64
+      },
+      "rmePercent": 0.15,
+      "slowdownVsGenerated": 19.46,
+      "passed": true
+    },
+    {
+      "name": "celery runtime process.env explicit medium",
+      "suite": "celery-runtime",
+      "scenario": "medium",
+      "scope": "valid",
+      "hz": 10357,
+      "latencyUs": {
+        "mean": 96.75,
+        "p75": 96.75,
+        "p99": 99.92
+      },
+      "rmePercent": 0.15,
+      "slowdownVsGenerated": 23.33,
+      "passed": true
+    },
+    {
+      "name": "celery generated process.env medium",
+      "suite": "celery-generated",
+      "scenario": "medium",
+      "scope": "valid",
+      "hz": 12769,
+      "latencyUs": {
+        "mean": 78.53,
+        "p75": 78.33,
+        "p99": 82.01
+      },
+      "rmePercent": 0.17,
+      "slowdownVsGenerated": 18.92,
+      "passed": true
+    },
+    {
+      "name": "celery runtime process.env medium",
+      "suite": "celery-runtime",
+      "scenario": "medium",
+      "scope": "valid",
+      "hz": 10363,
+      "latencyUs": {
+        "mean": 96.7,
+        "p75": 97.17,
+        "p99": 101.18
+      },
+      "rmePercent": 0.16,
+      "slowdownVsGenerated": 23.31,
+      "passed": true
+    },
+    {
+      "name": "zod medium",
+      "suite": "zod",
+      "scenario": "medium",
+      "scope": "valid",
+      "hz": 29767,
+      "latencyUs": {
+        "mean": 36.38,
+        "p75": 34.13,
+        "p99": 61.81
+      },
+      "rmePercent": 0.41,
+      "slowdownVsGenerated": 8.12,
+      "passed": true
+    },
+    {
+      "name": "valibot medium",
+      "suite": "valibot",
+      "scenario": "medium",
+      "scope": "valid",
+      "hz": 23188,
+      "latencyUs": {
+        "mean": 43.73,
+        "p75": 43.17,
+        "p99": 48.44
+      },
+      "rmePercent": 0.16,
+      "slowdownVsGenerated": 10.42,
+      "passed": true
+    },
+    {
+      "name": "envalid medium",
+      "suite": "envalid",
+      "scenario": "medium",
+      "scope": "valid",
+      "hz": 1063,
+      "latencyUs": {
+        "mean": 1051.12,
+        "p75": 930.5,
+        "p99": 1711.3
+      },
+      "rmePercent": 1.98,
+      "slowdownVsGenerated": 227.35,
+      "passed": true
+    },
+    {
+      "name": "envsafe medium",
+      "suite": "envsafe",
+      "scenario": "medium",
+      "scope": "valid",
+      "hz": 53309,
+      "latencyUs": {
+        "mean": 18.99,
+        "p75": 18.79,
+        "p99": 21.18
+      },
+      "rmePercent": 0.11,
+      "slowdownVsGenerated": 4.53,
+      "passed": true
+    },
+    {
+      "name": "celery generated large",
+      "suite": "celery-generated",
+      "scenario": "large",
+      "scope": "valid",
+      "hz": 21189,
+      "latencyUs": {
+        "mean": 47.57,
+        "p75": 48.71,
+        "p99": 52.67
+      },
+      "rmePercent": 0.25,
+      "slowdownVsGenerated": 1,
+      "passed": true
+    },
+    {
+      "name": "celery runtime large",
+      "suite": "celery-runtime",
+      "scenario": "large",
+      "scope": "valid",
+      "hz": 13147,
+      "latencyUs": {
+        "mean": 77.96,
+        "p75": 75.4,
+        "p99": 182.91
+      },
+      "rmePercent": 0.57,
+      "slowdownVsGenerated": 1.61,
+      "passed": true
+    },
+    {
+      "name": "celery generated process.env explicit large",
+      "suite": "celery-generated",
+      "scenario": "large",
+      "scope": "valid",
+      "hz": 1399,
+      "latencyUs": {
+        "mean": 715.37,
+        "p75": 729.83,
+        "p99": 754.27
+      },
+      "rmePercent": 0.43,
+      "slowdownVsGenerated": 15.15,
+      "passed": true
+    },
+    {
+      "name": "celery runtime process.env explicit large",
+      "suite": "celery-runtime",
+      "scenario": "large",
+      "scope": "valid",
+      "hz": 1253,
+      "latencyUs": {
+        "mean": 799.63,
+        "p75": 802.97,
+        "p99": 1041.42
+      },
+      "rmePercent": 0.7,
+      "slowdownVsGenerated": 16.91,
+      "passed": true
+    },
+    {
+      "name": "celery generated process.env large",
+      "suite": "celery-generated",
+      "scenario": "large",
+      "scope": "valid",
+      "hz": 1469,
+      "latencyUs": {
+        "mean": 680.9,
+        "p75": 679.85,
+        "p99": 701.79
+      },
+      "rmePercent": 0.3,
+      "slowdownVsGenerated": 14.42,
+      "passed": true
+    },
+    {
+      "name": "celery runtime process.env large",
+      "suite": "celery-runtime",
+      "scenario": "large",
+      "scope": "valid",
+      "hz": 1281,
+      "latencyUs": {
+        "mean": 782.75,
+        "p75": 795.84,
+        "p99": 1031.47
+      },
+      "rmePercent": 0.77,
+      "slowdownVsGenerated": 16.54,
+      "passed": true
+    },
+    {
+      "name": "zod large",
+      "suite": "zod",
+      "scenario": "large",
+      "scope": "valid",
+      "hz": 3441,
+      "latencyUs": {
+        "mean": 311.92,
+        "p75": 297.92,
+        "p99": 1186.78
+      },
+      "rmePercent": 1.63,
+      "slowdownVsGenerated": 6.16,
+      "passed": true
+    },
+    {
+      "name": "valibot large",
+      "suite": "valibot",
+      "scenario": "large",
+      "scope": "valid",
+      "hz": 4268,
+      "latencyUs": {
+        "mean": 238.63,
+        "p75": 232.03,
+        "p99": 506.35
+      },
+      "rmePercent": 0.82,
+      "slowdownVsGenerated": 4.97,
+      "passed": true
+    },
+    {
+      "name": "envalid large",
+      "suite": "envalid",
+      "scenario": "large",
+      "scope": "valid",
+      "hz": 54,
+      "latencyUs": {
+        "mean": 27597.97,
+        "p75": 18427.96,
+        "p99": 245368.62
+      },
+      "rmePercent": 3.32,
+      "slowdownVsGenerated": 389.42,
+      "passed": true
+    },
+    {
+      "name": "envsafe large",
+      "suite": "envsafe",
+      "scenario": "large",
+      "scope": "valid",
+      "hz": 7956,
+      "latencyUs": {
+        "mean": 128.21,
+        "p75": 126.14,
+        "p99": 265.24
+      },
+      "rmePercent": 0.68,
+      "slowdownVsGenerated": 2.66,
+      "passed": true
+    },
+    {
+      "name": "celery generated invalid small",
+      "suite": "celery-generated",
+      "scenario": "invalid_small",
+      "scope": "invalid",
+      "hz": 140333,
+      "latencyUs": {
+        "mean": 7.14,
+        "p75": 7.17,
+        "p99": 7.5
+      },
+      "rmePercent": 0.04,
+      "slowdownVsGenerated": 1,
+      "passed": true
+    },
+    {
+      "name": "celery runtime invalid small",
+      "suite": "celery-runtime",
+      "scenario": "invalid_small",
+      "scope": "invalid",
+      "hz": 121637,
+      "latencyUs": {
+        "mean": 8.24,
+        "p75": 8.29,
+        "p99": 8.71
+      },
+      "rmePercent": 0.04,
+      "slowdownVsGenerated": 1.15,
+      "passed": true
+    },
+    {
+      "name": "zod invalid small",
+      "suite": "zod",
+      "scenario": "invalid_small",
+      "scope": "invalid",
+      "hz": 34886,
+      "latencyUs": {
+        "mean": 29.74,
+        "p75": 28.79,
+        "p99": 32.82
+      },
+      "rmePercent": 0.16,
+      "slowdownVsGenerated": 4.02,
+      "passed": true
+    },
+    {
+      "name": "valibot invalid small",
+      "suite": "valibot",
+      "scenario": "invalid_small",
+      "scope": "invalid",
+      "hz": 115135,
+      "latencyUs": {
+        "mean": 8.95,
+        "p75": 8.75,
+        "p99": 9.67
+      },
+      "rmePercent": 0.06,
+      "slowdownVsGenerated": 1.22,
+      "passed": true
+    },
+    {
+      "name": "envalid invalid small",
+      "suite": "envalid",
+      "scenario": "invalid_small",
+      "scope": "invalid",
+      "hz": 16706,
+      "latencyUs": {
+        "mean": 59.91,
+        "p75": 60.08,
+        "p99": 62.18
+      },
+      "rmePercent": 0.1,
+      "slowdownVsGenerated": 8.4,
+      "passed": true
+    },
+    {
+      "name": "envsafe invalid small",
+      "suite": "envsafe",
+      "scenario": "invalid_small",
+      "scope": "invalid",
+      "hz": 20091,
+      "latencyUs": {
+        "mean": 49.79,
+        "p75": 49.88,
+        "p99": 50.83
+      },
+      "rmePercent": 0.06,
+      "slowdownVsGenerated": 6.99,
+      "passed": true
+    },
+    {
+      "name": "celery generated default strict numeric",
+      "suite": "celery-generated",
+      "scenario": "strict_numeric",
+      "scope": "valid",
+      "hz": 9004500,
+      "latencyUs": {
+        "mean": 0.12,
+        "p75": 0.13,
+        "p99": 0.13
+      },
+      "rmePercent": 0.04,
+      "slowdownVsGenerated": 1,
+      "passed": true
+    },
+    {
+      "name": "celery generated speed strict numeric",
+      "suite": "celery-generated",
+      "scenario": "strict_numeric",
+      "scope": "valid",
+      "hz": 10712453,
+      "latencyUs": {
+        "mean": 0.1,
+        "p75": 0.12,
+        "p99": 0.13
+      },
+      "rmePercent": 0.03,
+      "slowdownVsGenerated": 0.84,
+      "passed": true
+    },
+    {
+      "name": "celery runtime strict numeric",
+      "suite": "celery-runtime",
+      "scenario": "strict_numeric",
+      "scope": "valid",
+      "hz": 5999935,
+      "latencyUs": {
+        "mean": 0.21,
+        "p75": 0.17,
+        "p99": 0.21
+      },
+      "rmePercent": 0.02,
+      "slowdownVsGenerated": 1.5,
+      "passed": true
+    },
+    {
+      "name": "celery generated process.env explicit strict numeric",
+      "suite": "celery-generated",
+      "scenario": "strict_numeric",
+      "scope": "valid",
+      "hz": 1597645,
+      "latencyUs": {
+        "mean": 0.64,
+        "p75": 0.63,
+        "p99": 0.71
+      },
+      "rmePercent": 0.03,
+      "slowdownVsGenerated": 5.64,
+      "passed": true
+    },
+    {
+      "name": "celery generated speed process.env explicit strict numeric",
+      "suite": "celery-generated",
+      "scenario": "strict_numeric",
+      "scope": "valid",
+      "hz": 1640369,
+      "latencyUs": {
+        "mean": 0.63,
+        "p75": 0.63,
+        "p99": 0.67
+      },
+      "rmePercent": 0.02,
+      "slowdownVsGenerated": 5.49,
+      "passed": true
+    },
+    {
+      "name": "celery runtime process.env explicit strict numeric",
+      "suite": "celery-runtime",
+      "scenario": "strict_numeric",
+      "scope": "valid",
+      "hz": 1241256,
+      "latencyUs": {
+        "mean": 0.83,
+        "p75": 0.83,
+        "p99": 0.88
+      },
+      "rmePercent": 0.02,
+      "slowdownVsGenerated": 7.25,
+      "passed": true
+    },
+    {
+      "name": "celery generated process.env strict numeric",
+      "suite": "celery-generated",
+      "scenario": "strict_numeric",
+      "scope": "valid",
+      "hz": 1578314,
+      "latencyUs": {
+        "mean": 0.65,
+        "p75": 0.63,
+        "p99": 0.71
+      },
+      "rmePercent": 0.02,
+      "slowdownVsGenerated": 5.71,
+      "passed": true
+    },
+    {
+      "name": "celery generated speed process.env strict numeric",
+      "suite": "celery-generated",
+      "scenario": "strict_numeric",
+      "scope": "valid",
+      "hz": 1663955,
+      "latencyUs": {
+        "mean": 0.62,
+        "p75": 0.63,
+        "p99": 0.67
+      },
+      "rmePercent": 0.02,
+      "slowdownVsGenerated": 5.41,
+      "passed": true
+    },
+    {
+      "name": "celery runtime process.env strict numeric",
+      "suite": "celery-runtime",
+      "scenario": "strict_numeric",
+      "scope": "valid",
+      "hz": 1243810,
+      "latencyUs": {
+        "mean": 0.81,
+        "p75": 0.83,
+        "p99": 0.87
+      },
+      "rmePercent": 0.02,
+      "slowdownVsGenerated": 7.24,
+      "passed": true
+    },
+    {
+      "name": "celery generated default invalid strict numeric",
+      "suite": "celery-generated",
+      "scenario": "invalid_strict numeric",
+      "scope": "invalid",
+      "hz": 145790,
+      "latencyUs": {
+        "mean": 7,
+        "p75": 6.92,
+        "p99": 7.17
+      },
+      "rmePercent": 0.05,
+      "slowdownVsGenerated": 1,
+      "passed": true
+    },
+    {
+      "name": "celery generated speed invalid strict numeric",
+      "suite": "celery-generated",
+      "scenario": "invalid_strict numeric",
+      "scope": "invalid",
+      "hz": 148734,
+      "latencyUs": {
+        "mean": 6.74,
+        "p75": 6.75,
+        "p99": 7.04
+      },
+      "rmePercent": 0.05,
+      "slowdownVsGenerated": 0.98,
+      "passed": true
+    },
+    {
+      "name": "celery runtime invalid strict numeric",
+      "suite": "celery-runtime",
+      "scenario": "invalid_strict numeric",
+      "scope": "invalid",
+      "hz": 128358,
+      "latencyUs": {
+        "mean": 7.83,
+        "p75": 7.83,
+        "p99": 8.25
+      },
+      "rmePercent": 0.05,
+      "slowdownVsGenerated": 1.14,
+      "passed": true
+    }
+  ],
+  "summary": {
+    "baselineHzByScenario": {
+      "small": 11123988,
+      "medium": 241605,
+      "large": 21189,
+      "invalid_small": 140333,
+      "strict_numeric": 9004500,
+      "invalid_strict numeric": 145790
+    },
+    "optimizeSpeed": {
+      "strictNumericDefaultHz": 9004500,
+      "strictNumericSpeedHz": 10712453,
+      "strictNumericSpeedup": 1.19,
+      "invalidStrictNumericDefaultHz": 145790,
+      "invalidStrictNumericSpeedHz": 148734,
+      "invalidStrictNumericSpeedup": 1.02
+    },
+    "runStatus": "ok"
+  }
+}

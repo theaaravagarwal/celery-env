@@ -1,0 +1,54 @@
+{
+  "schema": "celery-enum-set-threshold7/1",
+  "generatedAt": "2026-06-22T22:11:01.127Z",
+  "rows": [
+    {
+      "name": "threshold8 string7",
+      "hz": 20724381,
+      "mean_us": 0,
+      "rme": "0.02%"
+    },
+    {
+      "name": "threshold7 string7",
+      "hz": 15360060,
+      "mean_us": 0,
+      "rme": "0.04%"
+    },
+    {
+      "name": "threshold8 string8",
+      "hz": 20476762,
+      "mean_us": 0,
+      "rme": "0.02%"
+    },
+    {
+      "name": "threshold7 string8",
+      "hz": 20881971,
+      "mean_us": 0,
+      "rme": "0.02%"
+    },
+    {
+      "name": "threshold8 string12",
+      "hz": 20645116,
+      "mean_us": 0,
+      "rme": "0.02%"
+    },
+    {
+      "name": "threshold7 string12",
+      "hz": 20912177,
+      "mean_us": 0,
+      "rme": "0.02%"
+    },
+    {
+      "name": "threshold8 string32",
+      "hz": 20941223,
+      "mean_us": 0,
+      "rme": "0.02%"
+    },
+    {
+      "name": "threshold7 string32",
+      "hz": 21097567,
+      "mean_us": 0,
+      "rme": "0.02%"
+    }
+  ]
+}

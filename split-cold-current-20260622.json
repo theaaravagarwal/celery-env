@@ -1,0 +1,99 @@
+{
+  "schema": "celery-split-cold/1",
+  "generatedAt": "2026-06-23T02:03:32.995Z",
+  "metadata": {
+    "runtimeName": "node",
+    "runtimeVersion": "v26.3.0",
+    "nodeCompatVersion": "v26.3.0",
+    "v8Version": "14.6.202.34-node.20",
+    "platform": "darwin",
+    "arch": "arm64",
+    "execPath": "/opt/homebrew/Cellar/node/26.3.0/bin/node",
+    "nodeVersion": "v26.3.0",
+    "cpuModel": "Apple M3",
+    "runs": 7,
+    "counts": [
+      160,
+      320
+    ],
+    "thresholds": [
+      128,
+      256,
+      512
+    ]
+  },
+  "rows": [
+    {
+      "count": 160,
+      "name": "unsplit 160",
+      "raw_bytes": 175918,
+      "gzip_bytes": 14323,
+      "import_ms": 3.641,
+      "first_validate_ms": 5.538,
+      "total_ms": 9.184
+    },
+    {
+      "count": 160,
+      "name": "split-128 160",
+      "raw_bytes": 176521,
+      "gzip_bytes": 12937,
+      "import_ms": 3.57,
+      "first_validate_ms": 5.465,
+      "total_ms": 9.031
+    },
+    {
+      "count": 160,
+      "name": "split-256 160",
+      "raw_bytes": 176521,
+      "gzip_bytes": 12937,
+      "import_ms": 3.577,
+      "first_validate_ms": 5.463,
+      "total_ms": 9.041
+    },
+    {
+      "count": 160,
+      "name": "split-512 160",
+      "raw_bytes": 176521,
+      "gzip_bytes": 12937,
+      "import_ms": 3.612,
+      "first_validate_ms": 5.456,
+      "total_ms": 9.086
+    },
+    {
+      "count": 320,
+      "name": "unsplit 320",
+      "raw_bytes": 354908,
+      "gzip_bytes": 28440,
+      "import_ms": 5.744,
+      "first_validate_ms": 11.112,
+      "total_ms": 16.838
+    },
+    {
+      "count": 320,
+      "name": "split-128 320",
+      "raw_bytes": 355732,
+      "gzip_bytes": 25313,
+      "import_ms": 5.471,
+      "first_validate_ms": 10.919,
+      "total_ms": 16.366
+    },
+    {
+      "count": 320,
+      "name": "split-256 320",
+      "raw_bytes": 355732,
+      "gzip_bytes": 25313,
+      "import_ms": 5.401,
+      "first_validate_ms": 10.87,
+      "total_ms": 16.271
+    },
+    {
+      "count": 320,
+      "name": "split-512 320",
+      "raw_bytes": 355732,
+      "gzip_bytes": 25313,
+      "import_ms": 5.485,
+      "first_validate_ms": 10.859,
+      "total_ms": 16.307
+    }
+  ]
+}

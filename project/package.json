@@ -1,0 +1,20 @@
+{
+  "name": "celery-migration-fixture",
+  "version": "0.0.0",
+  "private": true,
+  "description": "A realistic pre-Celery Node service used to measure env-validation migration effort.",
+  "type": "module",
+  "scripts": {
+    "start": "node src/server.js",
+    "worker": "node src/worker.js",
+    "test": "node --test test/*.mjs",
+    "audit:env": "node scripts/audit-env-reads.mjs",
+    "install:variants": "node scripts/install-variants.mjs",
+    "compare:env-tools": "node scripts/compare-env-tools.mjs",
+    "compare:env-tools:write": "node scripts/compare-env-tools.mjs --verify --write",
+    "compare:env-tools:verify": "node scripts/compare-env-tools.mjs --verify"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

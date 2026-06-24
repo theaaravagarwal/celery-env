@@ -1,0 +1,56 @@
+{
+  "schema": "celery-shipped-size/1",
+  "generatedAt": "2026-06-24T11:23:20.940Z",
+  "rows": [
+    {
+      "name": "celery-generated",
+      "raw_bytes": 1209,
+      "gzip_bytes": 526
+    },
+    {
+      "name": "celery-runtime",
+      "raw_bytes": 7795,
+      "gzip_bytes": 2779
+    },
+    {
+      "name": "zod",
+      "raw_bytes": 75748,
+      "gzip_bytes": 20894
+    },
+    {
+      "name": "zod-mini",
+      "raw_bytes": 17340,
+      "gzip_bytes": 5810
+    },
+    {
+      "name": "valibot",
+      "raw_bytes": 5682,
+      "gzip_bytes": 2055
+    },
+    {
+      "name": "valienv",
+      "raw_bytes": 2278,
+      "gzip_bytes": 1130
+    },
+    {
+      "name": "envsafe",
+      "raw_bytes": 11155,
+      "gzip_bytes": 3292
+    },
+    {
+      "name": "envalid",
+      "raw_bytes": 21428,
+      "gzip_bytes": 7318
+    },
+    {
+      "name": "env-var",
+      "raw_bytes": 7652,
+      "gzip_bytes": 2969
+    },
+    {
+      "name": "t3-env-core",
+      "raw_bytes": 70266,
+      "gzip_bytes": 19531
+    }
+  ]
+}

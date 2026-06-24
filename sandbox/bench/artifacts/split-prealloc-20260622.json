@@ -1,0 +1,46 @@
+{
+  "schema": "celery-split-prealloc/1",
+  "generatedAt": "2026-06-22T21:45:06.305Z",
+  "rows": [
+    {
+      "count": 160,
+      "fields": 640,
+      "name": "current 160",
+      "raw_bytes": 177789,
+      "gzip_bytes": 12954,
+      "hz": 22960,
+      "mean_us": 43.74,
+      "rme": "0.13%"
+    },
+    {
+      "count": 160,
+      "fields": 640,
+      "name": "prealloc 160",
+      "raw_bytes": 177801,
+      "gzip_bytes": 12967,
+      "hz": 24046,
+      "mean_us": 41.75,
+      "rme": "0.12%"
+    },
+    {
+      "count": 320,
+      "fields": 1280,
+      "name": "current 320",
+      "raw_bytes": 358279,
+      "gzip_bytes": 25355,
+      "hz": 10096,
+      "mean_us": 107.7,
+      "rme": "0.87%"
+    },
+    {
+      "count": 320,
+      "fields": 1280,
+      "name": "prealloc 320",
+      "raw_bytes": 358292,
+      "gzip_bytes": 25371,
+      "hz": 9458,
+      "mean_us": 111.57,
+      "rme": "0.77%"
+    }
+  ]
+}

@@ -1,0 +1,307 @@
+{
+  "schema": "celery-strict-numeric/1",
+  "generatedAt": "2026-06-22T20:12:21.270Z",
+  "metadata": {
+    "runtimeName": "node",
+    "runtimeVersion": "v26.3.0",
+    "nodeCompatVersion": "v26.3.0",
+    "v8Version": "14.6.202.34-node.20",
+    "platform": "darwin",
+    "arch": "arm64",
+    "execPath": "/opt/homebrew/Cellar/node/26.3.0/bin/node",
+    "nodeVersion": "v26.3.0",
+    "cpuModel": "Apple M3",
+    "benchTimeMs": 180,
+    "benchWarmupMs": 80
+  },
+  "rows": [
+    {
+      "name": "generated default int-bounded",
+      "hz": 20680062,
+      "mean_us": 0.05,
+      "p75_us": 0.08,
+      "p99_us": 0.08,
+      "rme": "0.03%"
+    },
+    {
+      "name": "generated speed int-bounded",
+      "hz": 19877257,
+      "mean_us": 0.06,
+      "p75_us": 0.08,
+      "p99_us": 0.08,
+      "rme": "0.03%"
+    },
+    {
+      "name": "runtime int-bounded",
+      "hz": 10957849,
+      "mean_us": 0.09,
+      "p75_us": 0.12,
+      "p99_us": 0.13,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated default process.env int-bounded",
+      "hz": 3323329,
+      "mean_us": 0.3,
+      "p75_us": 0.29,
+      "p99_us": 0.37,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated speed process.env int-bounded",
+      "hz": 3335261,
+      "mean_us": 0.3,
+      "p75_us": 0.29,
+      "p99_us": 0.37,
+      "rme": "0.02%"
+    },
+    {
+      "name": "runtime process.env int-bounded",
+      "hz": 2449607,
+      "mean_us": 0.41,
+      "p75_us": 0.42,
+      "p99_us": 0.5,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated default invalid int-bounded",
+      "hz": 158732,
+      "mean_us": 6.31,
+      "p75_us": 6.33,
+      "p99_us": 6.54,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated speed invalid int-bounded",
+      "hz": 157366,
+      "mean_us": 6.36,
+      "p75_us": 6.42,
+      "p99_us": 6.62,
+      "rme": "0.03%"
+    },
+    {
+      "name": "runtime invalid int-bounded",
+      "hz": 135620,
+      "mean_us": 7.39,
+      "p75_us": 7.42,
+      "p99_us": 7.67,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated default num-dot",
+      "hz": 10757799,
+      "mean_us": 0.1,
+      "p75_us": 0.12,
+      "p99_us": 0.13,
+      "rme": "0.03%"
+    },
+    {
+      "name": "generated speed num-dot",
+      "hz": 10908209,
+      "mean_us": 0.11,
+      "p75_us": 0.12,
+      "p99_us": 0.13,
+      "rme": "0.03%"
+    },
+    {
+      "name": "runtime num-dot",
+      "hz": 7766419,
+      "mean_us": 0.13,
+      "p75_us": 0.13,
+      "p99_us": 0.17,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated default process.env num-dot",
+      "hz": 0,
+      "mean_us": 0,
+      "p75_us": 0,
+      "p99_us": 0,
+      "rme": "n/a"
+    },
+    {
+      "name": "generated speed process.env num-dot",
+      "hz": 0,
+      "mean_us": 0,
+      "p75_us": 0,
+      "p99_us": 0,
+      "rme": "n/a"
+    },
+    {
+      "name": "runtime process.env num-dot",
+      "hz": 0,
+      "mean_us": 0,
+      "p75_us": 0,
+      "p99_us": 0,
+      "rme": "n/a"
+    },
+    {
+      "name": "generated default invalid num-dot",
+      "hz": 156336,
+      "mean_us": 6.4,
+      "p75_us": 6.46,
+      "p99_us": 6.67,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated speed invalid num-dot",
+      "hz": 158478,
+      "mean_us": 6.33,
+      "p75_us": 6.37,
+      "p99_us": 6.58,
+      "rme": "0.02%"
+    },
+    {
+      "name": "runtime invalid num-dot",
+      "hz": 135675,
+      "mean_us": 7.38,
+      "p75_us": 7.42,
+      "p99_us": 7.63,
+      "rme": "0.03%"
+    },
+    {
+      "name": "generated default num-decimal",
+      "hz": 10420634,
+      "mean_us": 0.1,
+      "p75_us": 0.13,
+      "p99_us": 0.13,
+      "rme": "0.03%"
+    },
+    {
+      "name": "generated speed num-decimal",
+      "hz": 10539320,
+      "mean_us": 0.1,
+      "p75_us": 0.13,
+      "p99_us": 0.13,
+      "rme": "0.03%"
+    },
+    {
+      "name": "runtime num-decimal",
+      "hz": 7714390,
+      "mean_us": 0.13,
+      "p75_us": 0.13,
+      "p99_us": 0.17,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated default process.env num-decimal",
+      "hz": 0,
+      "mean_us": 0,
+      "p75_us": 0,
+      "p99_us": 0,
+      "rme": "n/a"
+    },
+    {
+      "name": "generated speed process.env num-decimal",
+      "hz": 0,
+      "mean_us": 0,
+      "p75_us": 0,
+      "p99_us": 0,
+      "rme": "n/a"
+    },
+    {
+      "name": "runtime process.env num-decimal",
+      "hz": 0,
+      "mean_us": 0,
+      "p75_us": 0,
+      "p99_us": 0,
+      "rme": "n/a"
+    },
+    {
+      "name": "generated default invalid num-decimal",
+      "hz": 156675,
+      "mean_us": 6.4,
+      "p75_us": 6.42,
+      "p99_us": 6.62,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated speed invalid num-decimal",
+      "hz": 158296,
+      "mean_us": 6.32,
+      "p75_us": 6.37,
+      "p99_us": 6.54,
+      "rme": "0.02%"
+    },
+    {
+      "name": "runtime invalid num-decimal",
+      "hz": 135590,
+      "mean_us": 7.38,
+      "p75_us": 7.42,
+      "p99_us": 7.67,
+      "rme": "0.03%"
+    },
+    {
+      "name": "generated default num-integer-text",
+      "hz": 16570070,
+      "mean_us": 0.07,
+      "p75_us": 0.08,
+      "p99_us": 0.12,
+      "rme": "0.04%"
+    },
+    {
+      "name": "generated speed num-integer-text",
+      "hz": 15418943,
+      "mean_us": 0.08,
+      "p75_us": 0.08,
+      "p99_us": 0.13,
+      "rme": "0.05%"
+    },
+    {
+      "name": "runtime num-integer-text",
+      "hz": 9892982,
+      "mean_us": 0.11,
+      "p75_us": 0.12,
+      "p99_us": 0.13,
+      "rme": "0.03%"
+    },
+    {
+      "name": "generated default process.env num-integer-text",
+      "hz": 2773550,
+      "mean_us": 0.38,
+      "p75_us": 0.37,
+      "p99_us": 0.46,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated speed process.env num-integer-text",
+      "hz": 2789685,
+      "mean_us": 0.37,
+      "p75_us": 0.37,
+      "p99_us": 0.42,
+      "rme": "0.02%"
+    },
+    {
+      "name": "runtime process.env num-integer-text",
+      "hz": 2374699,
+      "mean_us": 0.43,
+      "p75_us": 0.42,
+      "p99_us": 0.5,
+      "rme": "0.01%"
+    },
+    {
+      "name": "generated default invalid num-integer-text",
+      "hz": 160649,
+      "mean_us": 6.34,
+      "p75_us": 6.29,
+      "p99_us": 6.54,
+      "rme": "0.03%"
+    },
+    {
+      "name": "generated speed invalid num-integer-text",
+      "hz": 158049,
+      "mean_us": 6.33,
+      "p75_us": 6.38,
+      "p99_us": 6.54,
+      "rme": "0.02%"
+    },
+    {
+      "name": "runtime invalid num-integer-text",
+      "hz": 136632,
+      "mean_us": 7.32,
+      "p75_us": 7.38,
+      "p99_us": 7.58,
+      "rme": "0.02%"
+    }
+  ]
+}

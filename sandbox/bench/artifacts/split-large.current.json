@@ -1,0 +1,78 @@
+{
+  "schema": "celery-split-large/1",
+  "generatedAt": "2026-06-22T17:32:29.292Z",
+  "rows": [
+    {
+      "count": 160,
+      "name": "baseline 160",
+      "raw_bytes": 257766,
+      "gzip_bytes": 19132,
+      "hz": 13223,
+      "mean_us": 78.14,
+      "rme": "0.75%"
+    },
+    {
+      "count": 160,
+      "name": "split-20 160",
+      "raw_bytes": 177156,
+      "gzip_bytes": 18939,
+      "hz": 18430,
+      "mean_us": 79.9,
+      "rme": "1.32%"
+    },
+    {
+      "count": 160,
+      "name": "split-40 160",
+      "raw_bytes": 176840,
+      "gzip_bytes": 18894,
+      "hz": 5860,
+      "mean_us": 186.52,
+      "rme": "1.45%"
+    },
+    {
+      "count": 160,
+      "name": "split-80 160",
+      "raw_bytes": 176682,
+      "gzip_bytes": 18659,
+      "hz": 4074,
+      "mean_us": 335.73,
+      "rme": "3.15%"
+    },
+    {
+      "count": 320,
+      "name": "baseline 320",
+      "raw_bytes": 519736,
+      "gzip_bytes": 36746,
+      "hz": 4811,
+      "mean_us": 387.99,
+      "rme": "3.01%"
+    },
+    {
+      "count": 320,
+      "name": "split-20 320",
+      "raw_bytes": 358926,
+      "gzip_bytes": 36339,
+      "hz": 3376,
+      "mean_us": 423.01,
+      "rme": "2.87%"
+    },
+    {
+      "count": 320,
+      "name": "split-40 320",
+      "raw_bytes": 357796,
+      "gzip_bytes": 36250,
+      "hz": 1948,
+      "mean_us": 734.42,
+      "rme": "4.71%"
+    },
+    {
+      "count": 320,
+      "name": "split-80 320",
+      "raw_bytes": 357480,
+      "gzip_bytes": 35962,
+      "hz": 1877,
+      "mean_us": 678.41,
+      "rme": "4.65%"
+    }
+  ]
+}

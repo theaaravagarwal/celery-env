@@ -1,0 +1,216 @@
+{
+  "schema": "celery-generated-shapes/1",
+  "generatedAt": "2026-06-22T22:23:42.270Z",
+  "rows": [
+    {
+      "count": 96,
+      "fields": 384,
+      "name": "locals-return 96",
+      "raw_bytes": 99450,
+      "gzip_bytes": 6058,
+      "hz": 27493,
+      "mean_us": 37.94,
+      "rme": "0.43%"
+    },
+    {
+      "count": 96,
+      "fields": 384,
+      "name": "array-slots 96",
+      "raw_bytes": 99450,
+      "gzip_bytes": 6058,
+      "hz": 27718,
+      "mean_us": 37.42,
+      "rme": "0.4%"
+    },
+    {
+      "count": 96,
+      "fields": 384,
+      "name": "object-assign 96",
+      "raw_bytes": 99450,
+      "gzip_bytes": 6058,
+      "hz": 21821,
+      "mean_us": 57.12,
+      "rme": "1.31%"
+    },
+    {
+      "count": 128,
+      "fields": 512,
+      "name": "locals-return 128",
+      "raw_bytes": 141326,
+      "gzip_bytes": 11673,
+      "hz": 14398,
+      "mean_us": 70.88,
+      "rme": "0.39%"
+    },
+    {
+      "count": 128,
+      "fields": 512,
+      "name": "array-slots 128",
+      "raw_bytes": 140678,
+      "gzip_bytes": 10349,
+      "hz": 11332,
+      "mean_us": 91.14,
+      "rme": "0.7%"
+    },
+    {
+      "count": 128,
+      "fields": 512,
+      "name": "object-assign 128",
+      "raw_bytes": 135054,
+      "gzip_bytes": 7950,
+      "hz": 17267,
+      "mean_us": 59.51,
+      "rme": "0.47%"
+    },
+    {
+      "count": 160,
+      "fields": 640,
+      "name": "locals-return 160",
+      "raw_bytes": 177198,
+      "gzip_bytes": 14474,
+      "hz": 11604,
+      "mean_us": 86.75,
+      "rme": "0.3%"
+    },
+    {
+      "count": 160,
+      "fields": 640,
+      "name": "array-slots 160",
+      "raw_bytes": 176358,
+      "gzip_bytes": 12771,
+      "hz": 7440,
+      "mean_us": 134.95,
+      "rme": "0.3%"
+    },
+    {
+      "count": 160,
+      "fields": 640,
+      "name": "object-assign 160",
+      "raw_bytes": 169294,
+      "gzip_bytes": 9783,
+      "hz": 8390,
+      "mean_us": 162.34,
+      "rme": "2.77%"
+    },
+    {
+      "count": 256,
+      "fields": 1024,
+      "name": "locals-return 256",
+      "raw_bytes": 284892,
+      "gzip_bytes": 22940,
+      "hz": 4959,
+      "mean_us": 202.86,
+      "rme": "0.52%"
+    },
+    {
+      "count": 256,
+      "fields": 1024,
+      "name": "array-slots 256",
+      "raw_bytes": 283452,
+      "gzip_bytes": 20140,
+      "hz": 4566,
+      "mean_us": 220.19,
+      "rme": "0.43%"
+    },
+    {
+      "count": 256,
+      "fields": 1024,
+      "name": "object-assign 256",
+      "raw_bytes": 272014,
+      "gzip_bytes": 15332,
+      "hz": 3772,
+      "mean_us": 270.61,
+      "rme": "1.02%"
+    },
+    {
+      "count": 320,
+      "fields": 1280,
+      "name": "locals-return 320",
+      "raw_bytes": 357468,
+      "gzip_bytes": 28666,
+      "hz": 4522,
+      "mean_us": 223.16,
+      "rme": "0.65%"
+    },
+    {
+      "count": 320,
+      "fields": 1280,
+      "name": "array-slots 320",
+      "raw_bytes": 355388,
+      "gzip_bytes": 25014,
+      "hz": 3904,
+      "mean_us": 258.73,
+      "rme": "0.8%"
+    },
+    {
+      "count": 320,
+      "fields": 1280,
+      "name": "object-assign 320",
+      "raw_bytes": 340494,
+      "gzip_bytes": 19027,
+      "hz": 3412,
+      "mean_us": 297.53,
+      "rme": "0.93%"
+    },
+    {
+      "count": 384,
+      "fields": 1536,
+      "name": "locals-return 384",
+      "raw_bytes": 430044,
+      "gzip_bytes": 32320,
+      "hz": 3950,
+      "mean_us": 255.7,
+      "rme": "0.76%"
+    },
+    {
+      "count": 384,
+      "fields": 1536,
+      "name": "array-slots 384",
+      "raw_bytes": 427324,
+      "gzip_bytes": 29550,
+      "hz": 3132,
+      "mean_us": 322.04,
+      "rme": "0.81%"
+    },
+    {
+      "count": 384,
+      "fields": 1536,
+      "name": "object-assign 384",
+      "raw_bytes": 408974,
+      "gzip_bytes": 22696,
+      "hz": 2835,
+      "mean_us": 359.25,
+      "rme": "1.15%"
+    },
+    {
+      "count": 480,
+      "fields": 1920,
+      "name": "locals-return 480",
+      "raw_bytes": 538908,
+      "gzip_bytes": 41487,
+      "hz": 3889,
+      "mean_us": 258.96,
+      "rme": "0.54%"
+    },
+    {
+      "count": 480,
+      "fields": 1920,
+      "name": "array-slots 480",
+      "raw_bytes": 535228,
+      "gzip_bytes": 34705,
+      "hz": 2992,
+      "mean_us": 336.54,
+      "rme": "0.73%"
+    },
+    {
+      "count": 480,
+      "fields": 1920,
+      "name": "object-assign 480",
+      "raw_bytes": 511694,
+      "gzip_bytes": 28182,
+      "hz": 2636,
+      "mean_us": 388.62,
+      "rme": "1.4%"
+    }
+  ]
+}

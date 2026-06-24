@@ -1,0 +1,19 @@
+{
+  "schema": "celery-spec-constructor-fastpath/1",
+  "generatedAt": "2026-06-22T22:48:44.301Z",
+  "baseline": "checkpoints/celery-20260622-154133.tgz",
+  "rows": [
+    {
+      "name": "scalar constructors no options",
+      "previous_hz": 75060049,
+      "current_hz": 76822124,
+      "delta_pct": 2.35
+    },
+    {
+      "name": "oneOf string8 no options",
+      "previous_hz": 5322634,
+      "current_hz": 5335551,
+      "delta_pct": 0.24
+    }
+  ]
+}

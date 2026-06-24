@@ -1,0 +1,42 @@
+{
+  "schema": "celery-split-v2/1",
+  "generatedAt": "2026-06-22T23:00:04.524Z",
+  "rows": [
+    {
+      "count": 320,
+      "name": "unsplit 320",
+      "raw_bytes": 354908,
+      "gzip_bytes": 28440,
+      "hz": 6289,
+      "mean_us": 159.29,
+      "rme": "0.2%"
+    },
+    {
+      "count": 320,
+      "name": "split-512 320",
+      "raw_bytes": 355719,
+      "gzip_bytes": 25298,
+      "hz": 9437,
+      "mean_us": 119.35,
+      "rme": "1.22%"
+    },
+    {
+      "count": 640,
+      "name": "unsplit 640",
+      "raw_bytes": 715228,
+      "gzip_bytes": 55702,
+      "hz": 2932,
+      "mean_us": 342.15,
+      "rme": "0.34%"
+    },
+    {
+      "count": 640,
+      "name": "split-512 640",
+      "raw_bytes": 715759,
+      "gzip_bytes": 48178,
+      "hz": 2358,
+      "mean_us": 426.56,
+      "rme": "0.58%"
+    }
+  ]
+}

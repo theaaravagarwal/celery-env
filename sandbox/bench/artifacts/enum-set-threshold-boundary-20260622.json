@@ -1,0 +1,78 @@
+{
+  "schema": "celery-enum-set-threshold-boundary/1",
+  "generatedAt": "2026-06-22T22:10:06.707Z",
+  "rows": [
+    {
+      "name": "threshold8 string5",
+      "hz": 20541885,
+      "mean_us": 0,
+      "rme": "0.02%"
+    },
+    {
+      "name": "threshold4 string5",
+      "hz": 20572147,
+      "mean_us": 0,
+      "rme": "0.02%"
+    },
+    {
+      "name": "threshold8 string6",
+      "hz": 20252847,
+      "mean_us": 0,
+      "rme": "0.03%"
+    },
+    {
+      "name": "threshold4 string6",
+      "hz": 20826487,
+      "mean_us": 0,
+      "rme": "0.02%"
+    },
+    {
+      "name": "threshold8 string7",
+      "hz": 21357693,
+      "mean_us": 0,
+      "rme": "0.02%"
+    },
+    {
+      "name": "threshold4 string7",
+      "hz": 20535365,
+      "mean_us": 0,
+      "rme": "0.02%"
+    },
+    {
+      "name": "threshold8 string8",
+      "hz": 21172232,
+      "mean_us": 0,
+      "rme": "0.02%"
+    },
+    {
+      "name": "threshold4 string8",
+      "hz": 21277763,
+      "mean_us": 0,
+      "rme": "0.02%"
+    },
+    {
+      "name": "threshold8 string12",
+      "hz": 21266031,
+      "mean_us": 0,
+      "rme": "0.02%"
+    },
+    {
+      "name": "threshold4 string12",
+      "hz": 21309371,
+      "mean_us": 0,
+      "rme": "0.02%"
+    },
+    {
+      "name": "threshold8 string32",
+      "hz": 21334570,
+      "mean_us": 0,
+      "rme": "0.02%"
+    },
+    {
+      "name": "threshold4 string32",
+      "hz": 21247112,
+      "mean_us": 0,
+      "rme": "0.02%"
+    }
+  ]
+}

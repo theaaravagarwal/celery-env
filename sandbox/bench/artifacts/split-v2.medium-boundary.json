@@ -1,0 +1,114 @@
+{
+  "schema": "celery-split-v2/1",
+  "generatedAt": "2026-06-22T19:20:01.099Z",
+  "rows": [
+    {
+      "count": 40,
+      "name": "unsplit 40",
+      "raw_bytes": 63666,
+      "gzip_bytes": 5124,
+      "hz": 92537,
+      "mean_us": 11.33,
+      "rme": "0.16%"
+    },
+    {
+      "count": 40,
+      "name": "split-160 40",
+      "raw_bytes": 64372,
+      "gzip_bytes": 4821,
+      "hz": 82236,
+      "mean_us": 12.5,
+      "rme": "0.18%"
+    },
+    {
+      "count": 40,
+      "name": "split-256 40",
+      "raw_bytes": 63666,
+      "gzip_bytes": 5124,
+      "hz": 100416,
+      "mean_us": 10.47,
+      "rme": "0.07%"
+    },
+    {
+      "count": 40,
+      "name": "split-512 40",
+      "raw_bytes": 63666,
+      "gzip_bytes": 5124,
+      "hz": 85638,
+      "mean_us": 11.91,
+      "rme": "0.09%"
+    },
+    {
+      "count": 64,
+      "name": "unsplit 64",
+      "raw_bytes": 102210,
+      "gzip_bytes": 7935,
+      "hz": 40070,
+      "mean_us": 26.14,
+      "rme": "0.35%"
+    },
+    {
+      "count": 64,
+      "name": "split-160 64",
+      "raw_bytes": 103273,
+      "gzip_bytes": 7391,
+      "hz": 54675,
+      "mean_us": 19.07,
+      "rme": "0.26%"
+    },
+    {
+      "count": 64,
+      "name": "split-256 64",
+      "raw_bytes": 103273,
+      "gzip_bytes": 7391,
+      "hz": 48334,
+      "mean_us": 21.8,
+      "rme": "0.36%"
+    },
+    {
+      "count": 64,
+      "name": "split-512 64",
+      "raw_bytes": 102210,
+      "gzip_bytes": 7935,
+      "hz": 45801,
+      "mean_us": 21.93,
+      "rme": "0.07%"
+    },
+    {
+      "count": 80,
+      "name": "unsplit 80",
+      "raw_bytes": 127906,
+      "gzip_bytes": 9804,
+      "hz": 36258,
+      "mean_us": 27.75,
+      "rme": "0.11%"
+    },
+    {
+      "count": 80,
+      "name": "split-160 80",
+      "raw_bytes": 129207,
+      "gzip_bytes": 9083,
+      "hz": 31151,
+      "mean_us": 34.33,
+      "rme": "0.2%"
+    },
+    {
+      "count": 80,
+      "name": "split-256 80",
+      "raw_bytes": 129207,
+      "gzip_bytes": 9083,
+      "hz": 45267,
+      "mean_us": 22.78,
+      "rme": "0.23%"
+    },
+    {
+      "count": 80,
+      "name": "split-512 80",
+      "raw_bytes": 127906,
+      "gzip_bytes": 9804,
+      "hz": 35507,
+      "mean_us": 29.09,
+      "rme": "0.14%"
+    }
+  ]
+}

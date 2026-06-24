@@ -1,0 +1,54 @@
+{
+  "schema": "generated-strict-num-dot-rerun/1",
+  "generatedAt": "2026-06-22T23:55:16.322Z",
+  "rows": [
+    {
+      "name": "new dot",
+      "hz": 23538299,
+      "mean_us": 0.04,
+      "rme": "0.01%"
+    },
+    {
+      "name": "old dot",
+      "hz": 24895655,
+      "mean_us": 0.03,
+      "rme": "0%"
+    },
+    {
+      "name": "old2 dot",
+      "hz": 24901557,
+      "mean_us": 0.03,
+      "rme": "0%"
+    },
+    {
+      "name": "new2 dot",
+      "hz": 24908888,
+      "mean_us": 0.03,
+      "rme": "0%"
+    },
+    {
+      "name": "new signed",
+      "hz": 14218565,
+      "mean_us": 0.08,
+      "rme": "0.02%"
+    },
+    {
+      "name": "old signed",
+      "hz": 14206157,
+      "mean_us": 0.08,
+      "rme": "0.02%"
+    },
+    {
+      "name": "old2 signed",
+      "hz": 14635840,
+      "mean_us": 0.08,
+      "rme": "0.02%"
+    },
+    {
+      "name": "new2 signed",
+      "hz": 14965401,
+      "mean_us": 0.07,
+      "rme": "0.02%"
+    }
+  ]
+}

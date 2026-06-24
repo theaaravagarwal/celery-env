@@ -1,0 +1,34 @@
+name: Bug report
+description: Report a reproducible celery-env bug.
+title: "bug: "
+labels: ["bug"]
+body:
+  - type: textarea
+    id: summary
+    attributes:
+      label: Summary
+      description: What happened?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Reproduction
+      description: Include the smallest schema, env input, command, and observed output.
+      render: js
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: celery-env version
+      placeholder: 0.1.0
+    validations:
+      required: true
+  - type: input
+    id: runtime
+    attributes:
+      label: Runtime
+      placeholder: Node 22, Node 26, Bun, etc.
+    validations:
+      required: true

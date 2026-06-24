@@ -1,0 +1,21 @@
+{
+  "schema": "celery-generated-num-size/1",
+  "generatedAt": "2026-06-22T23:14:08.094Z",
+  "rows": [
+    {
+      "name": "defaultNum",
+      "raw_bytes": 495,
+      "gzip_bytes": 281
+    },
+    {
+      "name": "strictNumDefault",
+      "raw_bytes": 618,
+      "gzip_bytes": 328
+    },
+    {
+      "name": "strictNumSpeed",
+      "raw_bytes": 912,
+      "gzip_bytes": 431
+    }
+  ]
+}

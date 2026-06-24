@@ -1,0 +1,43 @@
+{
+  "schema": "celery-generated-size/1",
+  "generatedAt": "2026-06-22T23:36:21.389Z",
+  "metadata": {
+    "runtimeName": "node",
+    "runtimeVersion": "v26.3.0",
+    "nodeCompatVersion": "v26.3.0",
+    "v8Version": "14.6.202.34-node.20",
+    "platform": "darwin",
+    "arch": "arm64",
+    "execPath": "/opt/homebrew/Cellar/node/26.3.0/bin/node",
+    "nodeVersion": "v26.3.0",
+    "cpuModel": "Apple M3",
+    "runs": 15,
+    "optimize": "default"
+  },
+  "rows": [
+    {
+      "name": "small",
+      "raw_bytes": 1535,
+      "gzip_bytes": 564,
+      "import_ms": 2.455,
+      "first_validate_ms": 0.107,
+      "total_ms": 2.566
+    },
+    {
+      "name": "medium",
+      "raw_bytes": 41434,
+      "gzip_bytes": 2738,
+      "import_ms": 2.883,
+      "first_validate_ms": 2.171,
+      "total_ms": 5.088
+    },
+    {
+      "name": "large",
+      "raw_bytes": 166964,
+      "gzip_bytes": 12832,
+      "import_ms": 4.479,
+      "first_validate_ms": 6.768,
+      "total_ms": 11.247
+    }
+  ]
+}

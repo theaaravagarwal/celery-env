@@ -1,0 +1,46 @@
+{
+  "schema": "celery-split-final-assign/1",
+  "generatedAt": "2026-06-22T22:05:02.468Z",
+  "rows": [
+    {
+      "count": 160,
+      "fields": 640,
+      "name": "current final literal 160",
+      "raw_bytes": 177789,
+      "gzip_bytes": 12954,
+      "hz": 21298,
+      "mean_us": 0.049,
+      "rme": "0.23%"
+    },
+    {
+      "count": 160,
+      "fields": 640,
+      "name": "final assign object 160",
+      "raw_bytes": 181644,
+      "gzip_bytes": 13001,
+      "hz": 16453,
+      "mean_us": 0.063,
+      "rme": "0.38%"
+    },
+    {
+      "count": 320,
+      "fields": 1280,
+      "name": "current final literal 320",
+      "raw_bytes": 358279,
+      "gzip_bytes": 25355,
+      "hz": 9876,
+      "mean_us": 0.109,
+      "rme": "0.87%"
+    },
+    {
+      "count": 320,
+      "fields": 1280,
+      "name": "final assign object 320",
+      "raw_bytes": 365974,
+      "gzip_bytes": 25510,
+      "hz": 3456,
+      "mean_us": 0.494,
+      "rme": "1.67%"
+    }
+  ]
+}

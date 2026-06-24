@@ -1,0 +1,110 @@
+{
+  "schema": "celery-cold-first/1",
+  "generatedAt": "2026-06-24T11:23:20.696Z",
+  "metadata": {
+    "runtimeName": "node",
+    "runtimeVersion": "v26.3.0",
+    "nodeCompatVersion": "v26.3.0",
+    "v8Version": "14.6.202.34-node.20",
+    "platform": "darwin",
+    "arch": "arm64",
+    "execPath": "/opt/homebrew/Cellar/node/26.3.0/bin/node",
+    "targetRuntime": "bun",
+    "nodeVersion": "v26.3.0",
+    "cpuModel": "Apple M3",
+    "runs": 7
+  },
+  "rows": [
+    {
+      "name": "celery generated",
+      "import_ms": 0.552,
+      "setup_ms": 0,
+      "first_validate_ms": 0.153,
+      "total_ms": 0.705
+    },
+    {
+      "name": "celery runtime",
+      "import_ms": 1.531,
+      "setup_ms": 0.277,
+      "first_validate_ms": 0.306,
+      "total_ms": 2.136
+    },
+    {
+      "name": "zod",
+      "import_ms": 13.838,
+      "setup_ms": 2.464,
+      "first_validate_ms": 1.258,
+      "total_ms": 17.469
+    },
+    {
+      "name": "valibot",
+      "import_ms": 9.417,
+      "setup_ms": 0.339,
+      "first_validate_ms": 0.308,
+      "total_ms": 10.062
+    },
+    {
+      "name": "envalid",
+      "import_ms": 4.493,
+      "setup_ms": 0.018,
+      "first_validate_ms": 0.31,
+      "total_ms": 4.821
+    },
+    {
+      "name": "envsafe",
+      "import_ms": 1.802,
+      "setup_ms": 0.037,
+      "first_validate_ms": 0.24,
+      "total_ms": 2.108
+    },
+    {
+      "name": "valienv",
+      "import_ms": 0.885,
+      "setup_ms": 0.039,
+      "first_validate_ms": 0.263,
+      "total_ms": 1.187
+    },
+    {
+      "name": "env-var",
+      "import_ms": 2.979,
+      "setup_ms": 0,
+      "first_validate_ms": 0.596,
+      "total_ms": 3.575
+    },
+    {
+      "name": "safe-env-vars",
+      "import_ms": 6.632,
+      "setup_ms": 0.053,
+      "first_validate_ms": 0.268,
+      "total_ms": 6.959
+    },
+    {
+      "name": "env-type-validator",
+      "import_ms": 24.015,
+      "setup_ms": 0.038,
+      "first_validate_ms": 0.463,
+      "total_ms": 24.498
+    },
+    {
+      "name": "t3-env core",
+      "import_ms": 13.835,
+      "setup_ms": 2.149,
+      "first_validate_ms": 0.764,
+      "total_ms": 16.827
+    },
+    {
+      "name": "env-schema",
+      "import_ms": 46.175,
+      "setup_ms": 0.009,
+      "first_validate_ms": 2.319,
+      "total_ms": 48.482
+    },
+    {
+      "name": "convict",
+      "import_ms": 11.797,
+      "setup_ms": 0,
+      "first_validate_ms": 2.085,
+      "total_ms": 13.904
+    }
+  ]
+}

@@ -1,0 +1,451 @@
+{
+  "schema": "celery-strict-numeric/1",
+  "generatedAt": "2026-06-22T23:52:58.384Z",
+  "metadata": {
+    "runtimeName": "node",
+    "runtimeVersion": "v26.3.0",
+    "nodeCompatVersion": "v26.3.0",
+    "v8Version": "14.6.202.34-node.20",
+    "platform": "darwin",
+    "arch": "arm64",
+    "execPath": "/opt/homebrew/Cellar/node/26.3.0/bin/node",
+    "nodeVersion": "v26.3.0",
+    "cpuModel": "Apple M3",
+    "benchTimeMs": 400,
+    "benchWarmupMs": 150
+  },
+  "rows": [
+    {
+      "name": "generated default int-bounded",
+      "hz": 16297035,
+      "mean_us": 0.07,
+      "p75_us": 0.08,
+      "p99_us": 0.13,
+      "rme": "0.03%"
+    },
+    {
+      "name": "generated speed int-bounded",
+      "hz": 15061877,
+      "mean_us": 0.08,
+      "p75_us": 0.08,
+      "p99_us": 0.13,
+      "rme": "0.03%"
+    },
+    {
+      "name": "runtime int-bounded",
+      "hz": 10958770,
+      "mean_us": 0.1,
+      "p75_us": 0.12,
+      "p99_us": 0.13,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated default process.env int-bounded",
+      "hz": 2924078,
+      "mean_us": 0.34,
+      "p75_us": 0.33,
+      "p99_us": 0.42,
+      "rme": "0.01%"
+    },
+    {
+      "name": "generated speed process.env int-bounded",
+      "hz": 3020739,
+      "mean_us": 0.33,
+      "p75_us": 0.33,
+      "p99_us": 0.42,
+      "rme": "0.01%"
+    },
+    {
+      "name": "runtime process.env int-bounded",
+      "hz": 2372878,
+      "mean_us": 0.42,
+      "p75_us": 0.42,
+      "p99_us": 0.5,
+      "rme": "0.01%"
+    },
+    {
+      "name": "generated default invalid int-bounded",
+      "hz": 161986,
+      "mean_us": 6.18,
+      "p75_us": 6.21,
+      "p99_us": 6.38,
+      "rme": "0.01%"
+    },
+    {
+      "name": "generated speed invalid int-bounded",
+      "hz": 161548,
+      "mean_us": 6.21,
+      "p75_us": 6.25,
+      "p99_us": 6.42,
+      "rme": "0.01%"
+    },
+    {
+      "name": "runtime invalid int-bounded",
+      "hz": 140105,
+      "mean_us": 7.15,
+      "p75_us": 7.21,
+      "p99_us": 7.42,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated default num-dot",
+      "hz": 9538638,
+      "mean_us": 0.11,
+      "p75_us": 0.12,
+      "p99_us": 0.17,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated speed num-dot",
+      "hz": 10710031,
+      "mean_us": 0.1,
+      "p75_us": 0.12,
+      "p99_us": 0.13,
+      "rme": "0.02%"
+    },
+    {
+      "name": "runtime num-dot",
+      "hz": 7890735,
+      "mean_us": 0.13,
+      "p75_us": 0.13,
+      "p99_us": 0.17,
+      "rme": "0.01%"
+    },
+    {
+      "name": "generated default process.env num-dot",
+      "hz": 2504306,
+      "mean_us": 0.4,
+      "p75_us": 0.42,
+      "p99_us": 0.46,
+      "rme": "0.01%"
+    },
+    {
+      "name": "generated speed process.env num-dot",
+      "hz": 2599031,
+      "mean_us": 0.39,
+      "p75_us": 0.38,
+      "p99_us": 0.46,
+      "rme": "0.01%"
+    },
+    {
+      "name": "runtime process.env num-dot",
+      "hz": 2153954,
+      "mean_us": 0.47,
+      "p75_us": 0.5,
+      "p99_us": 0.54,
+      "rme": "0.01%"
+    },
+    {
+      "name": "generated default invalid num-dot",
+      "hz": 160119,
+      "mean_us": 6.27,
+      "p75_us": 6.29,
+      "p99_us": 6.46,
+      "rme": "0.01%"
+    },
+    {
+      "name": "generated speed invalid num-dot",
+      "hz": 159820,
+      "mean_us": 6.27,
+      "p75_us": 6.29,
+      "p99_us": 6.5,
+      "rme": "0.01%"
+    },
+    {
+      "name": "runtime invalid num-dot",
+      "hz": 138948,
+      "mean_us": 7.2,
+      "p75_us": 7.25,
+      "p99_us": 7.46,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated default num-decimal",
+      "hz": 9329034,
+      "mean_us": 0.11,
+      "p75_us": 0.12,
+      "p99_us": 0.17,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated speed num-decimal",
+      "hz": 9729139,
+      "mean_us": 0.11,
+      "p75_us": 0.12,
+      "p99_us": 0.13,
+      "rme": "0.02%"
+    },
+    {
+      "name": "runtime num-decimal",
+      "hz": 7691541,
+      "mean_us": 0.14,
+      "p75_us": 0.13,
+      "p99_us": 0.17,
+      "rme": "0.01%"
+    },
+    {
+      "name": "generated default process.env num-decimal",
+      "hz": 2334228,
+      "mean_us": 0.45,
+      "p75_us": 0.46,
+      "p99_us": 0.5,
+      "rme": "0.01%"
+    },
+    {
+      "name": "generated speed process.env num-decimal",
+      "hz": 2388230,
+      "mean_us": 0.42,
+      "p75_us": 0.42,
+      "p99_us": 0.5,
+      "rme": "0.01%"
+    },
+    {
+      "name": "runtime process.env num-decimal",
+      "hz": 2046349,
+      "mean_us": 0.49,
+      "p75_us": 0.5,
+      "p99_us": 0.58,
+      "rme": "0.01%"
+    },
+    {
+      "name": "generated default invalid num-decimal",
+      "hz": 160193,
+      "mean_us": 6.25,
+      "p75_us": 6.29,
+      "p99_us": 6.5,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated speed invalid num-decimal",
+      "hz": 160557,
+      "mean_us": 6.24,
+      "p75_us": 6.29,
+      "p99_us": 6.46,
+      "rme": "0.01%"
+    },
+    {
+      "name": "runtime invalid num-decimal",
+      "hz": 140387,
+      "mean_us": 7.13,
+      "p75_us": 7.17,
+      "p99_us": 7.38,
+      "rme": "0.01%"
+    },
+    {
+      "name": "generated default num-integer-text",
+      "hz": 12004026,
+      "mean_us": 0.09,
+      "p75_us": 0.08,
+      "p99_us": 0.13,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated speed num-integer-text",
+      "hz": 12993968,
+      "mean_us": 0.08,
+      "p75_us": 0.08,
+      "p99_us": 0.12,
+      "rme": "0.02%"
+    },
+    {
+      "name": "runtime num-integer-text",
+      "hz": 10348293,
+      "mean_us": 0.11,
+      "p75_us": 0.12,
+      "p99_us": 0.13,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated default process.env num-integer-text",
+      "hz": 2351759,
+      "mean_us": 0.43,
+      "p75_us": 0.42,
+      "p99_us": 0.5,
+      "rme": "0.01%"
+    },
+    {
+      "name": "generated speed process.env num-integer-text",
+      "hz": 2465828,
+      "mean_us": 0.41,
+      "p75_us": 0.42,
+      "p99_us": 0.46,
+      "rme": "0.01%"
+    },
+    {
+      "name": "runtime process.env num-integer-text",
+      "hz": 2112933,
+      "mean_us": 0.48,
+      "p75_us": 0.5,
+      "p99_us": 0.54,
+      "rme": "0.01%"
+    },
+    {
+      "name": "generated default invalid num-integer-text",
+      "hz": 160469,
+      "mean_us": 6.24,
+      "p75_us": 6.29,
+      "p99_us": 6.46,
+      "rme": "0.01%"
+    },
+    {
+      "name": "generated speed invalid num-integer-text",
+      "hz": 159716,
+      "mean_us": 6.27,
+      "p75_us": 6.29,
+      "p99_us": 6.46,
+      "rme": "0.01%"
+    },
+    {
+      "name": "runtime invalid num-integer-text",
+      "hz": 139667,
+      "mean_us": 7.17,
+      "p75_us": 7.21,
+      "p99_us": 7.42,
+      "rme": "0.01%"
+    },
+    {
+      "name": "generated default num-trailing-dot",
+      "hz": 9817713,
+      "mean_us": 0.11,
+      "p75_us": 0.12,
+      "p99_us": 0.13,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated speed num-trailing-dot",
+      "hz": 11291354,
+      "mean_us": 0.09,
+      "p75_us": 0.08,
+      "p99_us": 0.13,
+      "rme": "0.01%"
+    },
+    {
+      "name": "runtime num-trailing-dot",
+      "hz": 8231039,
+      "mean_us": 0.13,
+      "p75_us": 0.12,
+      "p99_us": 0.17,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated default process.env num-trailing-dot",
+      "hz": 2342461,
+      "mean_us": 0.43,
+      "p75_us": 0.46,
+      "p99_us": 0.5,
+      "rme": "0.01%"
+    },
+    {
+      "name": "generated speed process.env num-trailing-dot",
+      "hz": 2503778,
+      "mean_us": 0.4,
+      "p75_us": 0.42,
+      "p99_us": 0.46,
+      "rme": "0.01%"
+    },
+    {
+      "name": "runtime process.env num-trailing-dot",
+      "hz": 2149001,
+      "mean_us": 0.47,
+      "p75_us": 0.46,
+      "p99_us": 0.54,
+      "rme": "0.01%"
+    },
+    {
+      "name": "generated default invalid num-trailing-dot",
+      "hz": 157526,
+      "mean_us": 6.66,
+      "p75_us": 6.38,
+      "p99_us": 6.54,
+      "rme": "0.01%"
+    },
+    {
+      "name": "generated speed invalid num-trailing-dot",
+      "hz": 160827,
+      "mean_us": 6.24,
+      "p75_us": 6.25,
+      "p99_us": 6.42,
+      "rme": "0.01%"
+    },
+    {
+      "name": "runtime invalid num-trailing-dot",
+      "hz": 139695,
+      "mean_us": 7.17,
+      "p75_us": 7.21,
+      "p99_us": 7.42,
+      "rme": "0.01%"
+    },
+    {
+      "name": "generated default num-signed-dot",
+      "hz": 8880892,
+      "mean_us": 0.12,
+      "p75_us": 0.12,
+      "p99_us": 0.17,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated speed num-signed-dot",
+      "hz": 10262214,
+      "mean_us": 0.1,
+      "p75_us": 0.12,
+      "p99_us": 0.13,
+      "rme": "0.02%"
+    },
+    {
+      "name": "runtime num-signed-dot",
+      "hz": 8220481,
+      "mean_us": 0.14,
+      "p75_us": 0.13,
+      "p99_us": 0.17,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated default process.env num-signed-dot",
+      "hz": 2201658,
+      "mean_us": 0.47,
+      "p75_us": 0.46,
+      "p99_us": 0.5,
+      "rme": "0.01%"
+    },
+    {
+      "name": "generated speed process.env num-signed-dot",
+      "hz": 2322804,
+      "mean_us": 0.43,
+      "p75_us": 0.46,
+      "p99_us": 0.5,
+      "rme": "0.01%"
+    },
+    {
+      "name": "runtime process.env num-signed-dot",
+      "hz": 2010919,
+      "mean_us": 0.5,
+      "p75_us": 0.5,
+      "p99_us": 0.58,
+      "rme": "0.01%"
+    },
+    {
+      "name": "generated default invalid num-signed-dot",
+      "hz": 161820,
+      "mean_us": 6.19,
+      "p75_us": 6.21,
+      "p99_us": 6.42,
+      "rme": "0.01%"
+    },
+    {
+      "name": "generated speed invalid num-signed-dot",
+      "hz": 160313,
+      "mean_us": 6.25,
+      "p75_us": 6.29,
+      "p99_us": 6.46,
+      "rme": "0.01%"
+    },
+    {
+      "name": "runtime invalid num-signed-dot",
+      "hz": 138440,
+      "mean_us": 7.23,
+      "p75_us": 7.29,
+      "p99_us": 7.46,
+      "rme": "0.01%"
+    }
+  ]
+}

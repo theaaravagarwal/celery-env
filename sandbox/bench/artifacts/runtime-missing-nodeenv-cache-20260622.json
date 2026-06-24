@@ -1,0 +1,42 @@
+{
+  "schema": "celery-runtime-missing/1",
+  "generatedAt": "2026-06-22T23:25:22.018Z",
+  "rows": [
+    {
+      "name": "old missing production defaults",
+      "hz": 3897227,
+      "mean_us": 0.26,
+      "rme": "0.01%"
+    },
+    {
+      "name": "new missing production defaults",
+      "hz": 4054650,
+      "mean_us": 0.26,
+      "rme": "0.01%"
+    },
+    {
+      "name": "old missing development defaults",
+      "hz": 3052389,
+      "mean_us": 0.34,
+      "rme": "0.01%"
+    },
+    {
+      "name": "new missing development defaults",
+      "hz": 3153008,
+      "mean_us": 0.32,
+      "rme": "0.01%"
+    },
+    {
+      "name": "old missing test defaults",
+      "hz": 2650285,
+      "mean_us": 0.39,
+      "rme": "0.01%"
+    },
+    {
+      "name": "new missing test defaults",
+      "hz": 2672197,
+      "mean_us": 0.38,
+      "rme": "0.01%"
+    }
+  ]
+}

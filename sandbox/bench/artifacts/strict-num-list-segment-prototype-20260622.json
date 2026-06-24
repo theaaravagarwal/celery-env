@@ -1,0 +1,52 @@
+{
+  "schema": "celery-strict-num-list-segment-prototype/1",
+  "generatedAt": "2026-06-22T22:04:11.039Z",
+  "sizes": {
+    "current": {
+      "raw": 1325,
+      "gzip": 562
+    },
+    "proto": {
+      "raw": 1888,
+      "gzip": 686
+    }
+  },
+  "rows": [
+    {
+      "name": "current speed num list 20",
+      "hz": 678057,
+      "mean_us": 0.001,
+      "rme": "0.02%"
+    },
+    {
+      "name": "proto segment num list 20",
+      "hz": 667827,
+      "mean_us": 0.002,
+      "rme": "0.02%"
+    },
+    {
+      "name": "runtime num list 20",
+      "hz": 493736,
+      "mean_us": 0.002,
+      "rme": "0.01%"
+    },
+    {
+      "name": "current speed num list 200",
+      "hz": 69674,
+      "mean_us": 0.015,
+      "rme": "0.04%"
+    },
+    {
+      "name": "proto segment num list 200",
+      "hz": 69461,
+      "mean_us": 0.014,
+      "rme": "0.03%"
+    },
+    {
+      "name": "runtime num list 200",
+      "hz": 51904,
+      "mean_us": 0.019,
+      "rme": "0.03%"
+    }
+  ]
+}

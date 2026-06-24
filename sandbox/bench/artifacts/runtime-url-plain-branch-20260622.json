@@ -1,0 +1,42 @@
+{
+  "schema": "celery-runtime-url-plain-branch/1",
+  "generatedAt": "2026-06-22T22:15:05.810Z",
+  "rows": [
+    {
+      "name": "old url plain valid",
+      "hz": 2821870,
+      "mean_us": 0,
+      "rme": "0.01%"
+    },
+    {
+      "name": "new url plain valid",
+      "hz": 2917360,
+      "mean_us": 0,
+      "rme": "0.01%"
+    },
+    {
+      "name": "old url protocols valid",
+      "hz": 2836707,
+      "mean_us": 0,
+      "rme": "0.01%"
+    },
+    {
+      "name": "new url protocols valid",
+      "hz": 2727058,
+      "mean_us": 0,
+      "rme": "0.01%"
+    },
+    {
+      "name": "old url plain invalid",
+      "hz": 62540,
+      "mean_us": 0.017,
+      "rme": "0.02%"
+    },
+    {
+      "name": "new url plain invalid",
+      "hz": 61685,
+      "mean_us": 0.016,
+      "rme": "0.02%"
+    }
+  ]
+}

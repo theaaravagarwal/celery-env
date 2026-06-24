@@ -1,0 +1,113 @@
+{
+  "schema": "celery-strict-num-list-segment/1",
+  "generatedAt": "2026-06-23T01:54:35.220Z",
+  "metadata": {
+    "runtimeName": "node",
+    "runtimeVersion": "v26.3.0",
+    "nodeCompatVersion": "v26.3.0",
+    "v8Version": "14.6.202.34-node.20",
+    "platform": "darwin",
+    "arch": "arm64",
+    "execPath": "/opt/homebrew/Cellar/node/26.3.0/bin/node",
+    "nodeVersion": "v26.3.0",
+    "cpuModel": "Apple M3",
+    "listCount": 200,
+    "shortListCount": 20,
+    "benchTimeMs": 350,
+    "benchWarmupMs": 100
+  },
+  "sizes": [
+    {
+      "name": "strict-num-list.current.mjs",
+      "raw_bytes": 1367,
+      "gzip_bytes": 558
+    },
+    {
+      "name": "strict-num-list.segment-proto.mjs",
+      "raw_bytes": 1917,
+      "gzip_bytes": 676
+    }
+  ],
+  "rows": [
+    {
+      "name": "current short 20",
+      "hz": 568008,
+      "mean_us": 1.78,
+      "p75_us": 1.79,
+      "p99_us": 1.92,
+      "rme": "0.02%"
+    },
+    {
+      "name": "segment short 20",
+      "hz": 566595,
+      "mean_us": 1.8,
+      "p75_us": 1.79,
+      "p99_us": 2.79,
+      "rme": "0.03%"
+    },
+    {
+      "name": "current long 200",
+      "hz": 55775,
+      "mean_us": 17.98,
+      "p75_us": 17.96,
+      "p99_us": 19,
+      "rme": "0.03%"
+    },
+    {
+      "name": "segment long 200",
+      "hz": 55096,
+      "mean_us": 18.2,
+      "p75_us": 18.17,
+      "p99_us": 18.92,
+      "rme": "0.03%"
+    },
+    {
+      "name": "current spaced 200",
+      "hz": 60323,
+      "mean_us": 16.65,
+      "p75_us": 16.83,
+      "p99_us": 17.92,
+      "rme": "0.04%"
+    },
+    {
+      "name": "segment spaced 200",
+      "hz": 59134,
+      "mean_us": 16.95,
+      "p75_us": 17,
+      "p99_us": 17.83,
+      "rme": "0.03%"
+    },
+    {
+      "name": "current longDecimal 200",
+      "hz": 41957,
+      "mean_us": 23.89,
+      "p75_us": 23.92,
+      "p99_us": 25.1,
+      "rme": "0.04%"
+    },
+    {
+      "name": "segment longDecimal 200",
+      "hz": 44261,
+      "mean_us": 22.65,
+      "p75_us": 22.83,
+      "p99_us": 23.79,
+      "rme": "0.04%"
+    },
+    {
+      "name": "current invalidLast 200",
+      "hz": 40743,
+      "mean_us": 24.62,
+      "p75_us": 24.67,
+      "p99_us": 25.83,
+      "rme": "0.04%"
+    },
+    {
+      "name": "segment invalidLast 200",
+      "hz": 40760,
+      "mean_us": 24.59,
+      "p75_us": 24.58,
+      "p99_us": 25.67,
+      "rme": "0.04%"
+    }
+  ]
+}

@@ -1,0 +1,79 @@
+{
+  "baseline": {
+    "name": "manual process.env",
+    "path": ".",
+    "description": "Current hand-written parser and scattered raw env reads."
+  },
+  "tools": [
+    {
+      "name": "celery generated",
+      "path": "variants/celery-generated",
+      "package": "celery-env",
+      "mode": "generated",
+      "expectedShape": "schema file plus generated env module"
+    },
+    {
+      "name": "celery runtime",
+      "path": "variants/celery-runtime",
+      "package": "celery-env",
+      "mode": "runtime",
+      "expectedShape": "schema file plus parseEnv at runtime"
+    },
+    {
+      "name": "zod",
+      "path": "variants/zod",
+      "package": "zod",
+      "mode": "runtime",
+      "expectedShape": "Zod object schema plus manual process.env input"
+    },
+    {
+      "name": "valibot",
+      "path": "variants/valibot",
+      "package": "valibot",
+      "mode": "runtime",
+      "expectedShape": "Valibot schema plus manual process.env input"
+    },
+    {
+      "name": "envalid",
+      "path": "variants/envalid",
+      "package": "envalid",
+      "mode": "runtime",
+      "expectedShape": "cleanEnv validators"
+    },
+    {
+      "name": "envsafe",
+      "path": "variants/envsafe",
+      "package": "envsafe",
+      "mode": "runtime",
+      "expectedShape": "envsafe validators"
+    },
+    {
+      "name": "env-var",
+      "path": "variants/env-var",
+      "package": "env-var",
+      "mode": "runtime",
+      "expectedShape": "imperative env.get chains"
+    },
+    {
+      "name": "@t3-oss/env-core",
+      "path": "variants/t3-env-core",
+      "package": "@t3-oss/env-core",
+      "mode": "runtime",
+      "expectedShape": "createEnv with Zod validators"
+    }
+  ],
+  "requiredCapabilities": [
+    "required strings",
+    "defaults",
+    "strict integers",
+    "booleans",
+    "enums",
+    "URLs",
+    "lists",
+    "JSON object",
+    "conditional required secrets",
+    "secret-safe errors",
+    "own-property env reads",
+    "typed config shape"
+  ]
+}

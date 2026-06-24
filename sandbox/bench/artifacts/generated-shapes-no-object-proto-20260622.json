@@ -1,0 +1,156 @@
+{
+  "schema": "celery-generated-shapes/1",
+  "generatedAt": "2026-06-22T22:24:26.614Z",
+  "rows": [
+    {
+      "count": 32,
+      "fields": 128,
+      "name": "locals-return 32",
+      "raw_bytes": 34934,
+      "gzip_bytes": 3194,
+      "hz": 122043,
+      "mean_us": 8.42,
+      "rme": "0.12%"
+    },
+    {
+      "count": 32,
+      "fields": 128,
+      "name": "array-slots 32",
+      "raw_bytes": 34862,
+      "gzip_bytes": 2921,
+      "hz": 115195,
+      "mean_us": 8.81,
+      "rme": "0.14%"
+    },
+    {
+      "count": 32,
+      "fields": 128,
+      "name": "object-assign 32",
+      "raw_bytes": 33626,
+      "gzip_bytes": 2310,
+      "hz": 385811,
+      "mean_us": 2.72,
+      "rme": "0.06%"
+    },
+    {
+      "count": 40,
+      "fields": 160,
+      "name": "locals-return 40",
+      "raw_bytes": 43758,
+      "gzip_bytes": 3895,
+      "hz": 77633,
+      "mean_us": 12.93,
+      "rme": "0.06%"
+    },
+    {
+      "count": 40,
+      "fields": 160,
+      "name": "array-slots 40",
+      "raw_bytes": 43638,
+      "gzip_bytes": 3534,
+      "hz": 94025,
+      "mean_us": 10.8,
+      "rme": "0.16%"
+    },
+    {
+      "count": 40,
+      "fields": 160,
+      "name": "object-assign 40",
+      "raw_bytes": 42034,
+      "gzip_bytes": 2780,
+      "hz": 274878,
+      "mean_us": 3.94,
+      "rme": "0.13%"
+    },
+    {
+      "count": 64,
+      "fields": 256,
+      "name": "locals-return 64",
+      "raw_bytes": 70230,
+      "gzip_bytes": 6004,
+      "hz": 44872,
+      "mean_us": 22.6,
+      "rme": "0.26%"
+    },
+    {
+      "count": 64,
+      "fields": 256,
+      "name": "array-slots 64",
+      "raw_bytes": 69966,
+      "gzip_bytes": 5370,
+      "hz": 54366,
+      "mean_us": 18.88,
+      "rme": "0.32%"
+    },
+    {
+      "count": 64,
+      "fields": 256,
+      "name": "object-assign 64",
+      "raw_bytes": 67258,
+      "gzip_bytes": 4195,
+      "hz": 89089,
+      "mean_us": 11.43,
+      "rme": "0.13%"
+    },
+    {
+      "count": 80,
+      "fields": 320,
+      "name": "locals-return 80",
+      "raw_bytes": 87878,
+      "gzip_bytes": 7396,
+      "hz": 38813,
+      "mean_us": 26.56,
+      "rme": "0.09%"
+    },
+    {
+      "count": 80,
+      "fields": 320,
+      "name": "array-slots 80",
+      "raw_bytes": 87518,
+      "gzip_bytes": 6579,
+      "hz": 32552,
+      "mean_us": 30.83,
+      "rme": "0.11%"
+    },
+    {
+      "count": 80,
+      "fields": 320,
+      "name": "object-assign 80",
+      "raw_bytes": 84074,
+      "gzip_bytes": 5138,
+      "hz": 57328,
+      "mean_us": 17.83,
+      "rme": "0.19%"
+    },
+    {
+      "count": 96,
+      "fields": 384,
+      "name": "locals-return 96",
+      "raw_bytes": 105526,
+      "gzip_bytes": 8787,
+      "hz": 31655,
+      "mean_us": 31.65,
+      "rme": "0.09%"
+    },
+    {
+      "count": 96,
+      "fields": 384,
+      "name": "array-slots 96",
+      "raw_bytes": 105070,
+      "gzip_bytes": 7799,
+      "hz": 25875,
+      "mean_us": 38.85,
+      "rme": "0.15%"
+    },
+    {
+      "count": 96,
+      "fields": 384,
+      "name": "object-assign 96",
+      "raw_bytes": 100890,
+      "gzip_bytes": 6112,
+      "hz": 43668,
+      "mean_us": 23.4,
+      "rme": "0.25%"
+    }
+  ]
+}

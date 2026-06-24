@@ -1,0 +1,115 @@
+{
+  "schema": "celery-enum/1",
+  "generatedAt": "2026-06-23T00:16:04.214Z",
+  "metadata": {
+    "runtimeName": "node",
+    "runtimeVersion": "v26.3.0",
+    "nodeCompatVersion": "v26.3.0",
+    "v8Version": "14.6.202.34-node.20",
+    "platform": "darwin",
+    "arch": "arm64",
+    "execPath": "/opt/homebrew/Cellar/node/26.3.0/bin/node",
+    "nodeVersion": "v26.3.0",
+    "cpuModel": "Apple M3",
+    "benchTimeMs": 180,
+    "benchWarmupMs": 90
+  },
+  "rows": [
+    {
+      "name": "generated enum string2",
+      "hz": 13662018,
+      "mean_us": 0.08,
+      "p75_us": 0.08,
+      "p99_us": 0.13,
+      "rme": "0.05%"
+    },
+    {
+      "name": "generated enum speed string2",
+      "hz": 13856664,
+      "mean_us": 0.08,
+      "p75_us": 0.08,
+      "p99_us": 0.13,
+      "rme": "0.05%"
+    },
+    {
+      "name": "runtime enum string2",
+      "hz": 13065725,
+      "mean_us": 0.08,
+      "p75_us": 0.08,
+      "p99_us": 0.13,
+      "rme": "0.04%"
+    },
+    {
+      "name": "generated enum string8",
+      "hz": 17900596,
+      "mean_us": 0.06,
+      "p75_us": 0.08,
+      "p99_us": 0.08,
+      "rme": "0.04%"
+    },
+    {
+      "name": "generated enum speed string8",
+      "hz": 20456354,
+      "mean_us": 0.05,
+      "p75_us": 0.08,
+      "p99_us": 0.08,
+      "rme": "0.03%"
+    },
+    {
+      "name": "runtime enum string8",
+      "hz": 15480209,
+      "mean_us": 0.09,
+      "p75_us": 0.08,
+      "p99_us": 0.08,
+      "rme": "0.05%"
+    },
+    {
+      "name": "generated enum string32",
+      "hz": 16941286,
+      "mean_us": 0.07,
+      "p75_us": 0.08,
+      "p99_us": 0.08,
+      "rme": "0.04%"
+    },
+    {
+      "name": "generated enum speed string32",
+      "hz": 17359918,
+      "mean_us": 0.08,
+      "p75_us": 0.08,
+      "p99_us": 0.08,
+      "rme": "0.05%"
+    },
+    {
+      "name": "runtime enum string32",
+      "hz": 15515717,
+      "mean_us": 0.07,
+      "p75_us": 0.08,
+      "p99_us": 0.08,
+      "rme": "0.04%"
+    },
+    {
+      "name": "generated enum mixed8",
+      "hz": 21066078,
+      "mean_us": 0.06,
+      "p75_us": 0.04,
+      "p99_us": 0.08,
+      "rme": "0.03%"
+    },
+    {
+      "name": "generated enum speed mixed8",
+      "hz": 21074431,
+      "mean_us": 0.06,
+      "p75_us": 0.04,
+      "p99_us": 0.08,
+      "rme": "0.03%"
+    },
+    {
+      "name": "runtime enum mixed8",
+      "hz": 13443940,
+      "mean_us": 0.09,
+      "p75_us": 0.08,
+      "p99_us": 0.08,
+      "rme": "0.04%"
+    }
+  ]
+}

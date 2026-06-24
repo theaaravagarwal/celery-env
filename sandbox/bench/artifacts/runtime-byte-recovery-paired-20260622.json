@@ -1,0 +1,42 @@
+{
+  "schema": "runtime-byte-recovery-paired/1",
+  "generatedAt": "2026-06-22T23:46:37.866Z",
+  "rows": [
+    {
+      "name": "old defineEnv 160",
+      "hz": 35704,
+      "mean_us": 28.19,
+      "rme": "0.09%"
+    },
+    {
+      "name": "new defineEnv 160",
+      "hz": 35908,
+      "mean_us": 28.05,
+      "rme": "0.1%"
+    },
+    {
+      "name": "old parse cached 160",
+      "hz": 111430,
+      "mean_us": 9.01,
+      "rme": "0.03%"
+    },
+    {
+      "name": "new parse cached 160",
+      "hz": 110136,
+      "mean_us": 9.13,
+      "rme": "0.04%"
+    },
+    {
+      "name": "old parse raw 160",
+      "hz": 27387,
+      "mean_us": 36.65,
+      "rme": "0.08%"
+    },
+    {
+      "name": "new parse raw 160",
+      "hz": 27707,
+      "mean_us": 36.23,
+      "rme": "0.08%"
+    }
+  ]
+}

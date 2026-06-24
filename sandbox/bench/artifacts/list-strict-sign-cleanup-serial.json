@@ -1,0 +1,181 @@
+{
+  "schema": "celery-list/1",
+  "generatedAt": "2026-06-22T20:33:20.989Z",
+  "metadata": {
+    "runtimeName": "node",
+    "runtimeVersion": "v26.3.0",
+    "nodeCompatVersion": "v26.3.0",
+    "v8Version": "14.6.202.34-node.20",
+    "platform": "darwin",
+    "arch": "arm64",
+    "execPath": "/opt/homebrew/Cellar/node/26.3.0/bin/node",
+    "nodeVersion": "v26.3.0",
+    "cpuModel": "Apple M3",
+    "listCount": 200,
+    "shortListCount": 20,
+    "benchTimeMs": 220,
+    "benchWarmupMs": 100
+  },
+  "rows": [
+    {
+      "name": "generated list int 20",
+      "hz": 1207853,
+      "mean_us": 0.83,
+      "p75_us": 0.83,
+      "p99_us": 0.92,
+      "rme": "0.02%"
+    },
+    {
+      "name": "runtime list int 20",
+      "hz": 930083,
+      "mean_us": 1.09,
+      "p75_us": 1.08,
+      "p99_us": 1.21,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated list bool 20",
+      "hz": 1360483,
+      "mean_us": 0.74,
+      "p75_us": 0.75,
+      "p99_us": 0.83,
+      "rme": "0.02%"
+    },
+    {
+      "name": "runtime list bool 20",
+      "hz": 1246849,
+      "mean_us": 0.81,
+      "p75_us": 0.83,
+      "p99_us": 0.92,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated list string 20",
+      "hz": 671794,
+      "mean_us": 1.5,
+      "p75_us": 1.5,
+      "p99_us": 1.62,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated list string speed 20",
+      "hz": 689847,
+      "mean_us": 1.46,
+      "p75_us": 1.46,
+      "p99_us": 1.58,
+      "rme": "0.02%"
+    },
+    {
+      "name": "runtime list string 20",
+      "hz": 529333,
+      "mean_us": 1.89,
+      "p75_us": 1.92,
+      "p99_us": 2,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated list enum 20",
+      "hz": 1207930,
+      "mean_us": 0.86,
+      "p75_us": 0.83,
+      "p99_us": 1,
+      "rme": "0.02%"
+    },
+    {
+      "name": "runtime list enum 20",
+      "hz": 982397,
+      "mean_us": 1.02,
+      "p75_us": 1.04,
+      "p99_us": 1.12,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated list int 200",
+      "hz": 102265,
+      "mean_us": 9.81,
+      "p75_us": 9.79,
+      "p99_us": 10.67,
+      "rme": "0.04%"
+    },
+    {
+      "name": "runtime list int 200",
+      "hz": 87689,
+      "mean_us": 11.44,
+      "p75_us": 11.42,
+      "p99_us": 12.42,
+      "rme": "0.04%"
+    },
+    {
+      "name": "generated list strict int 200",
+      "hz": 183743,
+      "mean_us": 5.47,
+      "p75_us": 5.46,
+      "p99_us": 6.17,
+      "rme": "0.03%"
+    },
+    {
+      "name": "runtime list strict int 200",
+      "hz": 177585,
+      "mean_us": 5.65,
+      "p75_us": 5.63,
+      "p99_us": 6.37,
+      "rme": "0.03%"
+    },
+    {
+      "name": "generated list bool 200",
+      "hz": 142199,
+      "mean_us": 7.08,
+      "p75_us": 7.04,
+      "p99_us": 7.92,
+      "rme": "0.04%"
+    },
+    {
+      "name": "runtime list bool 200",
+      "hz": 139671,
+      "mean_us": 7.2,
+      "p75_us": 7.17,
+      "p99_us": 8.13,
+      "rme": "0.04%"
+    },
+    {
+      "name": "generated list string 200",
+      "hz": 68172,
+      "mean_us": 14.71,
+      "p75_us": 14.67,
+      "p99_us": 15.67,
+      "rme": "0.04%"
+    },
+    {
+      "name": "generated list string speed 200",
+      "hz": 69235,
+      "mean_us": 14.5,
+      "p75_us": 14.5,
+      "p99_us": 15.47,
+      "rme": "0.04%"
+    },
+    {
+      "name": "runtime list string 200",
+      "hz": 57045,
+      "mean_us": 17.59,
+      "p75_us": 17.58,
+      "p99_us": 18.58,
+      "rme": "0.05%"
+    },
+    {
+      "name": "generated list enum 200",
+      "hz": 118633,
+      "mean_us": 8.48,
+      "p75_us": 8.46,
+      "p99_us": 9.33,
+      "rme": "0.04%"
+    },
+    {
+      "name": "runtime list enum 200",
+      "hz": 104038,
+      "mean_us": 9.65,
+      "p75_us": 9.67,
+      "p99_us": 10.37,
+      "rme": "0.04%"
+    }
+  ]
+}

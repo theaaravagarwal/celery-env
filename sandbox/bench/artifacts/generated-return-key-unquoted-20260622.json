@@ -1,0 +1,43 @@
+{
+  "schema": "celery-generated-return-key-unquoted/1",
+  "generatedAt": "2026-06-22T22:39:31.428Z",
+  "baseline": "checkpoints/celery-20260622-153444.tgz",
+  "rows": [
+    {
+      "name": "small",
+      "prev_raw": 1545,
+      "current_raw": 1535,
+      "raw_delta": -10,
+      "prev_gzip": 566,
+      "current_gzip": 564,
+      "gzip_delta": -2
+    },
+    {
+      "name": "object-mode 160",
+      "prev_raw": 41434,
+      "current_raw": 41434,
+      "raw_delta": 0,
+      "prev_gzip": 2738,
+      "current_gzip": 2738,
+      "gzip_delta": 0
+    },
+    {
+      "name": "split 640",
+      "prev_raw": 177789,
+      "current_raw": 176509,
+      "raw_delta": -1280,
+      "prev_gzip": 12954,
+      "current_gzip": 12923,
+      "gzip_delta": -31
+    },
+    {
+      "name": "hyphen mixed",
+      "prev_raw": 527,
+      "current_raw": 525,
+      "raw_delta": -2,
+      "prev_gzip": 299,
+      "current_gzip": 298,
+      "gzip_delta": -1
+    }
+  ]
+}

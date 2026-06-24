@@ -1,0 +1,23 @@
+{
+  "description": "Source-only compiler byte recovery versus checkpoint celery-20260622-143722.tgz. Representative generated validators matched byte-for-byte for default, minified, speed, failFast, and splitLargeThreshold options.",
+  "runtime": "Node v26.3.0 darwin/arm64",
+  "previousCheckpoint": "checkpoints/celery-20260622-143722.tgz",
+  "previousCompiler": {
+    "rawBytes": 26461,
+    "gzipBytes": 5482
+  },
+  "currentCompiler": {
+    "rawBytes": 25689,
+    "gzipBytes": 5429
+  },
+  "delta": {
+    "rawBytes": -772,
+    "gzipBytes": -53
+  },
+  "validation": [
+    "generated outputs match latest checkpoint",
+    "npm test",
+    "BENCH_TIME=100 BENCH_WARMUP=50 npm --prefix sandbox/bench run check:extended",
+    "npm run prepublishOnly"
+  ]
+}

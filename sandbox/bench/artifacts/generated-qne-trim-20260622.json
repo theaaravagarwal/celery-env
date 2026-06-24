@@ -1,0 +1,59 @@
+{
+  "schema": "celery-generated-qne-trim/1",
+  "rows": [
+    {
+      "name": "old strict-num-speed",
+      "raw_bytes": 908,
+      "gzip_bytes": 422,
+      "neq": true,
+      "loose": true,
+      "hz": 11268107,
+      "mean_us": 0.09
+    },
+    {
+      "name": "new strict-num-speed",
+      "raw_bytes": 907,
+      "gzip_bytes": 423,
+      "neq": false,
+      "loose": true,
+      "hz": 11378861,
+      "mean_us": 0.09
+    },
+    {
+      "name": "old strict-int",
+      "raw_bytes": 1040,
+      "gzip_bytes": 448,
+      "neq": true,
+      "loose": true,
+      "hz": 21426259,
+      "mean_us": 0.05
+    },
+    {
+      "name": "new strict-int",
+      "raw_bytes": 1039,
+      "gzip_bytes": 449,
+      "neq": false,
+      "loose": true,
+      "hz": 22240350,
+      "mean_us": 0.05
+    },
+    {
+      "name": "old strict-int-list",
+      "raw_bytes": 1954,
+      "gzip_bytes": 674,
+      "neq": true,
+      "loose": true,
+      "hz": 195038,
+      "mean_us": 7.55
+    },
+    {
+      "name": "new strict-int-list",
+      "raw_bytes": 1953,
+      "gzip_bytes": 674,
+      "neq": false,
+      "loose": true,
+      "hz": 194317,
+      "mean_us": 5.17
+    }
+  ]
+}

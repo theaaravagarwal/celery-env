@@ -1,0 +1,75 @@
+{
+  "schema": "generated-strict-num-else-if-paired/1",
+  "generatedAt": "2026-06-22T23:53:59.819Z",
+  "rows": [
+    {
+      "name": "size",
+      "old_raw": 897,
+      "old_gzip": 429,
+      "new_raw": 893,
+      "new_gzip": 421,
+      "raw_delta": -4,
+      "gzip_delta": -8
+    },
+    {
+      "name": "old dot",
+      "hz": 16077938,
+      "mean_us": 0.07,
+      "rme": "0.03%"
+    },
+    {
+      "name": "new dot",
+      "hz": 14167090,
+      "mean_us": 0.08,
+      "rme": "0.03%"
+    },
+    {
+      "name": "old decimal",
+      "hz": 12647075,
+      "mean_us": 0.09,
+      "rme": "0.02%"
+    },
+    {
+      "name": "new decimal",
+      "hz": 13316652,
+      "mean_us": 0.08,
+      "rme": "0.03%"
+    },
+    {
+      "name": "old integer",
+      "hz": 22617584,
+      "mean_us": 0.05,
+      "rme": "0.01%"
+    },
+    {
+      "name": "new integer",
+      "hz": 23140369,
+      "mean_us": 0.04,
+      "rme": "0.01%"
+    },
+    {
+      "name": "old trailing",
+      "hz": 16544738,
+      "mean_us": 0.07,
+      "rme": "0.03%"
+    },
+    {
+      "name": "new trailing",
+      "hz": 16828660,
+      "mean_us": 0.07,
+      "rme": "0.03%"
+    },
+    {
+      "name": "old signed",
+      "hz": 14484563,
+      "mean_us": 0.08,
+      "rme": "0.03%"
+    },
+    {
+      "name": "new signed",
+      "hz": 14860276,
+      "mean_us": 0.07,
+      "rme": "0.03%"
+    }
+  ]
+}

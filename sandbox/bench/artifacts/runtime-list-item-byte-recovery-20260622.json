@@ -1,0 +1,24 @@
+{
+  "description": "Runtime byte recovery pass after reinvesting most recovered gzip budget in the scoped large all-string enum Set path.",
+  "runtime": "Node v26.3.0 darwin/arm64",
+  "previousCheckpoint": "checkpoints/celery-20260622-143722.tgz",
+  "previousRuntime": {
+    "rawBytes": 12255,
+    "gzipBytes": 2874
+  },
+  "currentRuntime": {
+    "rawBytes": 12071,
+    "gzipBytes": 2873
+  },
+  "delta": {
+    "rawBytes": -184,
+    "gzipBytes": -1
+  },
+  "validation": [
+    "npm test",
+    "node --test test/runtime.test.mjs",
+    "BENCH_TIME=100 BENCH_WARMUP=50 npm --prefix sandbox/bench run check:extended",
+    "BENCH_TIME=300 BENCH_WARMUP=100 node sandbox/bench/enum.mjs --artifact-out sandbox/bench/artifacts/enum-string-set-20260622.json",
+    "BENCH_TIME=300 BENCH_WARMUP=100 node sandbox/bench inline old-vs-set enum A/B -> artifacts/enum-string-set-ab-20260622.json"
+  ]
+}

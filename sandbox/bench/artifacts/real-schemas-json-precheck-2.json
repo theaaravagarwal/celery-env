@@ -1,0 +1,619 @@
+{
+  "schema": "celery-real-schemas/1",
+  "generatedAt": "2026-06-24T00:19:54.089Z",
+  "metadata": {
+    "runtimeName": "node",
+    "runtimeVersion": "v26.3.0",
+    "nodeCompatVersion": "v26.3.0",
+    "v8Version": "14.6.202.34-node.20",
+    "platform": "darwin",
+    "arch": "arm64",
+    "execPath": "/opt/homebrew/Cellar/node/26.3.0/bin/node",
+    "nodeVersion": "v26.3.0",
+    "cpuModel": "Apple M3",
+    "benchTimeMs": 300,
+    "benchWarmupMs": 100
+  },
+  "rows": [
+    {
+      "name": "celery generated api",
+      "suite": "celery-generated",
+      "scenario": "api",
+      "hz": 7013291,
+      "mean_us": 0.18,
+      "p75_us": 0.17,
+      "p99_us": 0.21,
+      "rme": "0.02%"
+    },
+    {
+      "name": "celery runtime api",
+      "suite": "celery-runtime",
+      "scenario": "api",
+      "hz": 3142313,
+      "mean_us": 0.32,
+      "p75_us": 0.33,
+      "p99_us": 0.37,
+      "rme": "0.01%"
+    },
+    {
+      "name": "zod api",
+      "suite": "zod",
+      "scenario": "api",
+      "hz": 1252185,
+      "mean_us": 0.86,
+      "p75_us": 0.79,
+      "p99_us": 1,
+      "rme": "0.02%"
+    },
+    {
+      "name": "valibot api",
+      "suite": "valibot",
+      "scenario": "api",
+      "hz": 944754,
+      "mean_us": 1.32,
+      "p75_us": 1.04,
+      "p99_us": 1.5,
+      "rme": "0.03%"
+    },
+    {
+      "name": "celery generated process.env api",
+      "suite": "celery-generated",
+      "scenario": "process.env api",
+      "hz": 527461,
+      "mean_us": 2.02,
+      "p75_us": 1.87,
+      "p99_us": 2.83,
+      "rme": "0.04%"
+    },
+    {
+      "name": "celery runtime process.env api",
+      "suite": "celery-runtime",
+      "scenario": "process.env api",
+      "hz": 434960,
+      "mean_us": 2.33,
+      "p75_us": 2.29,
+      "p99_us": 2.5,
+      "rme": "0.02%"
+    },
+    {
+      "name": "zod process.env api",
+      "suite": "zod",
+      "scenario": "process.env api",
+      "hz": 222707,
+      "mean_us": 4.92,
+      "p75_us": 4.46,
+      "p99_us": 11.05,
+      "rme": "0.08%"
+    },
+    {
+      "name": "valibot process.env api",
+      "suite": "valibot",
+      "scenario": "process.env api",
+      "hz": 160964,
+      "mean_us": 6.29,
+      "p75_us": 6.21,
+      "p99_us": 6.79,
+      "rme": "0.04%"
+    },
+    {
+      "name": "celery generated invalid api",
+      "suite": "celery-generated",
+      "scenario": "invalid api",
+      "hz": 147422,
+      "mean_us": 6.81,
+      "p75_us": 6.83,
+      "p99_us": 7.12,
+      "rme": "0.03%"
+    },
+    {
+      "name": "celery runtime invalid api",
+      "suite": "celery-runtime",
+      "scenario": "invalid api",
+      "hz": 126553,
+      "mean_us": 7.93,
+      "p75_us": 7.96,
+      "p99_us": 8.42,
+      "rme": "0.03%"
+    },
+    {
+      "name": "zod invalid api",
+      "suite": "zod",
+      "scenario": "invalid api",
+      "hz": 32631,
+      "mean_us": 32.54,
+      "p75_us": 30.62,
+      "p99_us": 40.69,
+      "rme": "0.11%"
+    },
+    {
+      "name": "valibot invalid api",
+      "suite": "valibot",
+      "scenario": "invalid api",
+      "hz": 109219,
+      "mean_us": 9.34,
+      "p75_us": 9.21,
+      "p99_us": 10.17,
+      "rme": "0.04%"
+    },
+    {
+      "name": "celery generated web",
+      "suite": "celery-generated",
+      "scenario": "web",
+      "hz": 1209561,
+      "mean_us": 0.85,
+      "p75_us": 0.83,
+      "p99_us": 0.96,
+      "rme": "0.01%"
+    },
+    {
+      "name": "celery runtime web",
+      "suite": "celery-runtime",
+      "scenario": "web",
+      "hz": 1022185,
+      "mean_us": 0.99,
+      "p75_us": 1,
+      "p99_us": 1.08,
+      "rme": "0.01%"
+    },
+    {
+      "name": "zod web",
+      "suite": "zod",
+      "scenario": "web",
+      "hz": 705806,
+      "mean_us": 1.43,
+      "p75_us": 1.42,
+      "p99_us": 1.58,
+      "rme": "0.02%"
+    },
+    {
+      "name": "valibot web",
+      "suite": "valibot",
+      "scenario": "web",
+      "hz": 621974,
+      "mean_us": 1.62,
+      "p75_us": 1.63,
+      "p99_us": 1.71,
+      "rme": "0.02%"
+    },
+    {
+      "name": "celery generated process.env web",
+      "suite": "celery-generated",
+      "scenario": "process.env web",
+      "hz": 406314,
+      "mean_us": 2.49,
+      "p75_us": 2.46,
+      "p99_us": 2.58,
+      "rme": "0.02%"
+    },
+    {
+      "name": "celery runtime process.env web",
+      "suite": "celery-runtime",
+      "scenario": "process.env web",
+      "hz": 349626,
+      "mean_us": 2.87,
+      "p75_us": 2.88,
+      "p99_us": 3,
+      "rme": "0.02%"
+    },
+    {
+      "name": "zod process.env web",
+      "suite": "zod",
+      "scenario": "process.env web",
+      "hz": 210430,
+      "mean_us": 4.8,
+      "p75_us": 4.75,
+      "p99_us": 5.08,
+      "rme": "0.03%"
+    },
+    {
+      "name": "valibot process.env web",
+      "suite": "valibot",
+      "scenario": "process.env web",
+      "hz": 154986,
+      "mean_us": 8.71,
+      "p75_us": 6.38,
+      "p99_us": 10,
+      "rme": "0.09%"
+    },
+    {
+      "name": "celery generated invalid web",
+      "suite": "celery-generated",
+      "scenario": "invalid web",
+      "hz": 47248,
+      "mean_us": 26.18,
+      "p75_us": 24.71,
+      "p99_us": 78.56,
+      "rme": "0.45%"
+    },
+    {
+      "name": "celery runtime invalid web",
+      "suite": "celery-runtime",
+      "scenario": "invalid web",
+      "hz": 55995,
+      "mean_us": 17.95,
+      "p75_us": 17.87,
+      "p99_us": 22.79,
+      "rme": "0.07%"
+    },
+    {
+      "name": "zod invalid web",
+      "suite": "zod",
+      "scenario": "invalid web",
+      "hz": 24668,
+      "mean_us": 42.64,
+      "p75_us": 40.29,
+      "p99_us": 72.75,
+      "rme": "0.18%"
+    },
+    {
+      "name": "valibot invalid web",
+      "suite": "valibot",
+      "scenario": "invalid web",
+      "hz": 48870,
+      "mean_us": 21.07,
+      "p75_us": 20.46,
+      "p99_us": 27.44,
+      "rme": "0.09%"
+    },
+    {
+      "name": "celery generated worker",
+      "suite": "celery-generated",
+      "scenario": "worker",
+      "hz": 2195393,
+      "mean_us": 0.47,
+      "p75_us": 0.46,
+      "p99_us": 0.54,
+      "rme": "0.01%"
+    },
+    {
+      "name": "celery runtime worker",
+      "suite": "celery-runtime",
+      "scenario": "worker",
+      "hz": 1652980,
+      "mean_us": 0.61,
+      "p75_us": 0.63,
+      "p99_us": 0.71,
+      "rme": "0.01%"
+    },
+    {
+      "name": "zod worker",
+      "suite": "zod",
+      "scenario": "worker",
+      "hz": 947142,
+      "mean_us": 1.11,
+      "p75_us": 1.08,
+      "p99_us": 1.62,
+      "rme": "0.03%"
+    },
+    {
+      "name": "valibot worker",
+      "suite": "valibot",
+      "scenario": "worker",
+      "hz": 780218,
+      "mean_us": 1.37,
+      "p75_us": 1.29,
+      "p99_us": 1.92,
+      "rme": "0.03%"
+    },
+    {
+      "name": "celery generated process.env worker",
+      "suite": "celery-generated",
+      "scenario": "process.env worker",
+      "hz": 492170,
+      "mean_us": 2.08,
+      "p75_us": 2.04,
+      "p99_us": 2.25,
+      "rme": "0.03%"
+    },
+    {
+      "name": "celery runtime process.env worker",
+      "suite": "celery-runtime",
+      "scenario": "process.env worker",
+      "hz": 407385,
+      "mean_us": 2.47,
+      "p75_us": 2.46,
+      "p99_us": 2.58,
+      "rme": "0.02%"
+    },
+    {
+      "name": "zod process.env worker",
+      "suite": "zod",
+      "scenario": "process.env worker",
+      "hz": 231837,
+      "mean_us": 4.33,
+      "p75_us": 4.33,
+      "p99_us": 4.58,
+      "rme": "0.02%"
+    },
+    {
+      "name": "valibot process.env worker",
+      "suite": "valibot",
+      "scenario": "process.env worker",
+      "hz": 170032,
+      "mean_us": 5.93,
+      "p75_us": 5.92,
+      "p99_us": 6.21,
+      "rme": "0.04%"
+    },
+    {
+      "name": "celery generated invalid worker",
+      "suite": "celery-generated",
+      "scenario": "invalid worker",
+      "hz": 138924,
+      "mean_us": 7.23,
+      "p75_us": 7.25,
+      "p99_us": 7.67,
+      "rme": "0.03%"
+    },
+    {
+      "name": "celery runtime invalid worker",
+      "suite": "celery-runtime",
+      "scenario": "invalid worker",
+      "hz": 119462,
+      "mean_us": 8.5,
+      "p75_us": 8.38,
+      "p99_us": 10.34,
+      "rme": "0.06%"
+    },
+    {
+      "name": "zod invalid worker",
+      "suite": "zod",
+      "scenario": "invalid worker",
+      "hz": 35795,
+      "mean_us": 29.42,
+      "p75_us": 28.04,
+      "p99_us": 34.67,
+      "rme": "0.09%"
+    },
+    {
+      "name": "valibot invalid worker",
+      "suite": "valibot",
+      "scenario": "invalid worker",
+      "hz": 107485,
+      "mean_us": 9.48,
+      "p75_us": 9.37,
+      "p99_us": 10.25,
+      "rme": "0.05%"
+    },
+    {
+      "name": "celery generated list-heavy",
+      "suite": "celery-generated",
+      "scenario": "list-heavy",
+      "hz": 384996,
+      "mean_us": 2.85,
+      "p75_us": 2.58,
+      "p99_us": 3.21,
+      "rme": "0.03%"
+    },
+    {
+      "name": "celery runtime list-heavy",
+      "suite": "celery-runtime",
+      "scenario": "list-heavy",
+      "hz": 328701,
+      "mean_us": 3.07,
+      "p75_us": 3.04,
+      "p99_us": 3.33,
+      "rme": "0.02%"
+    },
+    {
+      "name": "zod list-heavy",
+      "suite": "zod",
+      "scenario": "list-heavy",
+      "hz": 50642,
+      "mean_us": 19.93,
+      "p75_us": 19.79,
+      "p99_us": 23.52,
+      "rme": "0.07%"
+    },
+    {
+      "name": "valibot list-heavy",
+      "suite": "valibot",
+      "scenario": "list-heavy",
+      "hz": 56491,
+      "mean_us": 17.76,
+      "p75_us": 17.88,
+      "p99_us": 18.79,
+      "rme": "0.05%"
+    },
+    {
+      "name": "celery generated process.env list-heavy",
+      "suite": "celery-generated",
+      "scenario": "process.env list-heavy",
+      "hz": 237907,
+      "mean_us": 4.22,
+      "p75_us": 4.21,
+      "p99_us": 4.58,
+      "rme": "0.02%"
+    },
+    {
+      "name": "celery runtime process.env list-heavy",
+      "suite": "celery-runtime",
+      "scenario": "process.env list-heavy",
+      "hz": 203248,
+      "mean_us": 5.09,
+      "p75_us": 4.92,
+      "p99_us": 5.96,
+      "rme": "0.04%"
+    },
+    {
+      "name": "zod process.env list-heavy",
+      "suite": "zod",
+      "scenario": "process.env list-heavy",
+      "hz": 41278,
+      "mean_us": 24.36,
+      "p75_us": 24.29,
+      "p99_us": 27.37,
+      "rme": "0.07%"
+    },
+    {
+      "name": "valibot process.env list-heavy",
+      "suite": "valibot",
+      "scenario": "process.env list-heavy",
+      "hz": 43443,
+      "mean_us": 23.08,
+      "p75_us": 23.29,
+      "p99_us": 24.46,
+      "rme": "0.05%"
+    },
+    {
+      "name": "celery generated invalid list-heavy",
+      "suite": "celery-generated",
+      "scenario": "invalid list-heavy",
+      "hz": 127422,
+      "mean_us": 7.89,
+      "p75_us": 7.87,
+      "p99_us": 8.67,
+      "rme": "0.04%"
+    },
+    {
+      "name": "celery runtime invalid list-heavy",
+      "suite": "celery-runtime",
+      "scenario": "invalid list-heavy",
+      "hz": 113258,
+      "mean_us": 8.86,
+      "p75_us": 8.87,
+      "p99_us": 9.75,
+      "rme": "0.03%"
+    },
+    {
+      "name": "zod invalid list-heavy",
+      "suite": "zod",
+      "scenario": "invalid list-heavy",
+      "hz": 41512,
+      "mean_us": 24.87,
+      "p75_us": 24.21,
+      "p99_us": 27.39,
+      "rme": "0.07%"
+    },
+    {
+      "name": "valibot invalid list-heavy",
+      "suite": "valibot",
+      "scenario": "invalid list-heavy",
+      "hz": 91714,
+      "mean_us": 11,
+      "p75_us": 10.96,
+      "p99_us": 11.83,
+      "rme": "0.05%"
+    },
+    {
+      "name": "celery generated json-heavy",
+      "suite": "celery-generated",
+      "scenario": "json-heavy",
+      "hz": 1577780,
+      "mean_us": 0.64,
+      "p75_us": 0.67,
+      "p99_us": 0.71,
+      "rme": "0.01%"
+    },
+    {
+      "name": "celery runtime json-heavy",
+      "suite": "celery-runtime",
+      "scenario": "json-heavy",
+      "hz": 1266823,
+      "mean_us": 0.82,
+      "p75_us": 0.79,
+      "p99_us": 0.87,
+      "rme": "0.01%"
+    },
+    {
+      "name": "zod json-heavy",
+      "suite": "zod",
+      "scenario": "json-heavy",
+      "hz": 874237,
+      "mean_us": 1.17,
+      "p75_us": 1.17,
+      "p99_us": 1.37,
+      "rme": "0.02%"
+    },
+    {
+      "name": "valibot json-heavy",
+      "suite": "valibot",
+      "scenario": "json-heavy",
+      "hz": 702415,
+      "mean_us": 1.43,
+      "p75_us": 1.42,
+      "p99_us": 1.5,
+      "rme": "0.01%"
+    },
+    {
+      "name": "celery generated process.env json-heavy",
+      "suite": "celery-generated",
+      "scenario": "process.env json-heavy",
+      "hz": 447852,
+      "mean_us": 2.24,
+      "p75_us": 2.25,
+      "p99_us": 2.33,
+      "rme": "0.01%"
+    },
+    {
+      "name": "celery runtime process.env json-heavy",
+      "suite": "celery-runtime",
+      "scenario": "process.env json-heavy",
+      "hz": 379872,
+      "mean_us": 2.66,
+      "p75_us": 2.67,
+      "p99_us": 2.75,
+      "rme": "0.02%"
+    },
+    {
+      "name": "zod process.env json-heavy",
+      "suite": "zod",
+      "scenario": "process.env json-heavy",
+      "hz": 230979,
+      "mean_us": 4.35,
+      "p75_us": 4.37,
+      "p99_us": 4.58,
+      "rme": "0.02%"
+    },
+    {
+      "name": "valibot process.env json-heavy",
+      "suite": "valibot",
+      "scenario": "process.env json-heavy",
+      "hz": 166277,
+      "mean_us": 6.04,
+      "p75_us": 6.04,
+      "p99_us": 6.25,
+      "rme": "0.03%"
+    },
+    {
+      "name": "celery generated invalid json-heavy",
+      "suite": "celery-generated",
+      "scenario": "invalid json-heavy",
+      "hz": 148704,
+      "mean_us": 6.76,
+      "p75_us": 6.75,
+      "p99_us": 7.04,
+      "rme": "0.03%"
+    },
+    {
+      "name": "celery runtime invalid json-heavy",
+      "suite": "celery-runtime",
+      "scenario": "invalid json-heavy",
+      "hz": 126705,
+      "mean_us": 7.91,
+      "p75_us": 7.96,
+      "p99_us": 8.25,
+      "rme": "0.03%"
+    },
+    {
+      "name": "zod invalid json-heavy",
+      "suite": "zod",
+      "scenario": "invalid json-heavy",
+      "hz": 101012,
+      "mean_us": 9.95,
+      "p75_us": 9.96,
+      "p99_us": 10.96,
+      "rme": "0.05%"
+    },
+    {
+      "name": "valibot invalid json-heavy",
+      "suite": "valibot",
+      "scenario": "invalid json-heavy",
+      "hz": 91639,
+      "mean_us": 11,
+      "p75_us": 10.96,
+      "p99_us": 12.88,
+      "rme": "0.06%"
+    }
+  ]
+}

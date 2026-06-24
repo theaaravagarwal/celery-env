@@ -1,0 +1,36 @@
+{
+  "schema": "celery-generated-requiredwhen-undefined-omit/1",
+  "generatedAt": "2026-06-22T22:21:54.827Z",
+  "rows": [
+    {
+      "name": "local optional requiredWhen 4",
+      "prev_raw": 1116,
+      "current_raw": 1016,
+      "raw_delta": -100,
+      "prev_gzip": 365,
+      "current_gzip": 342,
+      "gzip_delta": -23,
+      "removed_undefined": 4
+    },
+    {
+      "name": "split optional requiredWhen 16",
+      "prev_raw": 3827,
+      "current_raw": 3388,
+      "raw_delta": -439,
+      "prev_gzip": 595,
+      "current_gzip": 535,
+      "gzip_delta": -60,
+      "removed_undefined": 16
+    },
+    {
+      "name": "split optional requiredWhen 640",
+      "prev_raw": 147040,
+      "current_raw": 128588,
+      "raw_delta": -18452,
+      "prev_gzip": 11684,
+      "current_gzip": 9808,
+      "gzip_delta": -1876,
+      "removed_undefined": 640
+    }
+  ]
+}

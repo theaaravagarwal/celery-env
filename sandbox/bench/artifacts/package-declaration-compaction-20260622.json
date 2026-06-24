@@ -1,0 +1,24 @@
+{
+  "schema": "celery-package-declaration-size/1",
+  "rows": [
+    {
+      "file": "src/index.d.ts",
+      "old_raw_bytes": 2502,
+      "new_raw_bytes": 2476
+    },
+    {
+      "file": "src/compiler.d.ts",
+      "old_raw_bytes": 612,
+      "new_raw_bytes": 593
+    },
+    {
+      "file": "combined",
+      "old_raw_bytes": 3114,
+      "new_raw_bytes": 3069
+    }
+  ],
+  "pack": {
+    "old_packed_bytes": 12417,
+    "new_packed_bytes": 12410
+  }
+}

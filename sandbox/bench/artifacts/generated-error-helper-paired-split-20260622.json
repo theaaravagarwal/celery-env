@@ -1,0 +1,78 @@
+{
+  "schema": "celery-generated-error-helper-paired/1",
+  "generatedAt": "2026-06-22T23:37:11.845Z",
+  "rows": [
+    {
+      "count": 128,
+      "name": "old split 128",
+      "raw_bytes": 140805,
+      "gzip_bytes": 10493,
+      "hz": 23716,
+      "mean_us": 45.46,
+      "rme": "0.54%"
+    },
+    {
+      "count": 128,
+      "name": "new split 128",
+      "raw_bytes": 133168,
+      "gzip_bytes": 10425,
+      "hz": 19437,
+      "mean_us": 53.01,
+      "rme": "0.35%"
+    },
+    {
+      "count": 160,
+      "name": "old split 160",
+      "raw_bytes": 176521,
+      "gzip_bytes": 12937,
+      "hz": 14990,
+      "mean_us": 67.7,
+      "rme": "0.24%"
+    },
+    {
+      "count": 160,
+      "name": "new split 160",
+      "raw_bytes": 166964,
+      "gzip_bytes": 12832,
+      "hz": 21347,
+      "mean_us": 47.7,
+      "rme": "0.31%"
+    },
+    {
+      "count": 240,
+      "name": "old split 240",
+      "raw_bytes": 265811,
+      "gzip_bytes": 19136,
+      "hz": 10135,
+      "mean_us": 110.35,
+      "rme": "0.61%"
+    },
+    {
+      "count": 240,
+      "name": "new split 240",
+      "raw_bytes": 251454,
+      "gzip_bytes": 18970,
+      "hz": 14861,
+      "mean_us": 67.78,
+      "rme": "0.2%"
+    },
+    {
+      "count": 320,
+      "name": "old split 320",
+      "raw_bytes": 355732,
+      "gzip_bytes": 25313,
+      "hz": 8192,
+      "mean_us": 125.42,
+      "rme": "0.62%"
+    },
+    {
+      "count": 320,
+      "name": "new split 320",
+      "raw_bytes": 336575,
+      "gzip_bytes": 25105,
+      "hz": 9418,
+      "mean_us": 108.09,
+      "rme": "0.47%"
+    }
+  ]
+}

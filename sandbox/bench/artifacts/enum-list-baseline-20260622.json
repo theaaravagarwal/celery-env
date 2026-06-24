@@ -1,0 +1,231 @@
+{
+  "schema": "celery-enum-list/1",
+  "generatedAt": "2026-06-23T00:12:26.621Z",
+  "metadata": {
+    "runtimeName": "node",
+    "runtimeVersion": "v26.3.0",
+    "nodeCompatVersion": "v26.3.0",
+    "v8Version": "14.6.202.34-node.20",
+    "platform": "darwin",
+    "arch": "arm64",
+    "execPath": "/opt/homebrew/Cellar/node/26.3.0/bin/node",
+    "nodeVersion": "v26.3.0",
+    "cpuModel": "Apple M3",
+    "listCount": 200,
+    "shortListCount": 20,
+    "benchTimeMs": 180,
+    "benchWarmupMs": 90
+  },
+  "generatedSizes": {
+    "string3": {
+      "raw_bytes": 736,
+      "gzip_bytes": 404
+    },
+    "string8": {
+      "raw_bytes": 866,
+      "gzip_bytes": 433
+    },
+    "string32": {
+      "raw_bytes": 1538,
+      "gzip_bytes": 556
+    },
+    "mixed8": {
+      "raw_bytes": 1020,
+      "gzip_bytes": 463
+    }
+  },
+  "rows": [
+    {
+      "name": "generated enum list string3 20",
+      "hz": 808002,
+      "mean_us": 1.25,
+      "p75_us": 1.33,
+      "p99_us": 1.5,
+      "rme": "0.05%"
+    },
+    {
+      "name": "runtime enum list string3 20",
+      "hz": 586796,
+      "mean_us": 1.72,
+      "p75_us": 1.83,
+      "p99_us": 1.92,
+      "rme": "0.05%"
+    },
+    {
+      "name": "generated enum list string3 200",
+      "hz": 79682,
+      "mean_us": 12.97,
+      "p75_us": 12.75,
+      "p99_us": 22.38,
+      "rme": "0.16%"
+    },
+    {
+      "name": "runtime enum list string3 200",
+      "hz": 69353,
+      "mean_us": 14.5,
+      "p75_us": 14.29,
+      "p99_us": 17.08,
+      "rme": "0.1%"
+    },
+    {
+      "name": "generated enum list invalid-last string3 200",
+      "hz": 43519,
+      "mean_us": 23.19,
+      "p75_us": 24.42,
+      "p99_us": 25.29,
+      "rme": "0.19%"
+    },
+    {
+      "name": "runtime enum list invalid-last string3 200",
+      "hz": 51434,
+      "mean_us": 19.78,
+      "p75_us": 20.67,
+      "p99_us": 25.13,
+      "rme": "0.23%"
+    },
+    {
+      "name": "generated enum list string8 20",
+      "hz": 544560,
+      "mean_us": 1.86,
+      "p75_us": 2,
+      "p99_us": 2.08,
+      "rme": "0.06%"
+    },
+    {
+      "name": "runtime enum list string8 20",
+      "hz": 526747,
+      "mean_us": 1.93,
+      "p75_us": 2.17,
+      "p99_us": 2.29,
+      "rme": "0.08%"
+    },
+    {
+      "name": "generated enum list string8 200",
+      "hz": 63573,
+      "mean_us": 15.92,
+      "p75_us": 15.75,
+      "p99_us": 16.88,
+      "rme": "0.04%"
+    },
+    {
+      "name": "runtime enum list string8 200",
+      "hz": 58260,
+      "mean_us": 17.21,
+      "p75_us": 17.17,
+      "p99_us": 18.42,
+      "rme": "0.04%"
+    },
+    {
+      "name": "generated enum list invalid-last string8 200",
+      "hz": 42672,
+      "mean_us": 23.56,
+      "p75_us": 23.17,
+      "p99_us": 27.33,
+      "rme": "0.12%"
+    },
+    {
+      "name": "runtime enum list invalid-last string8 200",
+      "hz": 30360,
+      "mean_us": 33.24,
+      "p75_us": 36.21,
+      "p99_us": 37.41,
+      "rme": "0.22%"
+    },
+    {
+      "name": "generated enum list string32 20",
+      "hz": 292460,
+      "mean_us": 3.48,
+      "p75_us": 3.83,
+      "p99_us": 3.92,
+      "rme": "0.11%"
+    },
+    {
+      "name": "runtime enum list string32 20",
+      "hz": 638037,
+      "mean_us": 1.57,
+      "p75_us": 1.58,
+      "p99_us": 1.67,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated enum list string32 200",
+      "hz": 34584,
+      "mean_us": 29.39,
+      "p75_us": 31.42,
+      "p99_us": 32.54,
+      "rme": "0.18%"
+    },
+    {
+      "name": "runtime enum list string32 200",
+      "hz": 60084,
+      "mean_us": 16.82,
+      "p75_us": 16.67,
+      "p99_us": 18.42,
+      "rme": "0.1%"
+    },
+    {
+      "name": "generated enum list invalid-last string32 200",
+      "hz": 28919,
+      "mean_us": 34.83,
+      "p75_us": 34.25,
+      "p99_us": 39.54,
+      "rme": "0.17%"
+    },
+    {
+      "name": "runtime enum list invalid-last string32 200",
+      "hz": 42985,
+      "mean_us": 23.39,
+      "p75_us": 23.17,
+      "p99_us": 26.67,
+      "rme": "0.13%"
+    },
+    {
+      "name": "generated enum list mixed8 20",
+      "hz": 1062491,
+      "mean_us": 0.95,
+      "p75_us": 0.96,
+      "p99_us": 1.13,
+      "rme": "0.03%"
+    },
+    {
+      "name": "runtime enum list mixed8 20",
+      "hz": 811170,
+      "mean_us": 1.26,
+      "p75_us": 1.25,
+      "p99_us": 1.46,
+      "rme": "0.03%"
+    },
+    {
+      "name": "generated enum list mixed8 200",
+      "hz": 109117,
+      "mean_us": 9.37,
+      "p75_us": 10.08,
+      "p99_us": 10.58,
+      "rme": "0.12%"
+    },
+    {
+      "name": "runtime enum list mixed8 200",
+      "hz": 74774,
+      "mean_us": 13.42,
+      "p75_us": 13.42,
+      "p99_us": 14.17,
+      "rme": "0.04%"
+    },
+    {
+      "name": "generated enum list invalid-last mixed8 200",
+      "hz": 60005,
+      "mean_us": 16.96,
+      "p75_us": 18.79,
+      "p99_us": 19.67,
+      "rme": "0.23%"
+    },
+    {
+      "name": "runtime enum list invalid-last mixed8 200",
+      "hz": 53035,
+      "mean_us": 18.99,
+      "p75_us": 19.96,
+      "p99_us": 20.75,
+      "rme": "0.15%"
+    }
+  ]
+}

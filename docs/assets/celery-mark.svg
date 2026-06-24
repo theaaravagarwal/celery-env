@@ -1,0 +1,7 @@
+<svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
+  <title id="title">celery-env mark</title>
+  <desc id="desc">A simple placeholder mark for celery-env.</desc>
+  <rect width="128" height="128" rx="28" fill="#0F766E"/>
+  <path d="M71 19c-7 9-11 18-12 27 12-3 23-11 34-24 3 21-9 37-31 45 12 6 24 7 38 3-13 18-30 25-50 22-8-1-15-5-20-10 8-2 15-5 21-10-13-3-22-12-26-26 13 7 25 10 36 7-2-10 1-21 10-34Z" fill="#D9F99D"/>
+  <path d="M38 103c16-2 32-2 48 0" stroke="#ECFDF5" stroke-width="8" stroke-linecap="round"/>
+</svg>

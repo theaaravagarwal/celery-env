@@ -1,0 +1,18 @@
+{
+  "schema": "celery-enum-set-list-inline-vs-call/1",
+  "generatedAt": "2026-06-22T21:58:52.177Z",
+  "rows": [
+    {
+      "name": "set call runtime enum32 list 200",
+      "hz": 56706,
+      "mean_us": 0.018,
+      "rme": "0.04%"
+    },
+    {
+      "name": "set inline runtime enum32 list 200",
+      "hz": 56619,
+      "mean_us": 0.018,
+      "rme": "0.04%"
+    }
+  ]
+}

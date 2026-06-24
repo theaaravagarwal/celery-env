@@ -1,0 +1,60 @@
+{
+  "schema": "celery-cold-modes/1",
+  "runs": 5,
+  "rows": [
+    {
+      "name": "small readable",
+      "raw_bytes": 1545,
+      "gzip_bytes": 566,
+      "import_ms": 2.435,
+      "setup_ms": 0,
+      "first_validate_ms": 0.105,
+      "total_ms": 2.54
+    },
+    {
+      "name": "small minified",
+      "raw_bytes": 1397,
+      "gzip_bytes": 548,
+      "import_ms": 2.438,
+      "setup_ms": 0,
+      "first_validate_ms": 0.119,
+      "total_ms": 2.544
+    },
+    {
+      "name": "small edge minified",
+      "raw_bytes": 1383,
+      "gzip_bytes": 539,
+      "import_ms": 2.423,
+      "setup_ms": 0,
+      "first_validate_ms": 0.101,
+      "total_ms": 2.523
+    },
+    {
+      "name": "list readable",
+      "raw_bytes": 2680,
+      "gzip_bytes": 795,
+      "import_ms": 2.437,
+      "setup_ms": 0,
+      "first_validate_ms": 0.4,
+      "total_ms": 2.835
+    },
+    {
+      "name": "list minified",
+      "raw_bytes": 2250,
+      "gzip_bytes": 750,
+      "import_ms": 2.403,
+      "setup_ms": 0,
+      "first_validate_ms": 0.398,
+      "total_ms": 2.803
+    },
+    {
+      "name": "list runtime",
+      "raw_bytes": 0,
+      "gzip_bytes": 0,
+      "import_ms": 2.918,
+      "setup_ms": 0.215,
+      "first_validate_ms": 0.772,
+      "total_ms": 3.905
+    }
+  ]
+}

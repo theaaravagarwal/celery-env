@@ -1,0 +1,18 @@
+{
+  "schema": "celery-enum-set-list-inline-ab/1",
+  "generatedAt": "2026-06-22T21:58:30.875Z",
+  "rows": [
+    {
+      "name": "old runtime enum32 list 200",
+      "hz": 42243,
+      "mean_us": 0.024,
+      "rme": "0.28%"
+    },
+    {
+      "name": "set inline runtime enum32 list 200",
+      "hz": 55536,
+      "mean_us": 0.018,
+      "rme": "0.05%"
+    }
+  ]
+}

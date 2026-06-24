@@ -1,0 +1,67 @@
+{
+  "name": "celery-env",
+  "version": "0.1.0",
+  "description": "Zero-dependency environment validation with generated standalone validators.",
+  "type": "module",
+  "types": "./src/index.d.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "import": "./src/index.js",
+      "default": "./src/index.js"
+    },
+    "./compiler": {
+      "types": "./src/compiler.d.ts",
+      "import": "./src/compiler.js",
+      "default": "./src/compiler.js"
+    }
+  },
+  "bin": {
+    "celery-env": "./src/cli.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/theaaravagarwal/celery-env.git"
+  },
+  "bugs": {
+    "url": "https://github.com/theaaravagarwal/celery-env/issues"
+  },
+  "homepage": "https://github.com/theaaravagarwal/celery-env#readme",
+  "files": [
+    "src/index.js",
+    "src/compiler.js",
+    "src/index.d.ts",
+    "src/compiler.d.ts",
+    "src/cli.js",
+    "SECURITY.md",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "ci": "npm run security:scan && npm run security:audit:bench && npm --prefix project run install:variants && npm --prefix project run compare:env-tools:verify",
+    "test": "node --test",
+    "size": "node scripts/size.mjs",
+    "security:scan": "node scripts/security-scan.mjs && npm run prepublishOnly",
+    "security:audit:bench": "npm --prefix sandbox/bench audit",
+    "validate:publish": "node scripts/validate-publish.mjs",
+    "prepublishOnly": "npm test && npm run size && npm run validate:publish",
+    "demo:generate": "node src/cli.js --schema examples/env.schema.mjs --out sandbox/generated/env.mjs --types sandbox/generated/env.d.ts"
+  },
+  "keywords": [
+    "env",
+    "validation",
+    "environment",
+    "config",
+    "schema",
+    "typescript",
+    "serverless",
+    "zod",
+    "dotenv",
+    "cli"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=18"
+  }
+}

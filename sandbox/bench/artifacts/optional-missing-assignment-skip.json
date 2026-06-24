@@ -1,0 +1,47 @@
+{
+  "schema": "celery-optional-missing-assignment-skip/1",
+  "generatedAt": "2026-06-22T21:36:31.195Z",
+  "baseline": "checkpoints/celery-20260622-143023.tgz",
+  "rows": [
+    {
+      "fields": 5,
+      "mode": "default/object-threshold",
+      "previous_raw": 695,
+      "current_raw": 580,
+      "raw_delta": -115,
+      "previous_gzip": 279,
+      "current_gzip": 257,
+      "gzip_delta": -22
+    },
+    {
+      "fields": 80,
+      "mode": "default/object-threshold",
+      "previous_raw": 8915,
+      "current_raw": 7005,
+      "raw_delta": -1910,
+      "previous_gzip": 1363,
+      "current_gzip": 1138,
+      "gzip_delta": -225
+    },
+    {
+      "fields": 160,
+      "mode": "default/object-threshold",
+      "previous_raw": 16334,
+      "current_raw": 16334,
+      "raw_delta": 0,
+      "previous_gzip": 1510,
+      "current_gzip": 1510,
+      "gzip_delta": 0
+    },
+    {
+      "fields": 520,
+      "mode": "split",
+      "previous_raw": 61167,
+      "current_raw": 47237,
+      "raw_delta": -13930,
+      "previous_gzip": 7501,
+      "current_gzip": 5882,
+      "gzip_delta": -1619
+    }
+  ]
+}

@@ -1,0 +1,349 @@
+# Optimization Goals
+
+This project optimizes for startup validation in serverless and microservice environments:
+
+- zero root dependencies
+- runtime entry still small, with speed prioritized over the original 2KB gzip target
+- generated validators faster than generic schema validators
+- no raw environment values in error messages
+- benchmark claims backed by local, reproducible numbers
+
+## Completed
+
+- Replaced string/Symbol runtime tags with compact numeric validator tags.
+- Removed runtime `Object.freeze` from parsed output to avoid hot-path work.
+- Removed per-field `try/catch` and per-field `Error` allocation from `parseEnv`.
+- Changed generated validators to allocate the error array lazily only on invalid paths.
+- Added generated `list()` item validation instead of splitting without validating items.
+- Fixed generated URL validation so protocol checks do not reuse stale URL state.
+- Added bounded-int codegen specialization using a 32-bit integer check when configured bounds make it safe.
+- Removed unused generated `x` local when a schema has no lists.
+- Added compile-time default validation for generated validator and type output.
+- Added `--no-process-default` / `processDefault: false` for edge-style generated validators.
+- Added opt-in strict numeric parsing for `int()` and `num()` to reject hex, exponent, and whitespace numeric strings.
+- Added JSON benchmark artifact output with runtime metadata.
+- Added repeated-run benchmark aggregation through `sandbox/bench/repeat.mjs`.
+- Added opt-in minified generated output through compiler options and CLI flags.
+- Expanded benchmarks to include small, medium, large, and invalid-small cases across Zod, Valibot, envalid, and envsafe.
+- Added publish validation for zero dependencies, exact package contents, and size ceilings.
+- Cached `defineEnv()` schema keys on extensible schema objects so repeated runtime validation avoids rebuilding `Object.keys(schema)`.
+- Changed runtime URL protocol validation to compare `protocol:` directly without slicing.
+- Changed generated URL validation to assign in the URL success branch without error-count bookkeeping.
+- Added compact string-enum generated code for all-string `oneOf()` values.
+- Fixed minified generated output so it no longer rewrites string literals such as `"out"` and `"errors"`.
+- Added a no-op hot benchmark baseline, an empty-process cold baseline, and V8/CPU metadata in JSON benchmark artifacts.
+- Removed empty root dependency maps from the published package; zero-dependency policy is enforced by `validate:publish`.
+- Added strict numeric benchmark rows for generated/runtime valid and invalid paths.
+- Added compiler-time nested-list rejection so `generateValidator()` and `generateTypes()` do not emit broken nested-list output.
+- Changed numeric parsing/codegen from `Number(value)` to unary `+value` for equivalent env-string coercion with smaller generated output.
+- Removed the compiler's runtime import by inlining its schema-shape check, so `celery-env/compiler` no longer evaluates the runtime entry.
+- Lazy-loaded the compiler in the CLI after argument validation and schema loading.
+- Added short-list rows to the primitive-list benchmark to distinguish fixed overhead from per-item cost.
+- Trimmed published README benchmark prose and compacted CLI option construction to reduce packed size.
+- Added a WeakMap key cache for pre-frozen schemas so their supported path avoids repeated `Object.keys(schema)` work.
+- Shortened generated lazy error allocation to `errors ??= []`, reducing emitted validator size on invalid branches.
+- Shortened generated list error-count checks with optional chaining/nullish coalescing.
+- Added `NATIVE_STRATEGY.md` with the low-level language ranking and acceptance bar for any Rust/C++/Zig/WASM experiment.
+- Changed generated non-empty-separator lists from `split()` to an `indexOf()` loop, avoiding the intermediate parts array while preserving current `slice().trim()` item semantics.
+- Added generated empty-separator list coverage so the list-loop optimization cannot hang on `separator: ""`.
+- Hoisted runtime strict-number regular expressions so strict runtime parsing reuses compiled regex objects.
+- Compacted runtime internals after the regex hoist, reducing the runtime entry below its previous gzip size.
+- Removed generated header text and tightened generated boolean equality formatting to reduce generated output and compiler gzip size.
+- Inlined compiler default-validation/type helpers to recover compiler gzip headroom without changing emitted validator semantics.
+- Added sandbox `scan` / `sandbox/bench/scan-experiments.mjs` to quantify strict-list scanner upside without touching published code.
+- Added sandbox `enum` / `sandbox/bench/enum.mjs` to isolate enum-heavy generated/runtime behavior.
+- Added sandbox `enum-list` / `sandbox/bench/enum-list.mjs` to isolate string and mixed enum lists, including invalid-last rows and generated validator sizes.
+- Extended sandbox `list` to compare generated and runtime list validation against a small pool of env objects.
+- Added sandbox `cold-first` / `sandbox/bench/cold-first-validate.mjs` to measure import, schema setup, and first validation separately in fresh subprocesses.
+- Added sandbox `cold-modes` / `sandbox/bench/cold-modes.mjs` to compare readable/minified/edge generated startup and list-heavy runtime startup.
+- Added sandbox `generated-size` / `sandbox/bench/generated-size.mjs` to track generated validator raw/gzip size and cold-first scaling across schema sizes.
+- Added sandbox `check` / `sandbox/bench/compare.mjs` to fail local celery benchmark regressions against a checked-in baseline.
+- Added sandbox `runtime-list-scan` / `sandbox/bench/runtime-list-scan.mjs` to A/B test runtime `split()` versus `indexOf()` list parsing with semantic parity checks.
+- Added sandbox `check:extended` / `sandbox/bench/verify-extra.mjs` to gate list-variant and cold-mode invariants in addition to the hot benchmark matrix.
+- Moved sandbox-only benchmark scripts out of the published root manifest into `sandbox/bench/package.json`, reducing packed tarball size.
+- Compacted declaration formatting and tightened `oneOf()` declarations so empty tuple literals match the runtime rejection.
+- Removed dead generated-header plumbing and the no-op CLI `--no-header` flag.
+- Removed redundant `main` and `./package.json` exports from the Node 18 ESM package manifest.
+- Trimmed published package keywords to the core discoverability terms, reducing packed metadata bytes without changing runtime behavior.
+- Made publish validation use the platform temp directory instead of a hardcoded macOS cache path.
+- Removed per-spec `Object.freeze()` while keeping `defineEnv()` schema freezing, reducing rule-construction work without invalidating cached schema keys.
+- Cached stringified runtime enum candidates at `oneOf()` construction so mixed enum validation avoids repeated `String(...)` coercion.
+- Made runtime list item labels lazy so valid list items no longer allocate indexed key strings before validation.
+- Shortened runtime internals after lazy list labels, restoring runtime gzip headroom while preserving the public `EnvError.errors` field.
+- Changed runtime `readList()` from `split()` to an `indexOf()` scanner after sandbox A/B evidence showed exact semantics and faster list-heavy `parseEnv()` throughput.
+- Moved runtime schema-entry validation from every `readValue()` call into `defineEnv()` for cached schemas, removing a hot-path spec check while preserving direct `parseEnv()` bad-schema errors on the uncached path.
+- Added sandbox `list-variants` / `sandbox/bench/list-variants.mjs` to cover string lists, multi-character separators, `trim: false`, and empty separators.
+- Mirrored the generated validator's string `min`/`startsWith` implication in runtime `readString()`, skipping a redundant minimum-length check when a successful prefix check already proves it.
+- Optimized all-string `oneOf()` construction by using `slice()` instead of `map(String)`, avoiding redundant string coercion while preserving a separate string snapshot.
+- Added sandbox `string-cache` / `sandbox/bench/string-cache.mjs` to test repeated strings versus a naive interning cache.
+- Ran string-cache evidence under local Node v20.16.0 and v26.3.0; both showed explicit interning slower than fresh strings, so cache-free repeated-string behavior is documentation-only.
+- Aligned the runtime/compiler gzip gates with the speed-prioritized direction after measured scanner wins.
+- Shortened generated validator internals from readable helper locals to compact locals, reducing generated raw/gzip bytes and compiler gzip.
+- Folded compiler default validation into the schema assertion helper and removed the generated URL wrapper block.
+- Reused validated compiler schema entries for validator/type generation, avoiding repeated `Object.keys()` / `Object.entries()` work.
+- Changed generated validator throws from `throw new Error(...)` to `throw Error(...)`, reducing emitted validator size.
+- Changed generated list success checks to use `errors?.length` as the sentinel directly, reducing emitted list code.
+- Corrected generated int32 integer checks so they only apply when both bounds are explicit safe int32 values, preserving runtime/compiler parity for unbounded integers.
+- Added allocation-light generated scanning for bounded strict-int list items, avoiding per-item substring allocation and regex validation for that exact semantics-safe shape.
+- Added allocation-light runtime scanning for bounded strict-int list items, closing most of the runtime/generated strict-list gap.
+- Added opt-in generated `failFast` mode and CLI `--fail-fast` for fastest first-error invalid-path validation.
+- Relaxed runtime, compiler, and packed-tarball size gates after prioritizing speed-focused code paths.
+- Added env-specific options: `devDefault`, `testDefault`, `requiredWhen`, and metadata fields `desc`, `example`, `docs`.
+- Compacted generated missing-value branches for common no-default/no-predicate rules so the advanced default and `requiredWhen` support does not slow normal generated schemas.
+- Added compiler-side `.env.example` generation through `generateExample()` and CLI `--example`.
+- Added explicit CLI `generate` and `init --target node|next|vite` workflows while preserving the legacy generation command.
+- Added sandbox `fail-fast` / `sandbox/bench/fail-fast.mjs` to compare aggregate-error and first-error generated invalid paths.
+- Added sandbox `real-schemas` / `sandbox/bench/real-schemas.mjs` with API, web, worker, list-heavy, and JSON-heavy schema shapes.
+- Added sandbox `report` / `sandbox/bench/report.mjs` to produce artifact-backed Markdown and JSON benchmark reports.
+- Expanded shipped-size comparisons to include Zod Mini, envalid, and T3 env core.
+- Added sandbox `check:release` to run benchmark smoke, shipped-size, fail-fast, real-schema, and report checks together.
+- Added thresholded large-schema generated helper splitting that writes into a single slot array and preserves one final public object-literal return.
+- Preallocated the production split-validator slot array to the schema length after a paired 320/640-field `split-v2` run improved the split rows while compiler byte recovery kept source size under budget.
+- Added hot benchmark rows for real `process.env` access so plain-object and process environment property access are tracked separately.
+- Changed runtime schema metadata caching from keys-only to flat key/rule entries, removing a schema property lookup per parsed field for `defineEnv()` schemas.
+- Added direct runtime string-list validation, preserving missing/constraint error precedence while avoiding generic per-item dispatch.
+- Added direct runtime boolean-list validation and shared scalar/list boolean parsing.
+- Added direct runtime enum-list validation for non-empty separators, preserving indexed missing/enum errors while avoiding generic per-item dispatch.
+- Added native `split("")` runtime fast path for unconstrained `list(str(), { separator: "", trim: false })`, preserving UTF-16 code-unit output while bypassing per-item dispatch.
+- Added the same native `split("")` fast path to generated validators for unconstrained empty-separator string lists.
+- Added sandbox `split-v2` / `sandbox/bench/split-v2.mjs` to compare the production slot-array split path against unsplit generated validators.
+- Added direct-object generated output for 128-384 field validators after `generated-shapes` showed this avoids the medium-schema local-register/return-literal slowdown.
+- Extended direct-object generated output to the default 512-entry split boundary after the 512-field object-assignment row improved throughput and generated gzip versus local registers and array slots.
+- Added sandbox `generated-shapes` / `sandbox/bench/generated-shapes.mjs` to compare generated local registers, array slots, and direct object assignment.
+- Factored runtime schema-entry validation so `defineEnv()` and raw-schema `parseEnv()` share one entry-packing path, preserving the cached hot loop while reducing runtime gzip.
+- Simplified string-list codegen bookkeeping by replacing repeated emitted-line scans with a local check flag, reducing compiler gzip without changing generated output semantics.
+- Changed generated boolean validation from repeated length-switch cases to compact equality chains after `bool-shapes` showed the chain was smaller and faster for bool-heavy generated schemas.
+- Added sandbox `bool-shapes` / `sandbox/bench/bool-shapes.mjs` to compare generated boolean output forms.
+- Expanded `sandbox/bench/real-schemas.mjs` with real `process.env` rows for each API, web, worker, list-heavy, and JSON-heavy scenario, so real-schema claims track both frozen plain-object and process environment access.
+- Added focused `sandbox/bench/strict-numeric.mjs` rows for bounded strict int and strict `num()` decimal shapes, including process.env and invalid-path rows.
+- Added `list-variants` rows for generic bounded strict-int list items with defaults so the non-fast-list generated scanner branch stays tracked.
+- Promoted generated bounded strict-int scalar scanning to the default for explicit int32-safe bounds after the focused strict-numeric benchmark removed the default/speed gap without increasing root compiler gzip.
+- Added speed-mode generated strict `num()` scanning, validating the strict-number grammar with `charCodeAt()` before unary numeric conversion while keeping default output on the compact regex path.
+- Promoted generated constrained string-list segment scanning to the default after `list.mjs` showed default and speed string-list rows tied while compiler gzip dropped.
+- Reused the generated bounded strict-int scanner in generic list-item branches, making a defaulted strict-int list microbench about 2.7x faster than the previous regex output at the cost of larger generated output for that rare shape.
+- Extended the generated bounded strict-int list scanner to static item defaults and optionals, restoring generated defaulted strict-int list throughput ahead of runtime without changing env-dependent default semantics.
+- Extended the generated native `split("")` path to unconstrained empty-separator string lists with item missing handlers, matching the runtime fast-path semantics while still reducing compiler gzip versus the previous checkpoint.
+- Shortened compiler-internal fast-list kind tags to numeric sentinels, reducing compiler gzip without changing emitted validator output.
+- Omitted redundant generated `undefined` assignments for optional missing local-register and split-array targets, reducing optional-heavy generated output while preserving object-mode own-property semantics.
+- Omitted redundant generated `undefined` assignments for optional `requiredWhen` local-register and split-array targets, reducing predicate-heavy generated output while preserving object-mode own-property semantics.
+- Cached URL protocol strings with a trailing colon in `url({ protocols })`, improving short URL-heavy real-schema plain-object runtime rows while keeping runtime gzip under budget.
+- Simplified runtime URL protocol matching to use the cached `protocol:` array with `includes()`, reducing runtime gzip without changing URL semantics.
+- Reused cached URL protocol strings in compiler default validation and generated URL checks, reducing compiler gzip without changing emitted validator semantics.
+- Simplified compiler optimize-option validation and removed unused fast-list kind context plumbing, reducing compiler package size without changing generated output.
+- Fixed generated generic list-item missing/default handling for item defaults and optionals, preserving the strict-int scanner win while matching runtime behavior for empty defaulted slots.
+- Reused the main generated present-value emitter for generic list items, removing a duplicated switch and recovering most of the compiler gzip cost of the list-item default parity fix.
+- Extended runtime bounded strict-int list scanning to static item defaults and optionals, bringing defaulted strict-int list runtime throughput to parity-or-better with generated output.
+- Extended runtime boolean-list scanning to static item defaults and optionals, closing most of the defaulted bool-list runtime/generated gap while keeping runtime gzip under budget.
+- Extended runtime non-empty-separator enum-list scanning to static item defaults and optionals, closing most of the defaulted enum-list runtime/generated gap while preserving original enum value returns.
+- Extended runtime string-list scanning to static item defaults and optionals, closing most of the defaulted string-list runtime/generated gap while preserving string constraint precedence.
+- Shortened compiler-internal context fields and inlined small compiler-only locals, reducing compiler gzip while preserving generated output semantics.
+- Inlined compiler-only register name formatting, reused `literal()` in declarations, and simplified URL default validation, reducing compiler gzip without changing generated validator output.
+- Collapsed runtime number error branches and lazy schema-entry fallback into smaller equivalent forms, reducing runtime gzip without changing parse semantics.
+- Replaced post-coercion `Number.isFinite()` checks with `isFinite()` in runtime and generated validators, preserving numeric semantics after unary `+` while reducing runtime and emitted validator bytes.
+- Cached `NODE_ENV` once in the runtime missing-value branch and removed the defensive `{}` fallback for private `requiredWhen` calls, trimming runtime gzip while preserving the public `parseEnv()` call path.
+- Replaced runtime strict scalar numeric regex checks with one shared character scanner for strict `int()` and strict `num()`, preserving the strict numeric grammar while improving strict numeric benchmark rows.
+- Recovered runtime bytes after the shared scanner by trimming spec construction, schema-entry iteration, `isCelerySpec()`, strict scanner fallthrough, and a redundant integer-check grouping.
+- Recovered additional runtime bytes by trimming constructor default parameters, `oneOf()` guard formatting, schema-entry iteration, top-level error-key sentinel handling, parser locals, object literals, simple list-dispatch branches, cache branching, and boolean matching.
+- Trimmed generated speed-mode strict `num()` scanner output by using compact `else if` control flow while preserving the strict-number grammar.
+- Omitted quotes around valid identifier keys in generated final return object literals, reducing emitted validator raw/gzip size while preserving quoted keys where required.
+- Omitted quotes around valid identifier keys in generated declaration output, reducing declaration raw size while preserving quoted keys where required.
+- Added sandbox `process-env-shapes` / `sandbox/bench/process-env-shapes.mjs` to compare generated access shapes against real `process.env` property access.
+- Relaxed the runtime gzip gate from 2,800 to 2,900 bytes after direct runtime enum-list validation improved `runtime list enum 200` from the prior ~89.7k-89.9k ops/sec range to 104.0k ops/sec and native empty-string splitting improved `runtime str empty sep 200` to 3.97M ops/sec.
+- Rejected `Object.create(null)` as a default after a Node v26 create+assign+read microbench showed it was much slower for this object shape.
+- Rejected length-gated boolean comparisons as a default after a Node v26 microbench showed no win over the current equality chain.
+- Rejected runtime boolean equality chains as the default after the focused list benchmark dropped `runtime list bool 200` from the accepted 137k-143k ops/sec range to 128.6k ops/sec, despite smaller runtime gzip.
+- Rejected object-return large-schema function splitting after targeted benchmark showed the per-chunk-object design was not reliable enough.
+- Rejected object-target large-schema splitting after helpers writing directly into one output object shrank generated bytes but regressed the 320-count split-v2 row to 3,461 ops/sec versus 6,220 unsplit.
+- Rejected split-helper final object assignment after `split-final-assign-20260622.json` showed it slower and larger than the current final object literal (`1280` fields: 3,456 vs 9,876 ops/sec, 25,510 vs 25,355 generated gzip bytes).
+- Rejected object-literal return construction after local-register/object-literal prototype improved a small sample but severely regressed a 160-key sample.
+- Rejected non-strict allocation-free `list(int())` codegen after it proved fast but changed accepted input semantics and pushed compiler gzip over budget.
+- Rejected generated boolean list scanning after it was slower than the existing generated `indexOf()`/`slice()` path.
+- Rejected generated enum list segment scanning after focused list benchmarks showed it slower than the existing generated `indexOf()`/`slice()` path.
+- Rejected inlining the accepted string-enum `Set` check into `readEnums()` because `enum-string-set-list-inline-vs-call-20260622.json` tied the existing `readOneOf()` call path (56,619 vs 56,706 ops/sec) while adding runtime gzip bytes.
+- Rejected skipping the fallback linear scan on `Set`-backed enum misses because `enum-set-invalid-skip-20260622.json` only improved enum32 invalid scalar/list rows by about 2% while costing 9 runtime gzip bytes and slightly lowering the valid scalar row.
+- Rejected raising the all-string enum `Set` threshold to more than seven values because `enum-set-threshold7-20260622.json` showed the 7-value scalar enum row dropping from 20,724,381 to 15,360,060 ops/sec versus the current more-than-four threshold.
+- Rejected generated top-level `Set` for large all-string scalar enums because `generated-enum-set32-20260622.json` showed valid string32 slower than the equality chain (24,633,070 vs 25,292,164 ops/sec) and generated gzip larger (423 vs 415 bytes), despite smaller raw output.
+- Rejected native `split(separator)` for non-empty unconstrained generated string lists because the focused row showed generated `str split comma 200` at 149,118 ops/sec versus runtime at 195,669, despite smaller emitted code.
+- Rejected speed-mode scalar enum redesign for now because the large-enum win is not worth the compiler gzip and emitted-size cost. `enum-speed-length-guard-proto-20260622.json` improved the string32 speed row, but the compiler exceeded its gzip gate and the generated speed validator grew from 415 to 438 gzip bytes.
+- Rejected general runtime large-enum maps for mixed enums, but accepted a scoped all-string `Set` path after runtime byte recovery made it fit under the gzip gate.
+- Rejected inlining runtime enum-list matching because it pushed runtime gzip to 2,914 bytes and regressed `runtime list enum 200` to 96,721 ops/sec in the focused list run.
+- Rejected generated process.env access-shape changes after `process-env-shapes` showed direct `process.env`, omitted default, and destructuring all tied around 541k ops/sec while plain objects were above 8M ops/sec.
+- Rejected changing the generated split chunk size from 32 entries after boundary runs showed 64-entry chunks were not stable enough across 160/240/320-group large schemas to justify a production heuristic.
+- Rejected broad split preallocation as a heuristic change in `split-prealloc-20260622.json` because the 1,280-field row regressed, but later accepted the production split slot-array preallocation after `split-array-prealloc.candidate.json` improved the paired 320- and 640-field split rows and source byte recovery paid for the compiler cost.
+- Rejected factoring repeated compiler line-joining logic into a helper because raw bytes dropped but compiler gzip grew from 5,381 to 5,398 bytes.
+- Rejected standalone runtime strict `num()`-only hand scanning because that scanner missed the runtime gzip gate; the compact prototype reached 2,932 gzip bytes versus the 2,900-byte limit. A later shared strict int/num scanner fit under the gate and was accepted.
+- Rejected direct runtime strict `num()` list segment scanning for now because the smallest clean shape was estimated around 2,981 runtime gzip bytes, about 81 bytes over the current gate, despite likely improving 200-item strict-num list rows.
+- Rejected a narrower runtime strict `num()` list scanner after runtime byte recovery because it still pushed runtime gzip to 2,944 bytes, though the focused list row improved runtime strict num 200 to about 53.6k ops/sec.
+- Rejected a generated aggregate-error helper for split validators because it shrank large generated output but regressed split invalid-many paths by adding a function call per collected error.
+- Rejected a generated `list(bool())` segment scanner because it spent about 120 compiler gzip bytes and the focused list rows were noise-level versus the existing generic generated path.
+- Rejected extending default direct-object generated output to 640 entries because the generated-size artifact improved large output size, but the hot large benchmark prototype fell to 18,293 ops/sec versus the accepted split path's 23,638 ops/sec check row.
+- Rejected a generated string-enum list segment scanner because it pushed compiler gzip to 5,477 bytes and regressed generated enum-list throughput to about 102k ops/sec at 200 items versus the accepted ~119k-120k range.
+- Rejected switching large generated all-string enums from equality chains to `switch` because compiler gzip rose to 5,430 bytes and generated string32 enum-list throughput stayed worse than the accepted equality-chain output.
+- Rejected moving object-mode threshold bookkeeping into `emitterContext()` because it reduced raw compiler bytes but increased compiler gzip from 5,387 to 5,398 bytes without changing generated output.
+- Rejected compact invalid-path `return void e.push(...)` because it passed tests but worsened runtime gzip from 2,845 to 2,848 bytes.
+- Rejected removing spaces from cold-path schema guard operators because it passed tests but worsened runtime gzip from 2,839 to 2,846 bytes.
+- Rejected promoting generated strict-number hand scanning to the default; keep default strict `num()` on the compact regex path and limit the scanner to `optimize: "speed"`.
+- Rejected generated strict-regex hoisting because it barely improved strict-list throughput and exceeded the compiler gzip budget.
+- Rejected generated speed-mode strict-number list segment scanning after `strict-num-list-segment-prototype-20260622.json` tied or slightly lost to the current speed-mode slice/trim path (`num list 200`: 69,461 vs 69,674 ops/sec) while increasing generated gzip from 562 to 686 bytes.
+- Rejected runtime schema-entry caching because it slowed runtime list rows despite mixed-suite noise.
+- Rejected production string cache/interning because the sandbox `Map` canonicalizer was slower than fresh strings and would retain environment values, including secrets.
+- Rejected splitting runtime `readList()` into separate empty/non-empty separator loops because it added runtime bytes without a consistent throughput win.
+- Rejected further cold-path codegen changes for now because generated-size measurements show modest import growth and previous large-schema codegen experiments regressed hot paths.
+- Rejected skipping string `min <= 1` checks because it worsened runtime/compiler gzip size and did not improve the short real-schema or list benchmark rows.
+- Rejected runtime bool-list char-range scanning because the helper pushed runtime gzip well over budget.
+- Rejected runtime scalar int32 checks because they added gzip and did not improve the focused strict-numeric or hot runtime smoke rows.
+- Rejected using the cached URL protocol array as the loop source because it reduced raw bytes but increased runtime gzip and did not improve URL-heavy short rows.
+- Rejected factoring `options.protocols` into a local inside `url()` because it saved one raw byte but increased runtime gzip.
+- Rejected branching `readUrl()` to skip `.protocol` for plain `url()` because `runtime-url-plain-branch-20260622.json` improved plain valid URL parsing only modestly (2,917,360 vs 2,821,870 ops/sec), regressed protocol-filtered URL parsing (2,727,058 vs 2,836,707 ops/sec), and cost 12 runtime gzip bytes.
+- Rejected generated strict-int sign initialization cleanup because it saved bytes but adds work to the common unsigned valid path and did not improve focused list rows.
+- Rejected runtime `trim: false` string-list segment validation before slicing because `list-variants-runtime-string-trimfalse-proto-20260622.json` improved the 200-item target row only from 199,367 to 210,342 ops/sec while pushing runtime gzip to 2,992 bytes and needing extra invalid-path fallthrough handling.
+- Rejected generated speed-mode strict-number length caching because `strict-num-speed-length-cache-proto-20260622.json` produced mixed hot rows and made a representative speed-mode strict-number validator 10 raw / 3 gzip bytes larger.
+- Rejected simple scalar spec-constructor and `oneOf()` no-options fast paths because `spec-constructor-fastpath-20260622.json` showed only a 2.35% scalar constructor gain and a 0.24% `oneOf()` gain, not worth spending runtime gzip.
+- Reused generated segment-list header emission, removed split-chunk bookkeeping, and trimmed compiler-only locals, reducing `src/compiler.js` by 772 raw bytes / 53 gzip bytes while representative generated validator output stayed byte-identical to the previous checkpoint.
+- Trimmed runtime scalar bool dispatch and list dispatch bookkeeping, reducing `src/index.js` by 329 raw bytes / 44 gzip bytes without changing parser semantics.
+- Reinvested most of the recovered runtime gzip budget in a scoped all-string enum `Set` for enums with more than four values, improving the string32 scalar enum A/B row from 6,970,701 to 19,144,315 ops/sec while keeping tiny and mixed enums on the linear path.
+- Added a dedicated primitive-list benchmark in `sandbox/bench/list.mjs`.
+- Added URL-protocol list rows to `sandbox/bench/list.mjs`; generated and runtime are effectively tied because `new URL()` dominates the workload.
+- Changed generated URL protocol checks to a `switch` over `new URL(value).protocol`, preserving URL/protocol error semantics while improving URL-list protocol rows and shrinking multi-protocol generated output.
+- Trimmed compiler-only example/default selection, fail-fast error emission, split-threshold constants, comment emission, and repeated string-min implication checks without changing generated validator semantics.
+- Added a slice-based runtime strict `num()` list fast path that reuses the scalar strict scanner, preserving defaults, optionals, aggregate errors, and `trim: false` while bringing the 200-item strict-number list row close to generated speed mode.
+- Rejected threading the generated fast-list kind through `emitFastList()` because it passed tests but worsened compiler gzip from 5,387 to 5,396 bytes.
+- Rejected reusing the strict-number list scanner segment string variable for the coerced number because it reduced raw bytes but worsened runtime gzip from 2,899 to 2,906 bytes.
+- Rejected the first generated large string-enum list `Set` output because it improved 32-value list throughput but pushed compiler gzip to 5,543-5,563 bytes over the 5,500-byte gate and grew the representative string32 generated validator to 713 gzip bytes.
+- Recovered compiler bytes by replacing the parameterized whitespace-expression emitter with a single compiler constant, compacting cold list-default helper callbacks, and shortening enum-emitter internals, reducing compiler gzip from 5,387 to 5,361 bytes without changing generated validator semantics.
+- Rejected factoring list-temp detection into a range helper because it reduced raw compiler bytes but worsened compiler gzip from 5,361 to 5,370 bytes.
+- Rejected compacting the example-value field loop because it passed tests but worsened compiler gzip from 5,361 to 5,365 bytes.
+- Grouped runtime and compiler numeric tag constants, reducing runtime gzip from 2,899 to 2,898 bytes and compiler gzip from 5,361 to 5,359 bytes without changing semantics.
+- Rejected a shared runtime missing/default helper for list scanners because it reduced raw bytes but worsened runtime gzip from 2,899 to 2,911 bytes.
+- Rejected compacting the runtime schema-entry fallback operators because it reduced raw bytes but worsened runtime gzip from 2,899 to 2,901 bytes.
+- Rejected compacting the compiler emitted whitespace expression because it reduced raw bytes and emitted bytes but worsened compiler gzip from 5,361 to 5,362 bytes.
+- Rejected replacing the compiler `literal()` wrapper with a `JSON.stringify` alias because it passed tests but worsened compiler gzip from 5,361 to 5,366 bytes.
+- Accepted compact generated large string-enum list `Set` output after compiler byte recovery, using a cheaper prefix-line design and combined slice/membership check to keep compiler gzip at 5,496 bytes while improving generated string32 enum-list 200 from 34,584 to 74,431 ops/sec.
+- Rejected peeling the benchmark-hot last enum literal before generated enum-list `Set.has()` because the source-size prototype pushed compiler gzip to 5,532 bytes despite likely hot-row upside.
+- Rejected lowering the generated enum-list `Set` threshold from more than 15 to more than 8 all-string values because string12 valid regressed from 123,982 to 73,644 ops/sec and invalid-last regressed from 68,118 to 49,463, while generated 9-15 value enum-list validators would grow by about 150 gzip bytes each.
+- Accepted a generated string-list item-default min-check trim after it improved the 200-item defaulted string-list row from 168,264 to 173,252 ops/sec and shrank the focused generated validator from 762 raw / 411 gzip bytes to 676 raw / 377 gzip bytes while keeping compiler gzip at the 5,500-byte gate.
+- Rejected the broader generated string segment-default prototype because it exceeded the compiler gzip gate and left the 200-item defaulted string-list row flat at 168,052 ops/sec.
+- Accepted compiler-only byte recovery in schema assertion formatting, emitter context construction, and the segment-list finisher signature, reducing compiler size from 26,010 raw / 5,500 gzip bytes to 25,964 raw / 5,493 gzip bytes without changing emitted validator semantics.
+- Rejected a generated bool-list segment scanner because it pushed compiler gzip to 5,611 bytes and the focused `generated list bool 200` row was only 135,032 ops/sec in `list-generated-bool-segment-proto-20260622.json`.
+- Rejected a runtime single-protocol URL direct-compare path because it pushed runtime gzip to 2,918 bytes, above the 2,900-byte gate.
+- Extended the generated string-list min-check trim to optional item handlers, shrinking the focused optional generated validator from 761 raw / 408 gzip bytes to 675 raw / 378 gzip bytes while keeping hot throughput effectively tied.
+- Extended generated string min-check trimming to `includes` constraints when the required substring length already implies `min`, shrinking the focused generated list validator from 1,287 raw / 562 gzip bytes to 1,202 raw / 538 gzip bytes while keeping the paired hot row effectively tied.
+- Rejected the runtime `includes`-implied min skip because even the scalar-only prototype pushed runtime gzip from 2,898 to 2,912 bytes, above the 2,900-byte gate.
+- Re-audited scalar enum rows in `enum-current-after-min-trims-20260622.json`; generated scalar enums currently beat runtime for string2, string8, string32, and mixed8, so enum speed-mode redesign is not the next best target.
+- Accepted a generated string-list segment length trim, emitting `z - a` instead of `(z - a)`, which shrank a focused generated validator from 1,409 raw / 599 gzip bytes to 1,405 raw / 598 gzip bytes and reduced compiler gzip by 1 byte.
+- Rejected changing generated numeric scanner index checks from `!==` to `!=` because it spent compiler gzip budget and worsened scalar generated gzip by 1 byte for only noise-level throughput movement.
+- Compacted published declaration formatting, reducing `src/index.d.ts` plus `src/compiler.d.ts` from 3,114 to 3,069 raw bytes and the package dry-run from 12,417 to 12,410 packed bytes without changing the exported type surface.
+- Changed generated declaration output to return `Env` directly instead of `Readonly<Env>`, preserving readonly properties while shrinking the focused generated declaration from 329 to 319 raw bytes and reducing compiler gzip by 5 bytes.
+- Added medium- and large-schema real `process.env` rows to the main hot benchmark so actual process environment access is tracked beyond small scalar and real-schema smoke cases.
+- Re-ran current split-v2, generated-shape, list-variant, strict-numeric, and process-env-shape probes on Node v26.3.0/macOS; the data supports keeping production source stable while documenting the remaining large-schema split and scanner candidates.
+- Added sandbox `strict-num-list-segment` / `sandbox/bench/strict-num-list-segment.mjs` to keep the generated strict-number list segment-scanner idea measurable without changing production compiler output.
+- Added sandbox `enum-list-segment` / `sandbox/bench/enum-list-segment.mjs` to keep length-bucketed string-enum segment scanning measurable without changing production compiler output.
+- Added sandbox `list-url-trim-bounds` / `sandbox/bench/list-url-trim-bounds.mjs` to keep generated URL-list trim-bound scanning measurable without changing production compiler output.
+- Added sandbox `split-cold` / `sandbox/bench/split-cold.mjs` to measure generated split thresholds with fresh-process import and first-validation timings.
+- Recovered late source bytes by compacting runtime `spec()`, numeric/list helper formatting, boolean literal returns, indexed key formatting, compiler optimize-option validation, split infinity literals, and the compiler-only `prop()` ternary; also trimmed redundant published README prose. Runtime gzip is now 2,888 bytes, compiler gzip is 5,486 bytes, and package dry-run size is 12,323 bytes.
+- Added sandbox `process-env-generated-shapes` / `sandbox/bench/process-env-generated-shapes.mjs` to compare current generated `env.KEY` reads against destructuring, process.env snapshotting, and manual default-parameter lowering for medium/large schemas.
+- Removed top-level runtime and runtime-list aggregate success sentinels, assigning parsed values directly while preserving final aggregate errors on invalid input.
+- Removed generated list aggregate success sentinels, shrinking emitted list validators and compiler source while preserving invalid aggregate-error behavior.
+- Added sandbox `missing-defaults` / `sandbox/bench/missing-defaults.mjs` to isolate missing `default`, `optional`, `devDefault`, and `testDefault` behavior for plain env objects and real `process.env`.
+- Guarded the runtime missing-value `NODE_ENV` read so plain `default` and `optional` rules do not touch `env.NODE_ENV`, improving real `process.env` default-heavy schemas.
+
+## Current Evidence
+
+- `npm run prepublishOnly` passes.
+- Runtime gzip size: 3,120 bytes.
+- Compiler gzip size: 6,910 bytes.
+- Publish dry-run: 9 files, 16,755 packed bytes.
+- Generated validator is fastest in the local benchmark matrix.
+- Cold first-validation from the latest `npm run report`: generated 1.825 ms, runtime 2.454 ms, Zod 31.879 ms.
+- Generated-size scaling median from `generated-size.split-array-prealloc.json`: small 1.811 ms total, medium 4.287 ms, large 12.316 ms.
+- Generated validator source size in the latest generated-size run: small 1,535 raw / 564 gzip, medium 41,434 raw / 2,738 gzip, large 176,521 raw / 12,937 gzip.
+- Focused medium/large real `process.env` rows from `bench-process-env-large-20260622.json`: medium generated explicit/default `process.env` at 12,414 / 12,769 ops/sec versus runtime at 10,357 / 10,363; large generated explicit/default `process.env` at 1,399 / 1,469 versus runtime at 1,253 / 1,281.
+- Current split-v2 follow-up from `split-v2-current-20260622.json`: split helpers beat unsplit at 640 fields in the short run (16,603 versus 10,915 ops/sec), and the best 1,280-field split row beat unsplit (8,132 versus 5,433), but threshold sensitivity remains high.
+- Current split-cold follow-up from `split-cold-current-20260622.json` and `split-cold-high-threshold-20260622.json`: split output at 640 fields shrank generated gzip from 14,323 to 12,937 bytes and total cold import+first-validate from 9.184 ms to 9.086 ms; raising the threshold to 768/1024 reverted to unsplit output and lost that benefit.
+- Current generated-shape follow-up from `generated-shapes-current-20260622.json`: local-register output beat array-slot and direct-object transforms at 640 and 1,280 fields on Node v26.3.0/macOS, so return-shape changes remain experimental rather than production-ready.
+- Current local Zod deltas: 7.49x small, 9.69x medium, 5.20x large.
+- Current local envalid deltas: 100.36x small, 247.68x medium, 370.10x large.
+- Current strict numeric evidence from `strict-numeric-speed-num-scanner-final.json`: speed-mode strict `num()` valid rows are about 1.10x-1.17x faster than default generated rows, while invalid rows remain effectively tied; bounded strict int remains fastest because the safe int scanner is default.
+- Primitive list benchmark after generated/runtime bounded strict-int scanning: generated strict int 200 at 189,142 ops/sec, runtime strict int 200 at 170,920 ops/sec.
+- Runtime list benchmark after lazy item labels, `indexOf()` scanning, `defineEnv()` schema validation, and strict-int scanning: int 200 at 92,045 ops/sec, strict int 200 at 170,920 ops/sec, bool 200 at 128,011 ops/sec.
+- Runtime list scanner A/B versus generated old-split baseline: int 200 86,326 vs 74,409 ops/sec; bool 200 119,794 vs 86,723 ops/sec.
+- Real-schema corpus report: generated beats runtime, Zod, Valibot, Envalid, Envsafe, env-var, and T3 Env Core on API, web, worker, list-heavy, and JSON-heavy shapes. Latest generated/best-competitor rows: API 4,970,658 / 2,779,291 ops/sec, web 1,136,293 / 952,385, worker 1,994,794 / 1,538,809, list-heavy 370,845 / 172,562, JSON-heavy 1,443,504 / 1,230,190.
+- Latest hot runtime rows after entry caching: small 4,023,182 ops/sec, medium 111,298 ops/sec, large 13,233 ops/sec.
+- Latest hot generated medium row after direct-object output: 267,304 ops/sec, making runtime medium 2.44x slower in the same run.
+- Latest hot rows from `hot-compiler-cleanups-current.json`: generated small 10,085,215 ops/sec, generated medium 283,033, generated large 22,851; runtime small 3,351,816, runtime medium 107,934, runtime large 13,198.
+- Bool-shapes evidence for 160 boolean fields: switch true/false 229,817 / 207,254 ops/sec at 6,891 gzip bytes; equality chain true/false 374,684 / 339,551 ops/sec at 2,674 gzip bytes.
+- Generated shape boundary evidence: `generated-shapes-no-object-proto-20260622.json` temporarily disabled object mode so the benchmark could compare locals, arrays, and object assignment across 128-384 entries; object assignment won every row in that production range.
+- Latest primitive list rows after generated string-list segment scanning became default: generated string 200 at 69,704 ops/sec, generated string speed 200 at 69,861, runtime string 200 at 55,940; runtime bool 200 at 139,058 versus generated bool 200 at 140,273; runtime enum 200 at 104,117 versus generated enum 200 at 120,805.
+- Dedicated enum-list baseline artifact: `enum-list-baseline-20260622.json` shows generated winning 200-item string3 and string8 lists, runtime winning string32 lists through the large string-enum `Set` path, and generated winning mixed8 lists. Representative rows: string3 generated/runtime 79,682 / 69,353 ops/sec, string8 63,573 / 58,260, string32 34,584 / 60,084, and mixed8 109,117 / 74,774.
+- Empty-separator string list fast path: generated str empty sep 200 at 4,742,102 ops/sec and runtime str empty sep 200 at 4,018,842 ops/sec after both use native `split("")`.
+- Static-default empty-separator string list rows: `generated-string-empty-default-fastpath.json` shows generated str empty sep item default 200 at 4,754,149 ops/sec versus runtime at 3,609,207 after generated adopted native `split("")` for that static-default shape.
+- Optional missing assignment skip artifact: `optional-missing-assignment-skip.json` shows optional-heavy generated output shrinking by 225 gzip bytes at 80 local-register fields and 1,619 gzip bytes at 520 split fields, with no change for 160-field object mode.
+- Optional `requiredWhen` assignment skip artifact: `generated-requiredwhen-undefined-omit-20260622.json` shows predicate-heavy generated output shrinking by 23 gzip bytes at four local-register fields, 60 gzip bytes at 16 split fields, and 1,876 gzip bytes at 640 split fields, while object mode keeps own-property assignments.
+- Generated return-key artifact: `generated-return-key-unquoted-20260622.json` shows emitted validator output shrinking by 10 raw / 2 gzip bytes for the small schema and 1,280 raw / 31 gzip bytes for the 640-field split schema, with object-mode output unchanged.
+- Generated types bare-key artifact: `generated-types-bare-keys-20260622.json` shows declaration raw output shrinking by 4 bytes for a small mixed-key schema and 800 bytes for a large identifier-only schema; large declaration gzip grows by 40 bytes because repeated quotes compress well.
+- Spec constructor artifact: `spec-constructor-fastpath-20260622.json` records rejected no-options scalar and `oneOf()` fast paths.
+- Current source sizes after JSON Schema interop, benchmark/story additions, split preallocation, URL switch codegen, runtime strict scalar scanning, runtime strict-number list scanning, object-mode boundary expansion, generated large enum-list Set output, generated string-list min trims, segment length trim, generated declaration return trim, compiler/runtime byte recovery, aggregate-sentinel cleanup, and missing-branch NODE_ENV guarding: runtime 13,178 raw / 3,120 gzip bytes and compiler 31,042 raw / 6,910 gzip bytes.
+- Runtime strict scanner artifact: `runtime-strict-scanner-paired-20260622.json` shows old-vs-new strict int valid improving from 8,965,275 to 10,281,307 ops/sec and strict `num()` valid shapes improving across `.5` (6,632,311 to 7,149,568), `1.25` (6,324,431 to 7,699,138), `123` (8,968,799 to 9,892,944), `1.` (6,649,772 to 8,311,120), and `+.5` (6,727,804 to 7,675,854).
+- Full strict numeric artifact: `runtime-strict-scanner-20260622.json` keeps generated speed-mode ahead on most strict `num()` rows while moving runtime strict numeric closer, with runtime valid rows from 6,752,478 to 10,266,000 ops/sec depending on shape.
+- Runtime byte-recovery artifact: `runtime-byte-recovery-paired-20260622.json` shows the post-scanner byte trims neutral on setup/raw-schema rows, with defineEnv 160 at 35,908 vs 35,704 ops/sec and raw parse 160 at 27,707 vs 27,387.
+- Continued runtime byte-recovery artifact: `runtime-byte-recovery-continued-20260622.json` records the post-cleanup hot benchmark as runtime size dropped from 2,875 toward 2,858 gzip bytes; follow-up artifacts `runtime-object-literal-compact-20260622.json`, `runtime-list-fastpath-brace-cleanup-20260622.json`, `runtime-bool-fallthrough-20260622.json`, and `runtime-defineenv-ternary-20260622.json` record the later drop to 2,839 gzip bytes.
+- Generated strict `num()` cleanup artifact: `generated-strict-num-else-if-paired-20260622.json` shows representative speed-mode output shrinking from 429 to 421 gzip bytes and improving most paired rows, including `1.25` from 12,647,075 to 13,316,652 ops/sec and `+.5` from 14,484,563 to 14,860,276.
+- Strict `num()` list coverage artifact: `list-strict-num-coverage-20260622.json` shows generated speed-mode list rows ahead of generated default and runtime for decimal strict numbers, including 20-item lists at 576,323 ops/sec versus 503,075 default and 486,537 runtime, and 200-item lists at 56,802 versus 51,489 default and 51,739 runtime.
+- Runtime strict `num()` list fast-path artifact: `runtime-strict-num-list-slice-fastpath-20260622.json` shows runtime strict-number lists at 542,047 ops/sec for 20 items and 55,832 ops/sec for 200 items, versus generated speed-mode rows at 583,235 and 57,122 in the same run.
+- Generated enum-list Set artifact: `generated-enum-list-set-compact-20260622.json` shows generated string32 enum-list 200 at 74,431 ops/sec versus runtime at 71,630, and invalid-last at 50,004 versus runtime at 44,298, while string8 and mixed8 rows stay on their existing compact output.
+- Generated enum-list threshold artifacts: `generated-enum-list-threshold15-string12-20260622.json` and `generated-enum-list-threshold8-string12-20260622.json` keep the Set threshold at more than 15 all-string values because string12 remains faster on the compact equality-chain output: 123,982 vs 73,644 ops/sec valid, and 68,118 vs 49,463 invalid-last.
+- Generated enum-list segment artifact: `enum-list-segment-proto-20260622.json` rejects length-bucketed `startsWith()` segment scanning because it was slower and larger for string8/string12/string16/string32 list rows; representative 200-item valid rows were 32,514 vs current 73,510 for string8 and 78,263 vs current 122,482 for string12.
+- Generated string-list item-default artifact: `list-variants-skipmin-default-20260622.json` shows the accepted min-trim row at 173,252 ops/sec for 200 defaulted string items, versus 168,264 in `list-variants-next-baseline-20260622.json`; `list-variants-generated-str-default-segment-proto-20260622.json` records the rejected broader segment-default prototype.
+- Generated string-list item-optional artifact: `generated-string-optional-min-trim-paired-20260622.json` shows optional generated output shrinking from 761 raw / 408 gzip bytes to 675 raw / 378 gzip bytes, with the paired hot row effectively tied at 169,366 vs 169,912 ops/sec.
+- Generated includes min-trim artifact: `generated-includes-min-trim-paired-20260622.json` shows a 200-item generated list validator shrinking from 1,287 raw / 562 gzip bytes to 1,202 raw / 538 gzip bytes, with the paired hot row effectively tied at 109,670 vs 109,901 ops/sec.
+- Generated segment length trim artifact: `generated-segment-length-trim-20260622.json` shows a focused generated string-list validator shrinking from 1,409 raw / 599 gzip bytes to 1,405 raw / 598 gzip bytes.
+- Generated scanner inequality artifact: `generated-qne-trim-20260622.json` records the rejected `q !=` emission experiment; scalar strict-number and strict-int generated gzip grew by 1 byte while throughput movement was not decisive.
+- Generated strict-number list segment artifact: `strict-num-list-segment-proto-20260622.json` records the rejected original-string segment scanner; it grew focused emitted output from 1,367 raw / 558 gzip bytes to 1,917 raw / 676 gzip bytes, lost short/long/spaced rows, and only improved the long-decimal row.
+- Package declaration compaction artifact: `package-declaration-compaction-20260622.json` records `src/index.d.ts` shrinking from 2,502 to 2,476 raw bytes, `src/compiler.d.ts` from 612 to 593, and packed bytes from 12,417 to 12,410.
+- Generated declaration return artifact: `generated-types-return-env-20260622.json` shows a focused generated `.d.ts` shrinking from 329 to 319 raw bytes by returning `Env` instead of `Readonly<Env>`.
+- Current scalar enum audit artifact: `enum-current-after-min-trims-20260622.json` shows generated string2/string8/string32/mixed8 rows at 16,457,537 / 20,332,104 / 17,759,795 / 19,721,423 ops/sec versus runtime at 14,538,933 / 16,148,744 / 16,555,925 / 12,412,353.
+- Generated bool-list scanner prototype artifact: `list-generated-bool-segment-proto-20260622.json` records the rejected segment scanner at 135,032 ops/sec for 200 bool items while exceeding the compiler gzip gate.
+- Generated 512-field object-boundary artifact: `object-boundary-generated-shapes-20260622.json` shows object assignment at 26,600 ops/sec and 7,950 gzip bytes versus local registers at 14,910 ops/sec and 11,550 gzip bytes, so the default object-mode heuristic now includes the 512-entry split boundary.
+- Generated strict `num()` dot rerun artifact: `generated-strict-num-else-if-dot-rerun-20260622.json` shows `.5` old/new converging after warm/order effects, so the emitted-size win was kept.
+- Runtime missing-value branch artifact: `runtime-missing-nodeenv-cache-20260622.json` shows production default-heavy missing validation improving from 3,897,227 to 4,054,650 ops/sec, development from 3,052,389 to 3,153,008, and test from 2,650,285 to 2,672,197 while reducing runtime gzip by 9 bytes.
+- URL switch size artifact: `url-switch-size-20260622.json` shows single-protocol URL generated output grows by 5 gzip bytes, four-protocol scalar output is gzip-neutral and 28 raw bytes smaller, and four-protocol URL-list output shrinks by 28 raw / 2 gzip bytes.
+- Source byte recovery artifact: `source-byte-recovery-20260622-continue.json` shows the previous accepted runtime at 12,015 raw / 2,866 gzip bytes and compiler at 25,665 raw / 5,430 gzip bytes, versus the earlier checkpoint at 12,071 / 2,873 and 25,710 / 5,444.
+- Runtime aggregate-sentinel artifacts: `runtime-field-guard-before-20260622.json` and `runtime-field-guard-after-20260622.json` show the top-level assignment cleanup improving runtime small/medium rows by 2.57%/3.03% in the paired short run, while strict-numeric movement stayed small enough to re-check in the final full run.
+- List aggregate-sentinel artifact: `generated-list-sentinel-after-20260622.json` shows the accepted sentinel cleanup improving representative generated list rows, including enum optional 200 from 98,963 to 137,899 ops/sec and empty-separator string list 200 from 3,429,121 to 4,676,858, while runtime enum optional 200 improved from 87,352 to 123,820.
+- Runtime missing-default artifact: `missing-defaults-after-20260622.json` versus `missing-defaults-before-20260622.json` shows real `process.env` default/optional missing rows improving from 42,559/41,183 to 76,171/75,509 ops/sec at 40 fields and from 10,106/10,095 to 17,052/17,121 at 160 fields.
+- Generated process.env shape artifact: `process-env-generated-shapes-20260622.json` rejects destructuring and snapshotting; 640-field explicit process.env fell from 1,443 to 1,361 ops/sec with destructuring and to 415 with snapshot-if, while manual default lowering was too small and larger.
+- Final hot benchmark artifact: `final-hot-bench-20260622.json` shows generated/runtime small at 10,489,263 / 3,916,274 ops/sec, medium at 247,235 / 111,503, large at 22,228 / 13,273, and speed-mode strict numeric at 10,521,949 versus default generated at 9,148,636.
+- Compiler byte recovery artifact: `compiler-byte-recovery-20260622.json` shows the earlier compiler byte-recovery checkpoint at 25,689 raw / 5,429 gzip bytes versus the previous checkpoint at 26,461 raw / 5,482 gzip bytes.
+- Runtime byte recovery artifact: `runtime-list-item-byte-recovery-20260622.json` shows the earlier runtime at 12,071 raw / 2,873 gzip bytes versus the previous checkpoint at 12,255 raw / 2,874 gzip bytes after reinvesting most recovered gzip budget in the large string-enum `Set` path.
+- Runtime string-enum `Set` artifacts: `enum-string-set-ab-20260622.json` shows the string32 scalar enum row improving from 6,970,701 to 19,144,315 ops/sec; `enum-set-threshold4-20260622.json` supports lowering the all-string threshold from more than eight to more than four values after string8 improved from 15,286,482 to 20,826,341 ops/sec with no size cost; `enum-string-set-list-ab-20260622.json` shows a 200-item enum32 list improving from 46,186 to 54,442 ops/sec.
+- Earlier split preallocation artifact: `split-prealloc-20260622.json` kept broad preallocation rejected because the 1,280-field row regressed even though the 640-field row improved.
+- Split array preallocation artifact: `split-array-prealloc.candidate.json` versus `split-array-prealloc.baseline.json` shows the accepted production split preallocation improving `split-512 320` from 9,437 to 10,094 ops/sec and `split-512 640` from 2,358 to 2,429 ops/sec, while generated gzip grew by 15-20 bytes in those rows.
+- Actual process.env explicit artifact: `process-env-explicit-20260622.json` shows generated explicit small at 603,711 ops/sec versus runtime explicit small at 484,386, and generated speed explicit strict numeric at 1,575,315 versus runtime explicit strict numeric at 1,173,077.
+- Generated numeric finite-check artifact: `generated-num-isfinite-trim-20260622.json` records representative generated numeric validator sizes after the `isFinite()` trim.
+- Split threshold audits: `split-v2-audit-20260622.json` and `split-v2-high-threshold-audit-20260622.json` show the production slot-array split path remains a size/speed tradeoff; higher thresholds can help very large hot-path rows but materially increase generated gzip, so no default threshold change is accepted yet.
+- Static-default strict-int list rows: `generated-strict-int-default-fastpath.json` shows generated defaulted strict-int 200 at 187,843 ops/sec versus runtime at 176,437, after generated and runtime both use the bounded scanner for static defaults and optionals.
+- Static-default bool list rows: `list-variants-fast-kind-tags.json` shows generated defaulted bool 200 at 142,050 ops/sec versus runtime at 138,183, after runtime kept the direct bool scanner for static defaults and optionals.
+- Static-default enum list rows: maintained `list-variants` run shows runtime defaulted enum 200 at 122,425 ops/sec versus generated at 128,422, after runtime kept the direct enum scanner for static defaults and optionals.
+- Static-default string list rows: maintained `list-variants` run shows runtime defaulted string 200 at 153,095 ops/sec versus generated at 168,075, after runtime kept the direct string scanner for static defaults and optionals.
+- URL protocol suffix cache short real-schema rows: runtime web 1,015,871 ops/sec and worker 1,682,825 ops/sec, versus the preceding short rows at 979,719 and 1,608,481; process.env URL-heavy rows were essentially flat.
+- URL-protocol list rows: generated/runtime 20-item lists at 138,916 / 136,565 ops/sec and 200-item lists at 13,998 / 14,080 ops/sec, so URL-list work is tracked but not optimized beyond existing scalar URL semantics.
+- URL protocol switch rows: `list-url-switch-all-20260622.json` shows single-protocol generated URL lists at 141,122 ops/sec for 20 items and 14,413 ops/sec for 200 items; `list-url-switch-multiproto-20260622.json` versus `list-url-baseline-multiproto-20260622.json` shows four-protocol generated URL lists improving from 13,756 to 14,305 ops/sec at 200 items.
+- Generated URL-list trim-bound artifact: `list-url-trim-bounds-proto-20260622.json` rejects segment-bound URL scanning because throughput was effectively tied while emitted gzip grew from 431/437 bytes to 570/576 bytes for single/multi protocol validators.
+- Real-schema URL switch smoke: `real-schemas-url-switch-trims-20260622.json` keeps URL-bearing generated rows healthy, with web at 1,215,300 ops/sec and worker at 2,211,848 ops/sec.
+- Generated aggregate-error helper artifact: `generated-error-helper-split-only-20260622.json` showed large generated output shrinking to 166,964 raw / 12,832 gzip bytes, but `generated-error-helper-invalid-split-20260622.json` showed invalid-many split rows regressing from 41,289 to 38,582 ops/sec at 512 fields and 33,357 to 27,459 at 640 fields, so the helper was rejected.
+- Runtime strict `num()` list scanner investigation found real speed signal for long lists. The no-allocation segment parser remains rejected on gzip cost, but a smaller slice-based fast path now fits the runtime gate and is accepted.
+- Fail-fast short run: fail-fast generated valid path is faster than aggregate generated valid path, and invalid first/many cases are slightly faster while invalid-last can be slower.
+
+## Next Experiments
+
+1. Re-check generated strict numeric scanners on future V8 releases.
+   - Current status: bounded strict-int scalar scanning is default for explicit int32-safe bounds; strict `num()` scanning is speed-mode only.
+   - Acceptance for further changes: improve strict numeric without broadening accepted input semantics or weakening the tiny-output claim.
+
+2. Re-check generated enum-list threshold and emitted-size tradeoffs.
+   - Current status: compact generated `Set` output is accepted for all-string enum lists above 15 values; small and mid-sized string enums plus mixed enums keep the previous compact output.
+   - Acceptance: any threshold change must preserve string8 and mixed rows, prove the 9-15 value range does not regress, keep compiler gzip under the gate, and avoid excessive generated gzip growth.
+
+3. Re-run cross-Node evidence when additional Node majors or deployment runtimes are available.
+   - Current status: local Node v20.16.0 and v26.3.0 both reject production string interning; no version manager or additional local Node majors are available in this workspace.
+   - Acceptance: documentation-only unless a cache-free production change improves repeated invocation benchmarks without retaining secrets.

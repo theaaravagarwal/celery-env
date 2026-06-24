@@ -1,0 +1,83 @@
+{
+  "schema": "celery-fail-fast/1",
+  "generatedAt": "2026-06-22T23:36:25.365Z",
+  "metadata": {
+    "runtimeName": "node",
+    "runtimeVersion": "v26.3.0",
+    "nodeCompatVersion": "v26.3.0",
+    "v8Version": "14.6.202.34-node.20",
+    "platform": "darwin",
+    "arch": "arm64",
+    "execPath": "/opt/homebrew/Cellar/node/26.3.0/bin/node",
+    "nodeVersion": "v26.3.0",
+    "cpuModel": "Apple M3",
+    "benchTimeMs": 400,
+    "benchWarmupMs": 150
+  },
+  "rows": [
+    {
+      "name": "generated aggregate valid",
+      "hz": 10531288,
+      "mean_us": 0.1,
+      "p75_us": 0.13,
+      "p99_us": 0.17,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated fail-fast valid",
+      "hz": 12752198,
+      "mean_us": 0.09,
+      "p75_us": 0.08,
+      "p99_us": 0.13,
+      "rme": "0.03%"
+    },
+    {
+      "name": "generated aggregate invalid first",
+      "hz": 155573,
+      "mean_us": 6.63,
+      "p75_us": 6.46,
+      "p99_us": 6.71,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated fail-fast invalid first",
+      "hz": 162664,
+      "mean_us": 6.15,
+      "p75_us": 6.21,
+      "p99_us": 6.37,
+      "rme": "0.01%"
+    },
+    {
+      "name": "generated aggregate invalid last",
+      "hz": 154723,
+      "mean_us": 6.47,
+      "p75_us": 6.5,
+      "p99_us": 6.75,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated fail-fast invalid last",
+      "hz": 147151,
+      "mean_us": 6.81,
+      "p75_us": 6.88,
+      "p99_us": 7.13,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated aggregate invalid many",
+      "hz": 153011,
+      "mean_us": 6.54,
+      "p75_us": 6.58,
+      "p99_us": 6.83,
+      "rme": "0.02%"
+    },
+    {
+      "name": "generated fail-fast invalid many",
+      "hz": 161559,
+      "mean_us": 6.19,
+      "p75_us": 6.25,
+      "p99_us": 6.46,
+      "rme": "0.01%"
+    }
+  ]
+}

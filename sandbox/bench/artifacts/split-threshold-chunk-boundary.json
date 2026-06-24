@@ -1,0 +1,195 @@
+{
+  "schema": "celery-split-v2/1",
+  "generatedAt": "2026-06-22T19:51:03.302Z",
+  "rows": [
+    {
+      "count": 128,
+      "name": "unsplit 128",
+      "raw_bytes": 141326,
+      "gzip_bytes": 11673,
+      "hz": 23809,
+      "mean_us": 42.15,
+      "rme": "0.11%"
+    },
+    {
+      "count": 128,
+      "name": "split-512-chunk-32 128",
+      "raw_bytes": 141817,
+      "gzip_bytes": 10492,
+      "hz": 29113,
+      "mean_us": 34.45,
+      "rme": "0.09%"
+    },
+    {
+      "count": 128,
+      "name": "split-512-chunk-64 128",
+      "raw_bytes": 141237,
+      "gzip_bytes": 10442,
+      "hz": 29177,
+      "mean_us": 34.4,
+      "rme": "0.1%"
+    },
+    {
+      "count": 128,
+      "name": "split-640-chunk-32 128",
+      "raw_bytes": 141326,
+      "gzip_bytes": 11673,
+      "hz": 24037,
+      "mean_us": 41.71,
+      "rme": "0.1%"
+    },
+    {
+      "count": 128,
+      "name": "split-640-chunk-64 128",
+      "raw_bytes": 141326,
+      "gzip_bytes": 11673,
+      "hz": 23946,
+      "mean_us": 41.9,
+      "rme": "0.11%"
+    },
+    {
+      "count": 128,
+      "name": "split-768-chunk-32 128",
+      "raw_bytes": 141326,
+      "gzip_bytes": 11673,
+      "hz": 23577,
+      "mean_us": 42.55,
+      "rme": "0.11%"
+    },
+    {
+      "count": 128,
+      "name": "split-768-chunk-64 128",
+      "raw_bytes": 141326,
+      "gzip_bytes": 11673,
+      "hz": 23850,
+      "mean_us": 42.06,
+      "rme": "0.11%"
+    },
+    {
+      "count": 160,
+      "name": "unsplit 160",
+      "raw_bytes": 177198,
+      "gzip_bytes": 14474,
+      "hz": 18726,
+      "mean_us": 53.58,
+      "rme": "0.12%"
+    },
+    {
+      "count": 160,
+      "name": "split-512-chunk-32 160",
+      "raw_bytes": 177789,
+      "gzip_bytes": 12954,
+      "hz": 22596,
+      "mean_us": 44.43,
+      "rme": "0.12%"
+    },
+    {
+      "count": 160,
+      "name": "split-512-chunk-64 160",
+      "raw_bytes": 177059,
+      "gzip_bytes": 12890,
+      "hz": 21359,
+      "mean_us": 47.01,
+      "rme": "0.13%"
+    },
+    {
+      "count": 160,
+      "name": "split-640-chunk-32 160",
+      "raw_bytes": 177789,
+      "gzip_bytes": 12954,
+      "hz": 22597,
+      "mean_us": 44.43,
+      "rme": "0.12%"
+    },
+    {
+      "count": 160,
+      "name": "split-640-chunk-64 160",
+      "raw_bytes": 177059,
+      "gzip_bytes": 12890,
+      "hz": 22684,
+      "mean_us": 44.27,
+      "rme": "0.12%"
+    },
+    {
+      "count": 160,
+      "name": "split-768-chunk-32 160",
+      "raw_bytes": 177198,
+      "gzip_bytes": 14474,
+      "hz": 17868,
+      "mean_us": 56.88,
+      "rme": "0.35%"
+    },
+    {
+      "count": 160,
+      "name": "split-768-chunk-64 160",
+      "raw_bytes": 177198,
+      "gzip_bytes": 14474,
+      "hz": 18698,
+      "mean_us": 53.63,
+      "rme": "0.11%"
+    },
+    {
+      "count": 240,
+      "name": "unsplit 240",
+      "raw_bytes": 266878,
+      "gzip_bytes": 21509,
+      "hz": 8659,
+      "mean_us": 116.06,
+      "rme": "0.21%"
+    },
+    {
+      "count": 240,
+      "name": "split-512-chunk-32 240",
+      "raw_bytes": 267719,
+      "gzip_bytes": 19171,
+      "hz": 14513,
+      "mean_us": 69.26,
+      "rme": "0.18%"
+    },
+    {
+      "count": 240,
+      "name": "split-512-chunk-64 240",
+      "raw_bytes": 266624,
+      "gzip_bytes": 19076,
+      "hz": 13971,
+      "mean_us": 71.9,
+      "rme": "0.17%"
+    },
+    {
+      "count": 240,
+      "name": "split-640-chunk-32 240",
+      "raw_bytes": 267719,
+      "gzip_bytes": 19171,
+      "hz": 14739,
+      "mean_us": 68.19,
+      "rme": "0.17%"
+    },
+    {
+      "count": 240,
+      "name": "split-640-chunk-64 240",
+      "raw_bytes": 266624,
+      "gzip_bytes": 19076,
+      "hz": 14727,
+      "mean_us": 68.2,
+      "rme": "0.16%"
+    },
+    {
+      "count": 240,
+      "name": "split-768-chunk-32 240",
+      "raw_bytes": 267719,
+      "gzip_bytes": 19171,
+      "hz": 14317,
+      "mean_us": 70.42,
+      "rme": "0.24%"
+    },
+    {
+      "count": 240,
+      "name": "split-768-chunk-64 240",
+      "raw_bytes": 266624,
+      "gzip_bytes": 19076,
+      "hz": 14537,
+      "mean_us": 69.26,
+      "rme": "0.19%"
+    }
+  ]
+}

@@ -1,0 +1,186 @@
+{
+  "schema": "celery-generated-shapes/1",
+  "generatedAt": "2026-06-22T19:24:13.986Z",
+  "rows": [
+    {
+      "count": 5,
+      "fields": 20,
+      "name": "locals-return 5",
+      "raw_bytes": 7951,
+      "gzip_bytes": 1023,
+      "hz": 4705397,
+      "mean_us": 0.21,
+      "rme": "0.01%"
+    },
+    {
+      "count": 5,
+      "fields": 20,
+      "name": "array-slots 5",
+      "raw_bytes": 8021,
+      "gzip_bytes": 988,
+      "hz": 3736082,
+      "mean_us": 0.28,
+      "rme": "0.02%"
+    },
+    {
+      "count": 5,
+      "fields": 20,
+      "name": "object-assign 5",
+      "raw_bytes": 8044,
+      "gzip_bytes": 879,
+      "hz": 4412020,
+      "mean_us": 0.24,
+      "rme": "0.02%"
+    },
+    {
+      "count": 20,
+      "fields": 80,
+      "name": "locals-return 20",
+      "raw_bytes": 31641,
+      "gzip_bytes": 2770,
+      "hz": 1250778,
+      "mean_us": 0.8,
+      "rme": "0.01%"
+    },
+    {
+      "count": 20,
+      "fields": 80,
+      "name": "array-slots 20",
+      "raw_bytes": 31861,
+      "gzip_bytes": 2599,
+      "hz": 1027470,
+      "mean_us": 0.98,
+      "rme": "0.02%"
+    },
+    {
+      "count": 20,
+      "fields": 80,
+      "name": "object-assign 20",
+      "raw_bytes": 31924,
+      "gzip_bytes": 2194,
+      "hz": 786748,
+      "mean_us": 1.3,
+      "rme": "0.04%"
+    },
+    {
+      "count": 40,
+      "fields": 160,
+      "name": "locals-return 40",
+      "raw_bytes": 63666,
+      "gzip_bytes": 5124,
+      "hz": 103393,
+      "mean_us": 9.73,
+      "rme": "0.03%"
+    },
+    {
+      "count": 40,
+      "fields": 160,
+      "name": "array-slots 40",
+      "raw_bytes": 64026,
+      "gzip_bytes": 4757,
+      "hz": 98064,
+      "mean_us": 10.28,
+      "rme": "0.04%"
+    },
+    {
+      "count": 40,
+      "fields": 160,
+      "name": "object-assign 40",
+      "raw_bytes": 63964,
+      "gzip_bytes": 3909,
+      "hz": 267171,
+      "mean_us": 3.83,
+      "rme": "0.06%"
+    },
+    {
+      "count": 64,
+      "fields": 256,
+      "name": "locals-return 64",
+      "raw_bytes": 102210,
+      "gzip_bytes": 7935,
+      "hz": 45372,
+      "mean_us": 22.12,
+      "rme": "0.05%"
+    },
+    {
+      "count": 64,
+      "fields": 256,
+      "name": "array-slots 64",
+      "raw_bytes": 102714,
+      "gzip_bytes": 7309,
+      "hz": 38535,
+      "mean_us": 26.19,
+      "rme": "0.07%"
+    },
+    {
+      "count": 64,
+      "fields": 256,
+      "name": "object-assign 64",
+      "raw_bytes": 102412,
+      "gzip_bytes": 5965,
+      "hz": 77601,
+      "mean_us": 13.53,
+      "rme": "0.17%"
+    },
+    {
+      "count": 80,
+      "fields": 320,
+      "name": "locals-return 80",
+      "raw_bytes": 127906,
+      "gzip_bytes": 9804,
+      "hz": 36572,
+      "mean_us": 27.42,
+      "rme": "0.05%"
+    },
+    {
+      "count": 80,
+      "fields": 320,
+      "name": "array-slots 80",
+      "raw_bytes": 128506,
+      "gzip_bytes": 8988,
+      "hz": 30624,
+      "mean_us": 33.41,
+      "rme": "0.09%"
+    },
+    {
+      "count": 80,
+      "fields": 320,
+      "name": "object-assign 80",
+      "raw_bytes": 128044,
+      "gzip_bytes": 7343,
+      "hz": 44067,
+      "mean_us": 25.4,
+      "rme": "0.42%"
+    },
+    {
+      "count": 120,
+      "fields": 480,
+      "name": "locals-return 120",
+      "raw_bytes": 192606,
+      "gzip_bytes": 14452,
+      "hz": 23600,
+      "mean_us": 42.6,
+      "rme": "0.1%"
+    },
+    {
+      "count": 120,
+      "fields": 480,
+      "name": "array-slots 120",
+      "raw_bytes": 193446,
+      "gzip_bytes": 13190,
+      "hz": 19030,
+      "mean_us": 54.42,
+      "rme": "0.25%"
+    },
+    {
+      "count": 120,
+      "fields": 480,
+      "name": "object-assign 120",
+      "raw_bytes": 192724,
+      "gzip_bytes": 10780,
+      "hz": 21154,
+      "mean_us": 51.23,
+      "rme": "0.53%"
+    }
+  ]
+}
