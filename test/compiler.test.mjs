@@ -126,7 +126,7 @@ describe("generateValidator", () => {
     const { loadEnv } = await import(`${pathToFileURL(file).href}?t=${Date.now()}`);
     assert.deepEqual(loadEnv({ IDS: "1,2,3" }), { IDS: [1, 2, 3] });
     assert.deepEqual(loadEnv({ IDS: "1e1,0x10" }), { IDS: [10, 16] });
-    assert.throws(() => loadEnv({ IDS: "1,0,3" }), /IDS item must be >= 1/);
+    assert.throws(() => loadEnv({ IDS: "1,0,3" }), /IDS\[1\] must be >= 1/);
   });
 
   it("supports generated list items with an empty separator", async () => {
@@ -196,8 +196,9 @@ describe("generateValidator", () => {
       IDS: [1, -5, 42]
     });
     assert.throws(() => loadEnv({ IDS: "1e3,101,x" }), (error) => {
-      assert.match(error.message, /IDS item must be a strict integer/);
-      assert.match(error.message, /IDS item must be <= 100/);
+      assert.match(error.message, /IDS\[0\] must be a strict integer/);
+      assert.match(error.message, /IDS\[1\] must be <= 100/);
+      assert.match(error.message, /IDS\[2\] must be a strict integer/);
       return true;
     });
   });
@@ -390,6 +391,20 @@ describe("generateValidator", () => {
     );
   });
 
+  it("rejects malformed spec options at generation time", () => {
+    const badMin = int();
+    badMin.min = Infinity;
+    assert.throws(() => generateValidator({ PORT: badMin }), /PORT: min must be a finite number/);
+
+    const badList = list(str());
+    badList.item = {};
+    assert.throws(() => generateValidator({ IDS: badList }), /IDS: list item is not a celery-env spec/);
+
+    const badUrl = url({ protocols: ["https"] });
+    badUrl.ps = [];
+    assert.throws(() => generateValidator({ ORIGIN: badUrl }), /ORIGIN: malformed URL protocol spec/);
+  });
+
   it("can omit process.env default for edge-style generated validators", () => {
     const schema = defineEnv({ PORT: int({ default: 3000 }) });
     const code = generateValidator(schema, { processDefault: false });
@@ -480,8 +495,9 @@ describe("generateValidator", () => {
     const { loadEnv } = await import(`${pathToFileURL(file).href}?t=${Date.now()}`);
     assert.deepEqual(loadEnv({ IDS: "1,2,3" }), { IDS: [1, 2, 3] });
     assert.throws(() => loadEnv({ IDS: "1e3,101,x" }), (error) => {
-      assert.match(error.message, /IDS item must be a strict integer/);
-      assert.match(error.message, /IDS item must be <= 100/);
+      assert.match(error.message, /IDS\[0\] must be a strict integer/);
+      assert.match(error.message, /IDS\[1\] must be <= 100/);
+      assert.match(error.message, /IDS\[2\] must be a strict integer/);
       return true;
     });
   });
@@ -508,7 +524,7 @@ describe("generateValidator", () => {
     assert.doesNotMatch(code, /WORDS item must have length >= 1/);
     assert.doesNotMatch(code, /MAYBE item must have length >= 1/);
     assert.doesNotMatch(code, /HOST must have length >= 1/);
-    assert.doesNotMatch(code, /ORIGINS item must have length >= 1/);
+    assert.doesNotMatch(code, /ORIGINS\[0\] must have length >= 1/);
 
     const dir = join(tmpdir(), `celery-env-${process.pid}`);
     const file = join(dir, "string-list-item-defaults.mjs");
@@ -567,11 +583,11 @@ describe("generateValidator", () => {
     assert.throws(() => loadEnv({
       ORIGINS: "https://a.invalid.com",
       MODES: "alpha"
-    }), /ORIGINS item must include \.example/);
+    }), /ORIGINS\[0\] must include \.example/);
     assert.throws(() => loadEnv({
       ORIGINS: "https://a.example.com",
       MODES: "alpha,gamma"
-    }), /MODES item must be one of alpha, beta, release, staging, preview, production, test, dev/);
+    }), /MODES\[1\] must be one of alpha, beta, release, staging, preview, production, test, dev/);
   });
 
   it("uses generated Set lookup for large string enum lists", async () => {
@@ -595,7 +611,7 @@ describe("generateValidator", () => {
       MODE: ["mode_31", "mode_0"],
       SMALL: ["a", "b"]
     });
-    assert.throws(() => loadEnv({ MODE: "mode_31,bad", SMALL: "a" }), /MODE item must be one of mode_0/);
+    assert.throws(() => loadEnv({ MODE: "mode_31,bad", SMALL: "a" }), /MODE\[1\] must be one of mode_0/);
   });
 
   it("uses generated int32 checks only when explicit bounds make them safe", async () => {
@@ -667,9 +683,8 @@ describe("generateValidator", () => {
       API_KEY: str({ min: 8 })
     });
     const code = generateValidator(schema, { failFast: true });
-    assert.doesNotMatch(code, /join/);
     assert.doesNotMatch(code, /let r/);
-    assert.match(code, /throw Error/);
+    assert.match(code, /function R/);
 
     const dir = join(tmpdir(), `celery-env-${process.pid}`);
     const file = join(dir, "fail-fast.mjs");
@@ -681,6 +696,8 @@ describe("generateValidator", () => {
     assert.throws(
       () => loadEnv({ PORT: "0", API_KEY: "x" }),
       (error) => {
+        assert.equal(error.name, "EnvError");
+        assert.deepEqual(error.errors, ["PORT must be >= 1"]);
         assert.match(error.message, /Invalid environment:\n- PORT must be >= 1/);
         assert.doesNotMatch(error.message, /API_KEY/);
         return true;
@@ -701,7 +718,7 @@ describe("generateValidator", () => {
 
     const { loadEnv } = await import(`${pathToFileURL(file).href}?t=${Date.now()}`);
     assert.deepEqual(loadEnv({ IDS: "1,2,3" }), { IDS: [1, 2, 3] });
-    assert.throws(() => loadEnv({ IDS: "1,x,3" }), /IDS item must be a strict integer/);
+    assert.throws(() => loadEnv({ IDS: "1,x,3" }), /IDS\[1\] must be a strict integer/);
   });
 
   it("emits env-specific defaults and requiredWhen predicates", async () => {

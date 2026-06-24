@@ -204,11 +204,11 @@ describe("generated validator regression matrix", () => {
   }
 
   const generatedListErrorCases = [
-    ["list aggregate", { A: list(int({ min: 1 })), B: list(bool()) }, { A: "0,x", B: "true,maybe" }, ["A item must be >= 1", "A item must be an integer", "B item must be a boolean"]],
-    ["strict int list aggregate", { A: list(int({ strict: true, min: 1, max: 9 })) }, { A: "0,1e1,10" }, ["A item must be >= 1", "A item must be a strict integer", "A item must be <= 9"]],
-    ["strict num list aggregate", { A: list(num({ strict: true, min: 0, max: 2 })) }, { A: "-1,1e1,3" }, ["A item must be >= 0", "A item must be a strict number", "A item must be <= 2"], { optimize: "speed" }],
-    ["string list aggregate", { A: list(str({ min: 2, startsWith: "a", includes: "z" })) }, { A: ",a,bb,aa" }, ["A item must have length >= 2", "A item must have length >= 2", "A item must start with a", "A item must include z"]],
-    ["enum list aggregate", { A: list(oneOf(["a", "b"])) }, { A: "a,c,b" }, ["A item must be one of a, b"]]
+    ["list aggregate", { A: list(int({ min: 1 })), B: list(bool()) }, { A: "0,x", B: "true,maybe" }, ["A[0] must be >= 1", "A[1] must be an integer", "B[1] must be a boolean"]],
+    ["strict int list aggregate", { A: list(int({ strict: true, min: 1, max: 9 })) }, { A: "0,1e1,10" }, ["A[0] must be >= 1", "A[1] must be a strict integer", "A[2] must be <= 9"]],
+    ["strict num list aggregate", { A: list(num({ strict: true, min: 0, max: 2 })) }, { A: "-1,1e1,3" }, ["A[0] must be >= 0", "A[1] must be a strict number", "A[2] must be <= 2"], { optimize: "speed" }],
+    ["string list aggregate", { A: list(str({ min: 2, startsWith: "a", includes: "z" })) }, { A: ",a,bb,aa" }, ["A[0] must have length >= 2", "A[1] must have length >= 2", "A[2] must start with a", "A[3] must include z"]],
+    ["enum list aggregate", { A: list(oneOf(["a", "b"])) }, { A: "a,c,b" }, ["A[1] must be one of a, b"]]
   ];
 
   for (const [name, shape, env, errors, options] of generatedListErrorCases) {
@@ -232,7 +232,7 @@ describe("generated validator regression matrix", () => {
       assert.match(code, /export default readConfig/);
     }],
     ["fail fast throws immediately", defineEnv({ A: str(), B: str() }), { failFast: true }, (code) => {
-      assert.match(code, /throw Error/);
+      assert.match(code, /function R/);
       assert.doesNotMatch(code, /r \?\?=/);
     }],
     ["object mode keeps own optional properties", defineEnv(Object.fromEntries(Array.from({ length: 128 }, (_, i) => [`K_${i}`, str({ optional: true })]))), {}, (code) => {
@@ -326,7 +326,9 @@ function captureGenerated(loadEnv, env) {
   try {
     loadEnv(env);
   } catch (error) {
-    return error.message.split("\n- ").slice(1);
+    assert.equal(error.name, "EnvError");
+    assert.ok(Array.isArray(error.errors));
+    return error.errors;
   }
   throw new Error("expected generated validation to fail");
 }

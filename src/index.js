@@ -26,23 +26,34 @@ export function defineEnv(schema) {
 }
 
 export function str(options) {
+  assertBaseOptions("str", options);
+  assertStringOptions("str", options);
   return spec(STR, options);
 }
 
 export function int(options) {
+  assertBaseOptions("int", options);
+  assertNumberOptions("int", options);
   return spec(INT, options);
 }
 
 export function num(options) {
+  assertBaseOptions("num", options);
+  assertNumberOptions("num", options);
   return spec(NUM, options);
 }
 
 export function bool(options) {
+  assertBaseOptions("bool", options);
   return spec(BOOL, options);
 }
 
 export function oneOf(values, options) {
   if (!Array.isArray(values) || !values.length) throw new TypeError("oneOf() expects a non-empty array");
+  if (values.some(v => typeof v !== "string" && typeof v !== "number" && typeof v !== "boolean" || typeof v === "number" && !Number.isFinite(v))) {
+    throw new TypeError("oneOf() values must be strings, finite numbers, or booleans");
+  }
+  assertBaseOptions("oneOf", options);
   const mixed = values.some(v=>typeof v!="string");
   const strings = mixed ? values.map(String) : values.slice();
   const rule = {...options,values,strings};
@@ -51,15 +62,24 @@ export function oneOf(values, options) {
 }
 
 export function url(options) {
+  assertBaseOptions("url", options);
+  assertStringOptions("url", options);
+  if (options && H(options, "protocols") && (!Array.isArray(options.protocols) || options.protocols.some(p => typeof p !== "string" || p === "" || p.includes(":")))) {
+    throw new TypeError("url() protocols must be protocol names without \":\"");
+  }
   return spec(URL_T, options && H(options, "protocols") ? {...options,ps:options.protocols.map(p=>p+":")} : options);
 }
 
 export function json(options) {
+  assertBaseOptions("json", options);
   return spec(JSON_T, options);
 }
 
 export function list(item, options) {
   if (!isCelerySpec(item)) throw new TypeError("list() expects a celery-env spec item");
+  assertBaseOptions("list", options);
+  if (options && H(options, "separator") && typeof options.separator !== "string") throw new TypeError("list() separator must be a string");
+  if (options && H(options, "trim") && typeof options.trim !== "boolean") throw new TypeError("list() trim must be a boolean");
   return spec(LIST, {separator:",",...options,item});
 }
 
@@ -90,6 +110,34 @@ function schemaEntries(schema) {
     entries.push(key, rule);
   }
   return entries;
+}
+
+function assertBaseOptions(name, options) {
+  if (options === undefined) return;
+  if (options === null || typeof options !== "object" || Array.isArray(options)) throw new TypeError(`${name}() options must be an object`);
+  if (H(options, "optional") && typeof options.optional !== "boolean") throw new TypeError(`${name}() optional must be a boolean`);
+  if (H(options, "requiredWhen") && options.requiredWhen != null && typeof options.requiredWhen !== "function") throw new TypeError(`${name}() requiredWhen must be a function`);
+  if (H(options, "desc") && typeof options.desc !== "string") throw new TypeError(`${name}() desc must be a string`);
+  if (H(options, "docs") && typeof options.docs !== "string") throw new TypeError(`${name}() docs must be a string`);
+}
+
+function assertStringOptions(name, options) {
+  if (!options) return;
+  assertLimit(name, options, "min");
+  assertLimit(name, options, "max");
+  if (H(options, "startsWith") && typeof options.startsWith !== "string") throw new TypeError(`${name}() startsWith must be a string`);
+  if (H(options, "includes") && typeof options.includes !== "string") throw new TypeError(`${name}() includes must be a string`);
+}
+
+function assertNumberOptions(name, options) {
+  if (!options) return;
+  assertLimit(name, options, "min");
+  assertLimit(name, options, "max");
+  if (H(options, "strict") && typeof options.strict !== "boolean") throw new TypeError(`${name}() strict must be a boolean`);
+}
+
+function assertLimit(name, options, key) {
+  if (H(options, key) && !Number.isFinite(options[key])) throw new TypeError(`${name}() ${key} must be a finite number`);
 }
 
 function readValue(key, rule, value, e, i, env) {

@@ -20,6 +20,7 @@ export function generateValidator(schema, options = {}) {
     if (rule.t === LIST && needsListTempVar(rule)) needsListTemp = true;
     body.push(...emitRule(key, rule, `_${i}`, ctx));
   }
+  if (!ctx.f) envError(ctx);
   const lines = ctx.g;
   lines.push(`export function ${fn}(${param}) {`);
   if (!ctx.f) lines.push("  let r;");
@@ -28,7 +29,7 @@ export function generateValidator(schema, options = {}) {
   if (needsListTemp) lines.push("  let x;");
   lines.push(...body);
 
-  if (!ctx.f) lines.push("  if (r) throw Error(\"Invalid environment:\\n- \" + r.join(\"\\n- \"));");
+  if (!ctx.f) lines.push("  if (r) R(r);");
   lines.push(
     `  return ${returnObject(entries)};`,
     "}",
@@ -48,13 +49,14 @@ function generateObjectValidator(entries, fn, param, ctx, options) {
     if (rule.t === LIST && needsListTempVar(rule)) needsListTemp = true;
     body.push(...emitRule(key, rule, `o${prop(key)}`, ctx));
   }
+  if (!ctx.f) envError(ctx);
   const lines = ctx.g;
   lines.push(`export function ${fn}(${param}) {`);
   if (!ctx.f) lines.push("  let r;");
   lines.push("  let v;", "  const o = {};");
   if (needsListTemp) lines.push("  let x;");
   lines.push(...body);
-  if (!ctx.f) lines.push("  if (r) throw Error(\"Invalid environment:\\n- \" + r.join(\"\\n- \"));");
+  if (!ctx.f) lines.push("  if (r) R(r);");
   lines.push("  return o;", "}", `export default ${fn};`, "");
   if (options.minify) return lines.map((line) => line.trim()).join("");
   return lines.join("\n");
@@ -66,6 +68,7 @@ function generateSplitValidator(entries, fn, param, ctx, options) {
   for (let start = 0; start < entries.length; start += 32) {
     lines.push(...emitSplitChunk(entries, start, Math.min(start + 32, entries.length), n++, ctx));
   }
+  if (!ctx.f) envError(ctx);
 
   lines.push(`export function ${fn}(${param}) {`);
   if (!ctx.f) lines.push("  let r;");
@@ -73,7 +76,7 @@ function generateSplitValidator(entries, fn, param, ctx, options) {
   for (let i = 0; i < n; i++) {
     lines.push(ctx.f ? `  _c${i}(env, a);` : `  r = _c${i}(env, a, r);`);
   }
-  if (!ctx.f) lines.push("  if (r) throw Error(\"Invalid environment:\\n- \" + r.join(\"\\n- \"));");
+  if (!ctx.f) lines.push("  if (r) R(r);");
   lines.push(
     `  return ${returnObject(entries, "a")};`,
     "}",
@@ -221,6 +224,8 @@ function assertSchema(schema) {
   const entries = Object.entries(schema);
   for (const [key, rule] of entries) {
     if (!(rule && typeof rule === "object" && H(rule, "t") && typeof rule.t === "number")) throw new TypeError(`${key}: invalid celery-env spec`);
+    assertRuleOptions(key, rule);
+    if (rule.t === LIST && !(rule.item && typeof rule.item === "object" && H(rule.item, "t") && typeof rule.item.t === "number")) throw new TypeError(`${key}: list item is not a celery-env spec`);
     if (rule.t === LIST && rule.item.t === LIST) throw new TypeError(`${key}: nested list generation is not supported`);
     if (rule.requiredWhen != null && typeof rule.requiredWhen !== "function") throw new TypeError(`${key}: requiredWhen must be a function`);
     for (const field of ["default", "devDefault", "testDefault"]) {
@@ -230,6 +235,28 @@ function assertSchema(schema) {
     }
   }
   return entries;
+}
+
+function assertRuleOptions(key, rule) {
+  for (const field of ["min", "max"]) {
+    if (H(rule, field) && !Number.isFinite(rule[field])) throw new TypeError(`${key}: ${field} must be a finite number`);
+  }
+  if (H(rule, "strict") && typeof rule.strict !== "boolean") throw new TypeError(`${key}: strict must be a boolean`);
+  if (H(rule, "optional") && typeof rule.optional !== "boolean") throw new TypeError(`${key}: optional must be a boolean`);
+  if (H(rule, "startsWith") && typeof rule.startsWith !== "string") throw new TypeError(`${key}: startsWith must be a string`);
+  if (H(rule, "includes") && typeof rule.includes !== "string") throw new TypeError(`${key}: includes must be a string`);
+  if (H(rule, "protocols") && (!Array.isArray(rule.protocols) || rule.protocols.some(p => typeof p !== "string" || p === "" || p.includes(":")))) {
+    throw new TypeError(`${key}: protocols must be protocol names without ":"`);
+  }
+  if (rule.t === URL_T && H(rule, "protocols") && (!Array.isArray(rule.ps) || rule.ps.length !== rule.protocols.length || rule.ps.some((p, i) => p !== `${rule.protocols[i]}:`))) {
+    throw new TypeError(`${key}: malformed URL protocol spec`);
+  }
+  if (H(rule, "separator") && typeof rule.separator !== "string") throw new TypeError(`${key}: separator must be a string`);
+  if (H(rule, "trim") && typeof rule.trim !== "boolean") throw new TypeError(`${key}: trim must be a boolean`);
+  if (rule.t === ENUM && (!Array.isArray(rule.values) || !rule.values.length || rule.values.some(v => typeof v !== "string" && typeof v !== "number" && typeof v !== "boolean" || typeof v === "number" && !Number.isFinite(v)))) {
+    throw new TypeError(`${key}: oneOf values must be strings, finite numbers, or booleans`);
+  }
+  if (rule.t === LIST && rule.item && typeof rule.item === "object") assertRuleOptions(`${key} item`, rule.item);
 }
 
 function validDefault(rule, value) {
@@ -299,7 +326,7 @@ function emitterContext(options) {
   if (optimize && optimize !== "default" && optimize !== "speed") throw new TypeError(`Unknown optimize mode: ${optimize}`);
   const t = options.splitLarge === false ? 1/0 : options.splitLargeThreshold ?? 512;
   if (!Number.isInteger(t) && t !== 1/0) throw new TypeError("splitLargeThreshold must be an integer");
-  return { e: 0, f: options.failFast === true, g: [], h: 0, j: 0, s: optimize > "default", t };
+  return { e: 0, f: options.failFast === true, g: [], h: 0, j: 0, r: 0, s: optimize > "default", t };
 }
 
 function functionName(options) {
@@ -352,6 +379,10 @@ function envFacade(ctx) {
   return "E(env)";
 }
 
+function envError(ctx) {
+  if(!ctx.r++)ctx.g.push(`function R(r){const e=Error("Invalid environment:\\n- "+r.join("\\n- "));e.name="EnvError";e.errors=r;throw e}`);
+}
+
 function simpleMissing(rule) {
   return !hasDefault(rule) && !rule.requiredWhen;
 }
@@ -369,12 +400,12 @@ function emitMissing(key, rule, pad, target, out, ctx) {
   if (H(rule, "default")) {
     out.push(`${pad}${used ? "else " : ""}${target} = ${literal(rule.default)};`);
   } else if (rule.optional && rule.requiredWhen) {
-    out.push(`${pad}${used ? "else " : ""}if (${requiredWhenExpr(rule)}(${envFacade(ctx)}) === true) ${err(`${key} is required`, ctx)};`);
+    out.push(`${pad}${used ? "else " : ""}if (${requiredWhenExpr(rule)}(${envFacade(ctx)}) === true) ${errMsg(key, " is required", ctx)};`);
     if (target > "b") out.push(`${pad}else ${target} = undefined;`);
   } else if (rule.optional) {
     out.push(`${pad}${used ? "else " : ""}${target} = undefined;`);
   } else {
-    out.push(`${pad}${used ? "else " : ""}${err(`${key} is required`, ctx)};`);
+    out.push(`${pad}${used ? "else " : ""}${errMsg(key, " is required", ctx)};`);
   }
 }
 
@@ -403,16 +434,16 @@ function emitPresent(key, rule, pad, target, ctx, value = "v") {
 
 function emitJson(key, pad, target, value, ctx) {
   if(!ctx.j++)ctx.g.push(`function J(v){return v[0]=="{"&&v[v.length-1]!="}"||v[0]=="["&&v[v.length-1]!="]"}`);
-  const er=err(`${key} must be valid JSON`,ctx);
+  const er=errMsg(key, " must be valid JSON",ctx);
   return [`${pad}try { if (J(${value})) throw 0; ${target} = JSON.parse(${value}); } catch { ${er}; }`];
 }
 
 function emitString(key, rule, pad, target, value, ctx) {
   const out = [];
-  if (rule.min != null && !skipMin(rule)) out.push(`${pad}if (${value}.length < ${num(rule.min)}) ${err(`${key} must have length >= ${rule.min}`, ctx)};`);
-  if (rule.max != null) out.push(`${out.length ? pad + "else " : pad}if (${value}.length > ${num(rule.max)}) ${err(`${key} must have length <= ${rule.max}`, ctx)};`);
-  if (rule.startsWith != null) out.push(`${out.length ? pad + "else " : pad}if (!${value}.startsWith(${literal(rule.startsWith)})) ${err(`${key} must start with ${rule.startsWith}`, ctx)};`);
-  if (rule.includes != null) out.push(`${out.length ? pad + "else " : pad}if (!${value}.includes(${literal(rule.includes)})) ${err(`${key} must include ${rule.includes}`, ctx)};`);
+  if (rule.min != null && !skipMin(rule)) out.push(`${pad}if (${value}.length < ${num(rule.min)}) ${errMsg(key, ` must have length >= ${rule.min}`, ctx)};`);
+  if (rule.max != null) out.push(`${out.length ? pad + "else " : pad}if (${value}.length > ${num(rule.max)}) ${errMsg(key, ` must have length <= ${rule.max}`, ctx)};`);
+  if (rule.startsWith != null) out.push(`${out.length ? pad + "else " : pad}if (!${value}.startsWith(${literal(rule.startsWith)})) ${errMsg(key, ` must start with ${rule.startsWith}`, ctx)};`);
+  if (rule.includes != null) out.push(`${out.length ? pad + "else " : pad}if (!${value}.includes(${literal(rule.includes)})) ${errMsg(key, ` must include ${rule.includes}`, ctx)};`);
   out.push(`${out.length ? pad + "else " : pad}${target} = ${value};`);
   return out;
 }
@@ -427,14 +458,14 @@ function emitNumber(key, rule, pad, target, integer, value, ctx) {
   const out = [];
   if (rule.strict) {
     const re = integer ? "/^[+-]?\\d+$/" : "/^[+-]?(?:\\d+\\.?\\d*|\\.\\d+)$/";
-    out.push(`${pad}if (!${re}.test(${value})) ${err(`${key} must be ${integer ? "a strict integer" : "a strict number"}`, ctx)};`);
+    out.push(`${pad}if (!${re}.test(${value})) ${errMsg(key, ` must be ${integer ? "a strict integer" : "a strict number"}`, ctx)};`);
     out.push(`${pad}else {`);
     pad += "  ";
   }
   out.push(`${pad}${value} = +${value};`);
-  out.push(`${pad}if (${integer ? int32Bounded(rule) ? `(${value} | 0) !== ${value}` : `!Number.isInteger(${value})` : `!isFinite(${value})`}) ${err(`${key} must be ${integer ? "an integer" : "a number"}`, ctx)};`);
-  if (rule.min != null) out.push(`${pad}else if (${value} < ${num(rule.min)}) ${err(`${key} must be >= ${rule.min}`, ctx)};`);
-  if (rule.max != null) out.push(`${pad}else if (${value} > ${num(rule.max)}) ${err(`${key} must be <= ${rule.max}`, ctx)};`);
+  out.push(`${pad}if (${integer ? int32Bounded(rule) ? `(${value} | 0) !== ${value}` : `!Number.isInteger(${value})` : `!isFinite(${value})`}) ${errMsg(key, ` must be ${integer ? "an integer" : "a number"}`, ctx)};`);
+  if (rule.min != null) out.push(`${pad}else if (${value} < ${num(rule.min)}) ${errMsg(key, ` must be >= ${rule.min}`, ctx)};`);
+  if (rule.max != null) out.push(`${pad}else if (${value} > ${num(rule.max)}) ${errMsg(key, ` must be <= ${rule.max}`, ctx)};`);
   out.push(`${pad}else ${target} = ${value};`);
   if (rule.strict) out.push(`${pad.slice(0, -2)}}`);
   return out;
@@ -454,13 +485,13 @@ function emitStrictNumScalar(key, rule, pad, target, value, ctx) {
     `${pad}    else if (c < 48 || c > 57) break;`,
     `${pad}    else d = 1;`,
     `${pad}  }`,
-    `${pad}  if (!d || q !== ${value}.length) ${err(`${key} must be a strict number`, ctx)};`,
+    `${pad}  if (!d || q !== ${value}.length) ${errMsg(key, " must be a strict number", ctx)};`,
     `${pad}  else {`,
     `${pad}    ${value} = +${value};`,
-    `${pad}    if (!isFinite(${value})) ${err(`${key} must be a number`, ctx)};`
+    `${pad}    if (!isFinite(${value})) ${errMsg(key, " must be a number", ctx)};`
   ];
-  if (rule.min != null) out.push(`${pad}    else if (${value} < ${num(rule.min)}) ${err(`${key} must be >= ${rule.min}`, ctx)};`);
-  if (rule.max != null) out.push(`${pad}    else if (${value} > ${num(rule.max)}) ${err(`${key} must be <= ${rule.max}`, ctx)};`);
+  if (rule.min != null) out.push(`${pad}    else if (${value} < ${num(rule.min)}) ${errMsg(key, ` must be >= ${rule.min}`, ctx)};`);
+  if (rule.max != null) out.push(`${pad}    else if (${value} > ${num(rule.max)}) ${errMsg(key, ` must be <= ${rule.max}`, ctx)};`);
   out.push(
     `${pad}    else ${target} = ${value};`,
     `${pad}  }`,
@@ -477,7 +508,7 @@ function emitStrictIntScalar(key, rule, pad, target, value, ctx) {
     `${pad}  let c = ${value}.charCodeAt(q);`,
     `${pad}  let g = 1;`,
     `${pad}  if (c === 43 || c === 45) { g = c === 45 ? -1 : 1; q++; }`,
-    `${pad}  if (q === z) ${err(`${key} must be a strict integer`, ctx)};`,
+    `${pad}  if (q === z) ${errMsg(key, " must be a strict integer", ctx)};`,
     `${pad}  else {`,
     `${pad}    let n = 0;`,
     `${pad}    for (; q < z; q++) {`,
@@ -485,13 +516,13 @@ function emitStrictIntScalar(key, rule, pad, target, value, ctx) {
     `${pad}      if (c < 48 || c > 57) break;`,
     `${pad}      n = n * 10 + c - 48;`,
     `${pad}    }`,
-    `${pad}    if (q !== z) ${err(`${key} must be a strict integer`, ctx)};`,
+    `${pad}    if (q !== z) ${errMsg(key, " must be a strict integer", ctx)};`,
     `${pad}    else {`,
     `${pad}      n *= g;`,
-    `${pad}      if ((n | 0) !== n) ${err(`${key} must be an integer`, ctx)};`
+    `${pad}      if ((n | 0) !== n) ${errMsg(key, " must be an integer", ctx)};`
   ];
-  if (rule.min != null) out.push(`${pad}      else if (n < ${num(rule.min)}) ${err(`${key} must be >= ${rule.min}`, ctx)};`);
-  if (rule.max != null) out.push(`${pad}      else if (n > ${num(rule.max)}) ${err(`${key} must be <= ${rule.max}`, ctx)};`);
+  if (rule.min != null) out.push(`${pad}      else if (n < ${num(rule.min)}) ${errMsg(key, ` must be >= ${rule.min}`, ctx)};`);
+  if (rule.max != null) out.push(`${pad}      else if (n > ${num(rule.max)}) ${errMsg(key, ` must be <= ${rule.max}`, ctx)};`);
   out.push(
     `${pad}      else ${target} = n;`,
     `${pad}    }`,
@@ -506,14 +537,14 @@ function emitEnum(key, rule, pad, target, value, ctx) {
     const checks = rule.values.map(v=>`${value} === ${literal(v)}`).join(" || ");
     return [
       `${pad}if (${checks}) ${target} = ${value};`,
-      `${pad}else ${err(`${key} must be one of ${rule.values.join(", ")}`, ctx)};`
+      `${pad}else ${errMsg(key, ` must be one of ${rule.values.join(", ")}`, ctx)};`
     ];
   }
   const out = [`${pad}switch (${value}) {`];
   for (const v of rule.values) {
     out.push(`${pad}  case ${literal(String(v))}: ${target} = ${literal(v)}; break;`);
   }
-  out.push(`${pad}  default: ${err(`${key} must be one of ${rule.values.join(", ")}`, ctx)};`);
+  out.push(`${pad}  default: ${errMsg(key, ` must be one of ${rule.values.join(", ")}`, ctx)};`);
   out.push(`${pad}}`);
   return out;
 }
@@ -521,9 +552,9 @@ function emitEnum(key, rule, pad, target, value, ctx) {
 function emitUrl(key, rule, pad, target, value, ctx) {
   if (rule.protocols) {
     const cases = rule.ps.map((protocol) => `case ${literal(protocol)}:`).join(" ");
-    return [`${pad}try { switch (new URL(${value}).protocol) { ${cases} ${target} = ${value}; break; default: ${err(`${key} must use protocol ${rule.protocols.join(", ")}`, ctx)}; } } catch { ${err(`${key} must be a URL`, ctx)}; }`];
+    return [`${pad}try { switch (new URL(${value}).protocol) { ${cases} ${target} = ${value}; break; default: ${errMsg(key, ` must use protocol ${rule.protocols.join(", ")}`, ctx)}; } } catch { ${errMsg(key, " must be a URL", ctx)}; }`];
   }
-  return [`${pad}try { new URL(${value}); ${target} = ${value}; } catch { ${err(`${key} must be a URL`, ctx)}; }`];
+  return [`${pad}try { new URL(${value}); ${target} = ${value}; } catch { ${errMsg(key, " must be a URL", ctx)}; }`];
 }
 
 function emitList(key, rule, pad, target, ctx) {
@@ -589,10 +620,11 @@ function emitSetList(key, rule, pad, target, ctx) {
   const n = `S${ctx.g.length}`;
   ctx.g.push(`const ${n}=new Set(${literal(item.values)});`);
   const out = segmentListHeader(rule, pad, ctx);
+  const keyAt = listKey(key);
   out.push(
-    `${pad}    if (a === z) ${err(`${key} item is required`, ctx)};`,
+    `${pad}    if (a === z) ${errMsg(keyAt, " is required", ctx)};`,
     `${pad}    else if (${n}.has(x = v.slice(a, z))) l[i] = x;`,
-    `${pad}    else ${err(`${key} item must be one of ${item.values.join(", ")}`, ctx)};`
+    `${pad}    else ${errMsg(keyAt, ` must be one of ${item.values.join(", ")}`, ctx)};`
   );
   return finishSegmentList(out, pad, target, ctx);
 }
@@ -600,14 +632,15 @@ function emitSetList(key, rule, pad, target, ctx) {
 function emitFastStrictIntList(key, rule, pad, target, ctx) {
   const item = rule.item;
   const out = segmentListHeader(rule, pad, ctx);
+  const keyAt = listKey(key);
   out.push(
-    `${pad}    if (a === z) ${"default" in item || item.optional ? `l[i] = ${literal(item.default)}` : err(`${key} item must be a strict integer`, ctx)};`,
+    `${pad}    if (a === z) ${"default" in item || item.optional ? `l[i] = ${literal(item.default)}` : errMsg(keyAt, " must be a strict integer", ctx)};`,
     `${pad}    else {`,
     `${pad}      let q = a;`,
     `${pad}      let c = v.charCodeAt(q);`,
     `${pad}      let g = 1;`,
     `${pad}      if (c === 43 || c === 45) { g = c === 45 ? -1 : 1; q++; }`,
-    `${pad}      if (q === z) ${err(`${key} item must be a strict integer`, ctx)};`,
+    `${pad}      if (q === z) ${errMsg(keyAt, " must be a strict integer", ctx)};`,
     `${pad}      else {`,
     `${pad}        let n = 0;`,
     `${pad}        for (; q < z; q++) {`,
@@ -615,13 +648,13 @@ function emitFastStrictIntList(key, rule, pad, target, ctx) {
     `${pad}          if (c < 48 || c > 57) break;`,
     `${pad}          n = n * 10 + c - 48;`,
     `${pad}        }`,
-    `${pad}        if (q !== z) ${err(`${key} item must be a strict integer`, ctx)};`,
+    `${pad}        if (q !== z) ${errMsg(keyAt, " must be a strict integer", ctx)};`,
     `${pad}        else {`,
     `${pad}          n *= g;`,
-    `${pad}          if ((n | 0) !== n) ${err(`${key} item must be an integer`, ctx)};`
+    `${pad}          if ((n | 0) !== n) ${errMsg(keyAt, " must be an integer", ctx)};`
   );
-  if (item.min != null) out.push(`${pad}          else if (n < ${num(item.min)}) ${err(`${key} item must be >= ${item.min}`, ctx)};`);
-  if (item.max != null) out.push(`${pad}          else if (n > ${num(item.max)}) ${err(`${key} item must be <= ${item.max}`, ctx)};`);
+  if (item.min != null) out.push(`${pad}          else if (n < ${num(item.min)}) ${errMsg(keyAt, ` must be >= ${item.min}`, ctx)};`);
+  if (item.max != null) out.push(`${pad}          else if (n > ${num(item.max)}) ${errMsg(keyAt, ` must be <= ${item.max}`, ctx)};`);
   out.push(
     `${pad}          else l[i] = n;`,
     `${pad}        }`,
@@ -637,26 +670,26 @@ function emitFastStrictIntList(key, rule, pad, target, ctx) {
 function emitSegmentStringList(key, rule, pad, target, ctx) {
   const item = rule.item;
   const out = segmentListHeader(rule, pad, ctx);
-  const label = `${key} item`;
+  const keyAt = listKey(key);
   const len = "z - a";
   let checked = false;
   if (item.min != null && !skipMin(item)) {
-    out.push(`${pad}    if (${len} < ${num(item.min)}) ${err(`${label} must have length >= ${item.min}`, ctx)};`);
+    out.push(`${pad}    if (${len} < ${num(item.min)}) ${errMsg(keyAt, ` must have length >= ${item.min}`, ctx)};`);
     checked = true;
   }
   if (item.max != null) {
-    out.push(`${checked ? pad + "    else " : pad + "    "}if (${len} > ${num(item.max)}) ${err(`${label} must have length <= ${item.max}`, ctx)};`);
+    out.push(`${checked ? pad + "    else " : pad + "    "}if (${len} > ${num(item.max)}) ${errMsg(keyAt, ` must have length <= ${item.max}`, ctx)};`);
     checked = true;
   }
   if (item.startsWith != null) {
     const prefix = literal(item.startsWith);
-    out.push(`${checked ? pad + "    else " : pad + "    "}if (${len} < ${item.startsWith.length} || !v.startsWith(${prefix}, a)) ${err(`${label} must start with ${item.startsWith}`, ctx)};`);
+    out.push(`${checked ? pad + "    else " : pad + "    "}if (${len} < ${item.startsWith.length} || !v.startsWith(${prefix}, a)) ${errMsg(keyAt, ` must start with ${item.startsWith}`, ctx)};`);
     checked = true;
   }
   if (item.includes != null) {
     const needle = literal(item.includes);
     const needleLen = item.includes.length;
-    out.push(`${checked ? pad + "    else " : pad + "    "}if (((x = v.indexOf(${needle}, a)) < 0) || x + ${needleLen} > z) ${err(`${label} must include ${item.includes}`, ctx)};`);
+    out.push(`${checked ? pad + "    else " : pad + "    "}if (((x = v.indexOf(${needle}, a)) < 0) || x + ${needleLen} > z) ${errMsg(keyAt, ` must include ${item.includes}`, ctx)};`);
     checked = true;
   }
   out.push(`${checked ? pad + "    else " : pad + "    "}l[i] = v.slice(a, z);`);
@@ -707,7 +740,7 @@ function listAssign(pad, target) {
 }
 
 function emitListItem(key, rule, pad, ctx) {
-  key = `${key} item`;
+  key = listKey(key);
   if (rule.optional || !simpleMissing(rule)) {
     const out = [`${pad}if (x === "") {`];
     emitMissing(key, rule, `${pad}  `, "l[i]", out, ctx);
@@ -721,7 +754,7 @@ function emitBool(key, pad, target, value, ctx) {
   return [
     `${pad}if (${value}==="true"||${value}==="1"||${value}==="yes"||${value}==="on") ${target} = true;`,
     `${pad}else if (${value}==="false"||${value}==="0"||${value}==="no"||${value}==="off") ${target} = false;`,
-    `${pad}else ${err(`${key} must be a boolean`, ctx)};`
+    `${pad}else ${errMsg(key, " must be a boolean", ctx)};`
   ];
 }
 
@@ -747,7 +780,20 @@ function innerTypeFor(rule) {
 }
 
 function err(message, ctx) {
-  return ctx.f ? `throw Error(${literal(`Invalid environment:\n- ${message}`)})` : `(r ??= []).push(${literal(message)})`;
+  return errExpr(literal(message), ctx);
+}
+
+function errMsg(key, suffix, ctx) {
+  return typeof key === "string" ? err(`${key}${suffix}`, ctx) : errExpr(`${key.expr}+${literal(suffix)}`, ctx);
+}
+
+function errExpr(message, ctx) {
+  envError(ctx);
+  return ctx.f ? `R([${message}])` : `(r ??= []).push(${message})`;
+}
+
+function listKey(key) {
+  return { expr: `${literal(key)}+"["+i+"]"` };
 }
 
 function literal(value) {

@@ -255,7 +255,7 @@ describe("security hardening", () => {
     const generated = await compile(defineEnv({ VALUE: list(json()) }));
     try {
       Array.prototype[0] = { polluted: true };
-      assert.throws(() => generated.loadEnv({ VALUE: "{" }), /VALUE item must be valid JSON/);
+      assert.throws(() => generated.loadEnv({ VALUE: "{" }), /VALUE\[0\] must be valid JSON/);
     } finally {
       delete Array.prototype[0];
     }

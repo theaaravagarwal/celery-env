@@ -2,8 +2,8 @@ import { gzipSync } from "node:zlib";
 import { readFile } from "node:fs/promises";
 
 const files = [
-  ["src/index.js", 3200],
-  ["src/compiler.js", 7050]
+  ["src/index.js", 3700],
+  ["src/compiler.js", 7500]
 ];
 let failed = false;
 

@@ -76,8 +76,19 @@ describe("parseEnv", () => {
   it("rejects invalid schema entries at definition time", () => {
     assert.throws(() => defineEnv({ PORT: {} }), /PORT: schema entry is not a celery-env spec/);
     assert.throws(() => parseEnv({ PORT: {} }, { PORT: "3000" }), /PORT: schema entry is not a celery-env spec/);
-    assert.throws(() => defineEnv({ PORT: int({ requiredWhen: true }) }), /PORT: requiredWhen must be a function/);
-    assert.throws(() => parseEnv({ PORT: int({ requiredWhen: true }) }, { PORT: "3000" }), /PORT: requiredWhen must be a function/);
+    assert.throws(() => int({ requiredWhen: true }), /int\(\) requiredWhen must be a function/);
+  });
+
+  it("rejects invalid option shapes at construction time", () => {
+    assert.throws(() => str(null), /str\(\) options must be an object/);
+    assert.throws(() => str({ min: NaN }), /str\(\) min must be a finite number/);
+    assert.throws(() => str({ startsWith: 1 }), /str\(\) startsWith must be a string/);
+    assert.throws(() => int({ strict: "yes" }), /int\(\) strict must be a boolean/);
+    assert.throws(() => bool({ optional: "yes" }), /bool\(\) optional must be a boolean/);
+    assert.throws(() => oneOf([Infinity]), /oneOf\(\) values must be strings, finite numbers, or booleans/);
+    assert.throws(() => url({ protocols: ["https:"] }), /url\(\) protocols must be protocol names without ":"/);
+    assert.throws(() => list(str(), { separator: 1 }), /list\(\) separator must be a string/);
+    assert.throws(() => list(str(), { trim: "yes" }), /list\(\) trim must be a boolean/);
   });
 
   it("supports opt-in strict numeric parsing", () => {
