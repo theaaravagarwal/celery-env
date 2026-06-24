@@ -1,7 +1,6 @@
 # Getting Started
 
-This guide assumes you have a Node project and want one reliable place to define
-environment variables.
+This guide shows the generated-validator path for a Node project.
 
 ## 1. Install
 
@@ -15,12 +14,12 @@ yarn add -D celery-env
 bun add -d celery-env
 ```
 
-Use a dev dependency when you generate validators. The generated output has no
-runtime dependency on `celery-env`.
+Generated validators do not need `celery-env` at runtime, so most apps install
+it as a dev dependency.
 
 ## 2. Create A Schema
 
-Create `env.schema.mjs` in your project root:
+Create `env.schema.mjs`:
 
 ```js
 import { bool, defineEnv, int, oneOf, str, url } from "celery-env";
@@ -63,7 +62,7 @@ npx celery-env generate \
   --minify
 ```
 
-This creates:
+The command writes:
 
 | File | Purpose |
 | --- | --- |
@@ -71,7 +70,7 @@ This creates:
 | `src/env.d.ts` | Types for editors and TypeScript. |
 | `.env.example` | Documented env template. |
 
-Add the command to `package.json` so the workflow is repeatable:
+Add a script so generation is repeatable:
 
 ```json
 {
@@ -91,10 +90,9 @@ export const env = loadEnv(process.env);
 
 Use `env` everywhere else instead of reading `process.env` directly.
 
-## 5. Use A Nested App Config
+## 5. Optional: Shape App Config
 
-If your app already expects a nested config object, keep the generated env flat
-and adapt it in one small file:
+Keep the generated env flat. If your app wants nested config, adapt it once:
 
 ```js
 import { loadEnv } from "./env.mjs";
