@@ -171,7 +171,7 @@ competitors were checked with `npm view` on 2026-06-25.
 
 | Package | Version checked | Runtime deps | Unpacked npm size | Files |
 | --- | ---: | ---: | ---: | ---: |
-| `celery-env` | 0.1.2 + infer | 0 | 117.7 kB | 26 |
+| `celery-env` | 0.1.4 | 0 | 119.2 kB | 26 |
 | `zod` | 4.4.3 | 0 | 4.56 MB | 718 |
 | `valibot` | 1.4.1 | 0 | 1.84 MB | 9 |
 | `envalid` | 8.2.0 | 1 | 88.8 kB | 39 |

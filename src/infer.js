@@ -10,6 +10,7 @@ const DEFAULT_SCAN_PATHS = ["src", "app", "pages", "lib", "server"];
 const BOOL_VALUES = new Set(["true", "yes", "on", "false", "no", "off"]);
 const SECRET_KEY = /(?:SECRET|TOKEN|PASSWORD|PASS|PRIVATE|CREDENTIAL|AUTH|API_KEY|ACCESS_KEY)/i;
 const SECRET_VALUE = /(?:^sk_|^pk_|^gh[pousr]_|^xox[baprs]-|^eyJ|-----BEGIN |:\/\/[^/\s:@]+:[^/\s:@]+@|[A-Za-z0-9+/=_-]{32,})/;
+const ENUM_VALUE = /^[A-Za-z][A-Za-z0-9_.:-]{0,31}$/;
 const MAX_ENV_FILE_BYTES = 256 * 1024;
 const MAX_SOURCE_FILE_BYTES = 1024 * 1024;
 const MAX_SOURCE_FILES = 2000;
@@ -256,28 +257,29 @@ function inferRule(entry) {
     return { kind: "oneOf", values: ["development", "test", "production"], options: { default: "development" } };
   }
 
-  const samples = entry.values.map((item) => item.value).filter((value) => value !== "");
+  const samples = entry.values.filter((item) => item.value !== "");
   if (!samples.length) return { kind: "str", options: { min: 1 } };
 
-  const kinds = samples.map(inferValue);
+  const enumRule = sampleEnumRule(entry, samples);
+  if (enumRule) return withExample(entry, enumRule);
+
+  const kinds = samples.map((item) => inferValue(item.value, enumSafe(entry, item)));
   if (kinds.some((kind) => kind.kind === "str")) return stringRule(entry);
 
   const first = kinds[0].kind;
   if (!kinds.every((kind) => kind.kind === first)) return stringRule(entry);
 
   const rule = mergeRules(first, kinds);
-  const example = safeExample(entry, rule);
-  if (example !== undefined) rule.options = { ...rule.options, example };
-  return rule;
+  return withExample(entry, rule);
 }
 
-function inferValue(value) {
+function inferValue(value, allowEnum) {
   if (BOOL_VALUES.has(value)) return { kind: "bool" };
   if (strictInt(value)) return { kind: "int", options: { strict: true } };
   if (strictNumber(value)) return { kind: "num", options: { strict: true } };
   const jsonRule = inferJson(value);
   if (jsonRule) return jsonRule;
-  const listRule = inferList(value);
+  const listRule = inferList(value, allowEnum);
   if (listRule) return listRule;
   const urlRule = inferUrl(value);
   if (urlRule) return urlRule;
@@ -292,7 +294,7 @@ function inferJson(value) {
   } catch {}
 }
 
-function inferList(value) {
+function inferList(value, allowEnum) {
   if (!value.includes(",") || /^\s*[\[{]/.test(value)) return;
   const parts = value.split(",").map((part) => part.trim());
   if (parts.length < 2 || parts.some((part) => part === "")) return;
@@ -304,7 +306,11 @@ function inferList(value) {
     return urlRule || { kind: "str" };
   });
   const first = items[0].kind;
-  if (first === "str" || !items.every((item) => item.kind === first)) return;
+  if (first === "str") {
+    const values = allowEnum && enumValues(parts);
+    return { kind: "list", item: values ? { kind: "oneOf", values } : { kind: "str", options: { min: 1 } } };
+  }
+  if (!items.every((item) => item.kind === first)) return;
   return { kind: "list", item: mergeRules(first, items) };
 }
 
@@ -334,9 +340,12 @@ function mergeRules(kind, rules) {
   }
   if (kind === "list") {
     const itemKind = rules[0].item.kind;
+    if (!rules.every((rule) => rule.item.kind === itemKind)) return { kind: "list", item: { kind: "str", options: { min: 1 } } };
     return { kind: "list", item: mergeRules(itemKind, rules.map((rule) => rule.item)) };
   }
+  if (kind === "oneOf") return { kind, values: enumValues(rules.flatMap((rule) => rule.values)) };
   if (kind === "int" || kind === "num") return { kind, options: { strict: true } };
+  if (kind === "str" && rules.some((rule) => rule.options)) return { kind, options: { min: 1 } };
   return { kind };
 }
 
@@ -349,8 +358,27 @@ function stringRule(entry) {
 
 function safeExample(entry, rule) {
   const sample = entry.values.find((item) => item.safeExamples && item.value !== "");
-  if (!sample || SECRET_KEY.test(entry.key) || SECRET_VALUE.test(sample.value)) return;
+  if (!sample || unsafe(entry.key, sample.value)) return;
   return exampleValue(sample.value, rule);
+}
+
+function withExample(entry, rule) {
+  const example = safeExample(entry, rule);
+  if (example !== undefined) rule.options = { ...rule.options, example };
+  return rule;
+}
+
+function enumSafe(entry, item) {
+  return item.safeExamples && !unsafe(entry.key, item.value);
+}
+
+function sampleEnumRule(entry, samples) {
+  const values = samples.every((item) => enumSafe(entry, item)) && enumValues(samples.map((item) => item.value));
+  if (values && values.length > 1 && values.length <= 8) return { kind: "oneOf", values };
+}
+
+function unsafe(key, value) {
+  return SECRET_KEY.test(key) || SECRET_VALUE.test(value);
 }
 
 function exampleValue(value, rule) {
@@ -373,7 +401,7 @@ function collectRuleImports(imports, rule) {
 }
 
 function ruleSource(rule) {
-  if (rule.kind === "oneOf") return `oneOf(${literal(rule.values)}, ${literal(rule.options)})`;
+  if (rule.kind === "oneOf") return rule.options && Object.keys(rule.options).length ? `oneOf(${literal(rule.values)}, ${literal(rule.options)})` : `oneOf(${literal(rule.values)})`;
   if (rule.kind === "list") {
     const item = ruleSource(rule.item);
     return rule.options && Object.keys(rule.options).length ? `list(${item}, ${literal(rule.options)})` : `list(${item})`;
@@ -388,6 +416,11 @@ function schemaKey(key) {
 
 function literal(value) {
   return JSON.stringify(value);
+}
+
+function enumValues(values) {
+  if (!values.every((value) => ENUM_VALUE.test(value))) return;
+  return [...new Set(values)].sort();
 }
 
 function importSort(a, b) {

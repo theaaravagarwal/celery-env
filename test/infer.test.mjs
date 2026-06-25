@@ -37,33 +37,41 @@ describe("env schema inference", () => {
 
   it("generates conservative schema source from env files and scanned code", async () => withTempDir("celery-infer-", async (dir) => {
     const env = join(dir, ".env.example");
+    const sample = join(dir, ".env.sample");
     const source = join(dir, "src", "config.ts");
     await mkdir(join(dir, "src"), { recursive: true });
     await writeFile(env, [
       "NODE_ENV=development",
+      "APP_ENV=staging",
+      "LOG_LEVEL=info",
       "PORT=3000",
       "DEBUG=true",
       "RATE=.5",
       "DATABASE_URL=postgres://user:pass@localhost:5432/app",
       "PUBLIC_URL=https://example.com",
       "FEATURES=1,2,3",
+      "REGIONS=iad,sfo,fra",
       "SETTINGS={\"ok\":true}",
       "API_KEY=sk_should_not_be_emitted",
       "GITHUB_TOKEN=ghp_should_not_be_emitted",
       "JWT=eyJshouldNotBeEmitted",
       "NAME=celery"
     ].join("\n"), "utf8");
+    await writeFile(sample, "APP_ENV=production\nLOG_LEVEL=warn\n", "utf8");
     await writeFile(source, "export const secret = process.env.SESSION_SECRET;\n", "utf8");
 
-    const schema = await inferSchemaSource({ cwd: dir, envFiles: [".env.example"], scanPaths: ["src"] });
+    const schema = await inferSchemaSource({ cwd: dir, envFiles: [".env.example", ".env.sample"], scanPaths: ["src"] });
 
     assert.match(schema, /import \{ bool, defineEnv, int, json, list, num, oneOf, str, url \}/);
+    assert.match(schema, /APP_ENV: oneOf\(\["production","staging"\], \{"example":"staging"\}\)/);
+    assert.match(schema, /LOG_LEVEL: oneOf\(\["info","warn"\], \{"example":"info"\}\)/);
     assert.match(schema, /NODE_ENV: oneOf\(\["development","test","production"\], \{"default":"development"\}\)/);
     assert.match(schema, /PORT: int\(\{"strict":true,"example":3000\}\)/);
     assert.match(schema, /DEBUG: bool\(\{"example":true\}\)/);
     assert.match(schema, /RATE: num\(\{"strict":true,"example":0.5\}\)/);
     assert.match(schema, /PUBLIC_URL: url\(\{"protocols":\["https"\],"example":"https:\/\/example.com"\}\)/);
     assert.match(schema, /FEATURES: list\(int\(\{"strict":true\}\), \{"example":\[1,2,3\]\}\)/);
+    assert.match(schema, /REGIONS: list\(oneOf\(\["fra","iad","sfo"\]\), \{"example":\["iad","sfo","fra"\]\}\)/);
     assert.match(schema, /SETTINGS: json\(\{"example":\{"ok":true\}\}\)/);
     assert.match(schema, /SESSION_SECRET: str\(\{"min":1\}\)/);
     assert.doesNotMatch(schema, /sk_should_not_be_emitted/);
@@ -76,7 +84,9 @@ describe("env schema inference", () => {
     await writeFile(join(dir, ".env.local"), [
       "PUBLIC_URL=https://local.example",
       "FEATURE_FLAG=true",
-      "PORT=4000"
+      "PORT=4000",
+      "APP_ENV=staging",
+      "REGIONS=iad,sfo"
     ].join("\n"), "utf8");
 
     const schema = await inferSchemaSource({ cwd: dir });
@@ -84,7 +94,10 @@ describe("env schema inference", () => {
     assert.match(schema, /PUBLIC_URL: url\(\{"protocols":\["https"\]\}\)/);
     assert.match(schema, /FEATURE_FLAG: bool\(\)/);
     assert.match(schema, /PORT: int\(\{"strict":true\}\)/);
+    assert.match(schema, /APP_ENV: str\(\{"min":1\}\)/);
+    assert.match(schema, /REGIONS: list\(str\(\{"min":1\}\)\)/);
     assert.doesNotMatch(schema, /local\.example/);
+    assert.doesNotMatch(schema, /staging/);
     assert.doesNotMatch(schema, /"example"/);
   }));
 

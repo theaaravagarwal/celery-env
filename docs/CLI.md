@@ -42,6 +42,7 @@ npx celery-env infer \
 Inference is conservative. Ambiguous values become `str({ min: 1 })`. Only
 example, sample, or template env files can emit `example` metadata; local env
 values and secret-looking values are not copied into the generated schema.
+Safe example values can infer enums and string-list item enums.
 Review the result for project-specific constraints such as `requiredWhen`,
 `min`, `max`, or stricter URL protocols.
 

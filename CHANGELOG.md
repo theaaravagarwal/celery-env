@@ -1,5 +1,18 @@
 # Changelog
 
+## 0.1.4
+
+- Improved `celery-env infer` to infer `oneOf(...)` from safe example/sample
+  env values and `list(oneOf(...))` for safe string lists.
+- Kept local `.env` and `.env.local` values out of generated enum literals.
+
+## 0.1.3
+
+- Added `celery-env infer` for generating starter schemas from existing env
+  files and static source references.
+- Hardened inference scans with symlink refusal, resource caps, packed smoke
+  coverage, and package-size budgets.
+
 ## 0.1.2
 
 - Refreshed the project logo and published brand asset.
