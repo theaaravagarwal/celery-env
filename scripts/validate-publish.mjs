@@ -9,6 +9,7 @@ const pkg = JSON.parse(await readFile("package.json", "utf8"));
 const emptyDependencyFields = ["dependencies", "devDependencies", "peerDependencies", "optionalDependencies"];
 const expectedPrepublishOnly = "npm test && npm run size && npm run validate:publish && npm run smoke:pack";
 const binPath = typeof pkg.bin === "string" ? pkg.bin : pkg.bin?.["celery-env"];
+const expectedExports = [".", "./compiler"];
 
 for (const field of emptyDependencyFields) {
   assert.deepEqual(pkg[field] || {}, {}, `${field} must stay empty in the root package`);
@@ -18,6 +19,7 @@ for (const script of ["preinstall", "install", "postinstall", "prepare", "prepac
   assert.equal(pkg.scripts?.[script], undefined, `${script} lifecycle script must not be present`);
 }
 assert.equal(pkg.scripts?.prepublishOnly, expectedPrepublishOnly, "prepublishOnly must stay limited to the verification gate");
+assert.deepEqual(Object.keys(pkg.exports).sort(), expectedExports, "public exports changed unexpectedly");
 
 const expectedFiles = new Set([
   "package/LICENSE",
@@ -44,7 +46,8 @@ const expectedFiles = new Set([
   "package/src/compiler.d.ts",
   "package/src/compiler.js",
   "package/src/index.d.ts",
-  "package/src/index.js"
+  "package/src/index.js",
+  "package/src/infer.js"
 ]);
 
 for (const path of [
@@ -79,7 +82,7 @@ const [pack] = JSON.parse(output);
 const actualFiles = new Set(pack.files.map((file) => `package/${file.path}`));
 
 assert.deepEqual(actualFiles, expectedFiles, "npm package contents changed unexpectedly");
-assert.ok(pack.size < 33000, `packed tarball is too large: ${pack.size}`);
-assert.ok(pack.unpackedSize < 112000, `unpacked package is too large: ${pack.unpackedSize}`);
+assert.ok(pack.size < 32500, `packed tarball is too large: ${pack.size}`);
+assert.ok(pack.unpackedSize < 118000, `unpacked package is too large: ${pack.unpackedSize}`);
 
 console.log(`publish validation ok: ${pack.files.length} files, ${pack.size} packed bytes`);

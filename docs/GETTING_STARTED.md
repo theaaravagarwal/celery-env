@@ -25,7 +25,18 @@ npx celery-env --version
 
 ## 2. Create A Schema
 
-Create `env.schema.mjs`:
+If your project already has `.env` files or `process.env` references, infer a
+starter schema:
+
+```sh
+npx celery-env infer --schema env.schema.mjs
+```
+
+This reads `.env.example`, `.env`, `.env.local`, and common source directories.
+It writes a starter schema and refuses overwrite unless you pass `--force`.
+Review it for project-specific rules such as production-only secrets, ranges,
+or stricter URL protocols.
+You can also create `env.schema.mjs` manually:
 
 ```js
 import { bool, defineEnv, int, oneOf, str, url } from "celery-env";

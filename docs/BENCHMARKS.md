@@ -68,12 +68,12 @@ Snapshot dependency versions:
 
 ## Package Metadata
 
-Package footprint is separate from runtime speed. Current npm metadata checked
-on 2026-06-25:
+Package footprint is separate from runtime speed. Celery is this branch's
+`npm pack --dry-run`; competitors were checked with `npm view` on 2026-06-25.
 
 | Package | Version Checked | Runtime Deps | Unpacked npm Size | Files |
 | --- | ---: | ---: | ---: | ---: |
-| `celery-env` | 0.1.2 | 0 | 95.7 kB | 20 |
+| `celery-env` | 0.1.2 + infer | 0 | 117.7 kB | 26 |
 | `zod` | 4.4.3 | 0 | 4.56 MB | 718 |
 | `valibot` | 1.4.1 | 0 | 1.84 MB | 9 |
 | `envalid` | 8.2.0 | 1 | 88.8 kB | 39 |

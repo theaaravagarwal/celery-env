@@ -19,6 +19,32 @@ Targets:
 | `next` | Next.js projects. |
 | `vite` | Vite projects and edge-style environments. |
 
+## Infer A Schema
+
+```sh
+npx celery-env infer --schema env.schema.mjs
+```
+
+Use `infer` when a project already has `.env` files or source code that reads
+env vars. It discovers `.env.example`, `.env`, `.env.local`, and common source
+directories by default. It writes a starter schema and refuses overwrite unless
+you pass `--force`.
+
+You can pass sources explicitly:
+
+```sh
+npx celery-env infer \
+  --schema env.schema.mjs \
+  --env .env.example \
+  --scan src
+```
+
+Inference is conservative. Ambiguous values become `str({ min: 1 })`. Only
+example, sample, or template env files can emit `example` metadata; local env
+values and secret-looking values are not copied into the generated schema.
+Review the result for project-specific constraints such as `requiredWhen`,
+`min`, `max`, or stricter URL protocols.
+
 ## Generate
 
 ```sh
@@ -31,7 +57,17 @@ npx celery-env generate \
 
 Use `generate` after editing `env.schema.mjs`.
 
-## Flags
+## Infer Flags
+
+| Flag | Meaning |
+| --- | --- |
+| `--schema <file>` | Schema file to write. |
+| `--env <file>` | Env file to read for `infer`. Repeatable. |
+| `--scan <path>` | File or directory to scan for `infer`. Repeatable. |
+| `--force` | Overwrite an existing schema file. |
+| `--version`, `-v` | Print the installed CLI version. |
+
+## Generate Flags
 
 | Flag | Meaning |
 | --- | --- |

@@ -2,7 +2,16 @@
 
 Use this guide when adding Celery to an existing app.
 
-## Step 1. Find Env Reads
+## Step 1. Infer A Starter Schema
+
+```sh
+npx celery-env infer --schema env.schema.mjs
+```
+
+This reads existing env files and static source references. Review the generated
+schema before using it in production.
+
+## Step 2. Find Env Reads
 
 Search for direct env access:
 
@@ -12,7 +21,7 @@ rg "process\\.env|env\\.[A-Z_]+"
 
 The goal is one central module that reads env and exports validated config.
 
-## Step 2. Write A Flat Schema
+## Step 3. Tighten The Flat Schema
 
 Keep schema keys close to actual env var names:
 
@@ -26,13 +35,13 @@ export default defineEnv({
 });
 ```
 
-## Step 3. Generate
+## Step 4. Generate
 
 ```sh
 npx celery-env generate --schema env.schema.mjs --out src/env.mjs --types src/env.d.ts --example .env.example --minify
 ```
 
-## Step 4. Keep Your Existing Shape
+## Step 5. Keep Your Existing Shape
 
 If your app already expects nested config, adapt once:
 
@@ -49,6 +58,6 @@ export function loadConfig(source = process.env) {
 }
 ```
 
-## Step 5. Remove Direct Env Reads
+## Step 6. Remove Direct Env Reads
 
 Use the validated config everywhere else.
