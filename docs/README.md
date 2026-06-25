@@ -4,9 +4,9 @@ Start here if you are new to Celery or new to typed env validation.
 
 ## Learning Path
 
-1. [Getting Started](GETTING_STARTED.md): install, write a schema, generate a validator.
+1. [Getting Started](GETTING_STARTED.md): install, infer or write a schema, generate a validator.
 2. [Schema API](SCHEMA.md): every validator and option.
-3. [CLI](CLI.md): `init`, `generate`, and generation flags.
+3. [CLI](CLI.md): `init`, `infer`, `generate`, and command flags.
 4. [TypeScript](TYPESCRIPT.md): generated types and `InferEnv`.
 5. [Runtime Mode](RUNTIME.md): use Celery without generation.
 6. [Examples](EXAMPLES.md): Node service and Next.js-style schemas.

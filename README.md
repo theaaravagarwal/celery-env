@@ -50,6 +50,9 @@ Infer a schema from existing env files and source references:
 npx celery-env infer --schema env.schema.mjs
 ```
 
+This writes a starter schema and refuses overwrite unless you pass `--force`.
+Review it before generating; inference cannot know every production-only rule.
+
 Or create a schema manually:
 
 ```js
@@ -163,18 +166,17 @@ The benchmark corpus includes realistic API, web, worker, list-heavy, and
 JSON-heavy env schemas. Results are workload-specific; real `process.env` access
 narrows some gaps compared with frozen plain env objects.
 
-Current npm package metadata:
+Package metadata snapshot. Celery is this branch's `npm pack --dry-run`;
+competitors were checked with `npm view` on 2026-06-25.
 
 | Package | Version checked | Runtime deps | Unpacked npm size | Files |
 | --- | ---: | ---: | ---: | ---: |
-| `celery-env` | 0.1.2 | 0 | 95.7 kB | 20 |
+| `celery-env` | 0.1.2 + infer | 0 | 117.7 kB | 26 |
 | `zod` | 4.4.3 | 0 | 4.56 MB | 718 |
 | `valibot` | 1.4.1 | 0 | 1.84 MB | 9 |
 | `envalid` | 8.2.0 | 1 | 88.8 kB | 39 |
 | `envsafe` | 2.0.3 | 0 | 91.4 kB | 27 |
 | `env-var` | 7.5.0 | 0 | 42.9 kB | 30 |
-
-Metadata checked with `npm view` on 2026-06-25.
 
 ## Documentation
 

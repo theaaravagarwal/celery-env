@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdir, readFile, symlink, writeFile } from "node:fs/promises";
+import { mkdtemp, mkdir, readFile, rm, symlink, writeFile } from "node:fs/promises";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { describe, it } from "node:test";
@@ -30,11 +31,11 @@ describe("env schema inference", () => {
       const bracket = process.env["SESSION_SECRET"];
       const vite = import.meta.env.VITE_PUBLIC_KEY;
       const { NODE_ENV, PORT: localPort, DEBUG = "false" } = process.env;
-    `), ["API_URL", "DEBUG", "NODE_ENV", "PORT", "SESSION_SECRET", "VITE_PUBLIC_KEY"]);
+      const { VITE_API_URL } = import.meta.env;
+    `), ["API_URL", "DEBUG", "NODE_ENV", "PORT", "SESSION_SECRET", "VITE_API_URL", "VITE_PUBLIC_KEY"]);
   });
 
-  it("generates conservative schema source from env files and scanned code", async () => {
-    const dir = join(process.cwd(), ".tmp", `celery-infer-${process.pid}-${Date.now()}`);
+  it("generates conservative schema source from env files and scanned code", async () => withTempDir("celery-infer-", async (dir) => {
     const env = join(dir, ".env.example");
     const source = join(dir, "src", "config.ts");
     await mkdir(join(dir, "src"), { recursive: true });
@@ -48,6 +49,8 @@ describe("env schema inference", () => {
       "FEATURES=1,2,3",
       "SETTINGS={\"ok\":true}",
       "API_KEY=sk_should_not_be_emitted",
+      "GITHUB_TOKEN=ghp_should_not_be_emitted",
+      "JWT=eyJshouldNotBeEmitted",
       "NAME=celery"
     ].join("\n"), "utf8");
     await writeFile(source, "export const secret = process.env.SESSION_SECRET;\n", "utf8");
@@ -64,11 +67,29 @@ describe("env schema inference", () => {
     assert.match(schema, /SETTINGS: json\(\{"example":\{"ok":true\}\}\)/);
     assert.match(schema, /SESSION_SECRET: str\(\{"min":1\}\)/);
     assert.doesNotMatch(schema, /sk_should_not_be_emitted/);
+    assert.doesNotMatch(schema, /ghp_should_not_be_emitted/);
+    assert.doesNotMatch(schema, /eyJshouldNotBeEmitted/);
     assert.doesNotMatch(schema, /postgres:\/\/user:pass/);
-  });
+  }));
 
-  it("writes an inferred schema with the CLI and feeds existing generation", async () => {
-    const dir = join(process.cwd(), ".tmp", `celery-infer-cli-${process.pid}-${Date.now()}`);
+  it("does not emit examples from local env files", async () => withTempDir("celery-infer-local-", async (dir) => {
+    await writeFile(join(dir, ".env.local"), [
+      "PUBLIC_URL=https://local.example",
+      "FEATURE_FLAG=true",
+      "PORT=4000"
+    ].join("\n"), "utf8");
+
+    const schema = await inferSchemaSource({ cwd: dir });
+
+    assert.match(schema, /PUBLIC_URL: url\(\{"protocols":\["https"\]\}\)/);
+    assert.match(schema, /FEATURE_FLAG: bool\(\)/);
+    assert.match(schema, /PORT: int\(\{"strict":true\}\)/);
+    assert.doesNotMatch(schema, /local\.example/);
+    assert.doesNotMatch(schema, /"example"/);
+  }));
+
+  it("writes an inferred schema with the CLI and feeds existing generation", async () => withTempDir("celery-infer-cli-", async (dir) => {
+    await linkLocalPackage(dir);
     const env = join(dir, ".env.example");
     const source = join(dir, "src", "config.js");
     const schema = join(dir, "env.schema.mjs");
@@ -115,10 +136,9 @@ describe("env schema inference", () => {
       SESSION_SECRET: "dev-secret"
     });
     assert.match(await readFile(example, "utf8"), /PUBLIC_URL=https:\/\/example.com/);
-  });
+  }));
 
-  it("uses default discovery and protects existing schema outputs", async () => {
-    const dir = join(process.cwd(), ".tmp", `celery-infer-discover-${process.pid}-${Date.now()}`);
+  it("uses default discovery and protects existing schema outputs", async () => withTempDir("celery-infer-discover-", async (dir) => {
     const schema = join(dir, "env.schema.mjs");
     const link = join(dir, "linked.schema.mjs");
     const target = join(dir, "target.schema.mjs");
@@ -153,11 +173,95 @@ describe("env schema inference", () => {
     assert.notEqual(symlinked.status, 0);
     assert.match(symlinked.stderr, /symlink/);
     assert.equal(await readFile(target, "utf8"), "target");
-  });
+  }));
 
-  it("produces a schema object accepted by compiler helpers", async () => {
-    const dir = join(process.cwd(), ".tmp", `celery-infer-compile-${process.pid}-${Date.now()}`);
-    await mkdir(dir, { recursive: true });
+  it("rejects symlinked env files and explicit scan roots", async () => withTempDir("celery-infer-links-", async (dir) => {
+    const realEnv = join(dir, "real.env");
+    const envLink = join(dir, ".env.example");
+    const realSrc = join(dir, "real-src");
+    const scanLink = join(dir, "src-link");
+    await writeFile(realEnv, "PORT=3000\n", "utf8");
+    await mkdir(realSrc, { recursive: true });
+    await symlink(realEnv, envLink);
+    await symlink(realSrc, scanLink);
+
+    await assert.rejects(
+      inferSchemaSource({ cwd: dir, envFiles: [".env.example"] }),
+      /symlink; refusing to read/
+    );
+    await assert.rejects(
+      inferSchemaSource({ cwd: dir, envFiles: [realEnv], scanPaths: [scanLink] }),
+      /symlink; refusing to scan/
+    );
+  }));
+
+  it("skips symlinked children during source scans", async () => withTempDir("celery-infer-skip-links-", async (dir) => {
+    const src = join(dir, "src");
+    const outside = join(dir, "outside");
+    await mkdir(src, { recursive: true });
+    await mkdir(outside, { recursive: true });
+    await writeFile(join(dir, ".env.example"), "PORT=3000\n", "utf8");
+    await writeFile(join(src, "config.js"), "export const ok = process.env.PUBLIC_URL;\n", "utf8");
+    await writeFile(join(outside, "secret.js"), "export const leak = process.env.OUTSIDE_SECRET;\n", "utf8");
+    await symlink(join(outside, "secret.js"), join(src, "linked-secret.js"));
+    await symlink(outside, join(src, "linked-dir"));
+
+    const schema = await inferSchemaSource({ cwd: dir });
+
+    assert.match(schema, /PUBLIC_URL/);
+    assert.doesNotMatch(schema, /OUTSIDE_SECRET/);
+  }));
+
+  it("enforces inference resource caps", async () => withTempDir("celery-infer-caps-", async (dir) => {
+    await writeFile(join(dir, "large.env"), `VALUE=${"x".repeat(256 * 1024)}\n`, "utf8");
+    await assert.rejects(
+      inferSchemaSource({ cwd: dir, envFiles: ["large.env"] }),
+      /too large for env inference/
+    );
+
+    const src = join(dir, "src");
+    await mkdir(src, { recursive: true });
+    await writeFile(join(dir, ".env.example"), "PORT=3000\n", "utf8");
+    await writeFile(join(src, "large.js"), `const value = "${"x".repeat(1024 * 1024)}";\n`, "utf8");
+    await assert.rejects(
+      inferSchemaSource({ cwd: dir, scanPaths: ["src"] }),
+      /too large for source inference/
+    );
+
+    const bulky = join(dir, "bulky");
+    await mkdir(bulky, { recursive: true });
+    for (let i = 0; i < 9; i += 1) {
+      await writeFile(join(bulky, `b${i}.js`), `process.env.BULK_${i};\n${"x".repeat(970000)}`, "utf8");
+    }
+    await assert.rejects(
+      inferSchemaSource({ cwd: dir, scanPaths: ["bulky"] }),
+      /source scan is too large/
+    );
+
+    const many = join(dir, "many");
+    await mkdir(many, { recursive: true });
+    for (let i = 0; i < 2001; i += 1) {
+      await writeFile(join(many, `f${i}.js`), `process.env.KEY_${i};\n`, "utf8");
+    }
+    await assert.rejects(
+      inferSchemaSource({ cwd: dir, scanPaths: ["many"] }),
+      /too many files/
+    );
+
+    let deep = join(dir, "deep");
+    await mkdir(deep, { recursive: true });
+    for (let i = 0; i < 33; i += 1) {
+      deep = join(deep, "d");
+      await mkdir(deep);
+    }
+    await assert.rejects(
+      inferSchemaSource({ cwd: dir, scanPaths: ["deep"] }),
+      /scan depth limit/
+    );
+  }));
+
+  it("produces a schema object accepted by compiler helpers", async () => withTempDir("celery-infer-compile-", async (dir) => {
+    await linkLocalPackage(dir);
     await writeFile(join(dir, ".env.example"), "IDS=1,2,3\nMODE=local\n", "utf8");
 
     const schemaPath = join(dir, "env.schema.mjs");
@@ -167,5 +271,20 @@ describe("env schema inference", () => {
 
     assert.match(validator, /export function loadEnv\(env\)/);
     assert.match(generateExample(schema), /IDS=1,2,3/);
-  });
+  }));
 });
+
+async function withTempDir(prefix, fn) {
+  const dir = await mkdtemp(join(tmpdir(), prefix));
+  try {
+    return await fn(dir);
+  } finally {
+    await rm(dir, { recursive: true, force: true });
+  }
+}
+
+async function linkLocalPackage(dir) {
+  const modules = join(dir, "node_modules");
+  await mkdir(modules, { recursive: true });
+  await symlink(process.cwd(), join(modules, "celery-env"), "dir");
+}

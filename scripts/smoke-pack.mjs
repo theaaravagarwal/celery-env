@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { spawnSync } from "node:child_process";
-import { mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 
@@ -64,6 +64,27 @@ try {
   `;
   run(process.execPath, ["--input-type=module", "-e", checkSource], { cwd: tmp });
   run(process.execPath, [join(tmp, "node_modules", pkg.name, "src", "cli.js"), "--help"], { cwd: tmp });
+
+  const inferDir = join(tmp, "infer-app");
+  await mkdir(join(inferDir, "src"), { recursive: true });
+  await writeFile(join(inferDir, ".env.example"), "PORT=3000\nPUBLIC_URL=https://example.com\n", "utf8");
+  await writeFile(join(inferDir, "src", "config.js"), "export const secret = process.env.SESSION_SECRET;\n", "utf8");
+  run(process.execPath, [
+    join(tmp, "node_modules", pkg.name, "src", "cli.js"),
+    "infer",
+    "--schema", join(inferDir, "env.schema.mjs")
+  ], { cwd: inferDir });
+  const inferred = await readFile(join(inferDir, "env.schema.mjs"), "utf8");
+  assert.match(inferred, /from "celery-env"/);
+  assert.match(inferred, /SESSION_SECRET/);
+
+  const privateImport = spawnSync(process.execPath, [
+    "--input-type=module",
+    "-e",
+    "import('celery-env/infer')"
+  ], { cwd: tmp, encoding: "utf8", env: { ...process.env, npm_config_cache: cache } });
+  assert.notEqual(privateImport.status, 0);
+  assert.match(privateImport.stderr, /ERR_PACKAGE_PATH_NOT_EXPORTED|Package subpath/);
 
   console.log(`pack smoke ok: ${pack.filename}`);
 } finally {

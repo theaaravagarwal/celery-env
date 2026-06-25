@@ -16,6 +16,7 @@ assert.equal(pkg.scripts?.prepublishOnly, expectedPrepublishOnly, "prepublishOnl
 assert.deepEqual(new Set(pkg.files), new Set([
   "src/index.js",
   "src/compiler.js",
+  "src/infer.js",
   "src/index.d.ts",
   "src/compiler.d.ts",
   "src/cli.js",
@@ -43,6 +44,7 @@ assert.deepEqual(new Set(pkg.files), new Set([
 const sources = {
   "src/index.js": await readFile("src/index.js", "utf8"),
   "src/compiler.js": await readFile("src/compiler.js", "utf8"),
+  "src/infer.js": await readFile("src/infer.js", "utf8"),
   "src/cli.js": await readFile("src/cli.js", "utf8")
 };
 
@@ -60,5 +62,10 @@ assert.match(sources["src/compiler.js"], /function E\(e\)/, "generated requiredW
 assert.match(sources["src/index.js"], /Object\.defineProperty\(o, k/, "runtime must define __proto__ as data property");
 assert.match(sources["src/index.js"], /H\(env, "NODE_ENV"\)/, "runtime env-specific defaults must use own NODE_ENV");
 assert.match(sources["src/index.js"], /Object\.create\(null\)/, "runtime specs must not inherit option fields");
+assert.match(sources["src/infer.js"], /\blstat\b/, "infer scanner must inspect symlinks with lstat");
+assert.match(sources["src/infer.js"], /isSymbolicLink\(\)/, "infer scanner must reject or skip symlinks");
+assert.match(sources["src/infer.js"], /MAX_SOURCE_FILES/, "infer scanner must cap scanned file count");
+assert.match(sources["src/infer.js"], /MAX_SOURCE_BYTES/, "infer scanner must cap scanned byte count");
+assert.match(sources["src/infer.js"], /MAX_SCAN_DEPTH/, "infer scanner must cap scan depth");
 
 console.log("security scan ok: zero root dependencies, lifecycle hooks constrained, static source checks passed");

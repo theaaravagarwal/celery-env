@@ -32,7 +32,10 @@ starter schema:
 npx celery-env infer --schema env.schema.mjs
 ```
 
-Review the generated file and tighten any rules that need project knowledge.
+This reads `.env.example`, `.env`, `.env.local`, and common source directories.
+It writes a starter schema and refuses overwrite unless you pass `--force`.
+Review it for project-specific rules such as production-only secrets, ranges,
+or stricter URL protocols.
 You can also create `env.schema.mjs` manually:
 
 ```js

@@ -3,7 +3,9 @@ import { readFile } from "node:fs/promises";
 
 const files = [
   ["src/index.js", 3700],
-  ["src/compiler.js", 7500]
+  ["src/compiler.js", 7500],
+  ["src/cli.js", 2100],
+  ["src/infer.js", 4400]
 ];
 let failed = false;
 

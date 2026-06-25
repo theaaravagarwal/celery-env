@@ -1,4 +1,4 @@
-import { readdir, readFile, stat } from "node:fs/promises";
+import { lstat, readdir, readFile } from "node:fs/promises";
 import { basename, extname, join, resolve } from "node:path";
 
 const ENV_NAME = /^[A-Za-z_][A-Za-z0-9_]*$/;
@@ -9,7 +9,12 @@ const DEFAULT_ENV_FILES = [".env.example", ".env", ".env.local"];
 const DEFAULT_SCAN_PATHS = ["src", "app", "pages", "lib", "server"];
 const BOOL_VALUES = new Set(["true", "yes", "on", "false", "no", "off"]);
 const SECRET_KEY = /(?:SECRET|TOKEN|PASSWORD|PASS|PRIVATE|CREDENTIAL|AUTH|API_KEY|ACCESS_KEY)/i;
-const SECRET_VALUE = /(?:^sk_|^pk_|-----BEGIN |:\/\/[^/\s:@]+:[^/\s:@]+@|[A-Za-z0-9+/=_-]{32,})/;
+const SECRET_VALUE = /(?:^sk_|^pk_|^gh[pousr]_|^xox[baprs]-|^eyJ|-----BEGIN |:\/\/[^/\s:@]+:[^/\s:@]+@|[A-Za-z0-9+/=_-]{32,})/;
+const MAX_ENV_FILE_BYTES = 256 * 1024;
+const MAX_SOURCE_FILE_BYTES = 1024 * 1024;
+const MAX_SOURCE_FILES = 2000;
+const MAX_SOURCE_BYTES = 8 * 1024 * 1024;
+const MAX_SCAN_DEPTH = 32;
 
 export async function inferSchemaSource(options = {}) {
   const cwd = resolve(options.cwd || process.cwd());
@@ -20,14 +25,14 @@ export async function inferSchemaSource(options = {}) {
   const entries = new Map();
 
   for (const file of envFiles) {
-    const source = await readFile(file, "utf8");
+    const source = await readEnvFile(file);
     const safeExamples = isExampleEnvFile(file);
     for (const item of parseEnvSource(source)) {
       record(entries, item.key, { value: item.value, safeExamples });
     }
   }
 
-  for (const file of await sourceFiles(scanPaths)) {
+  for (const file of await sourceFiles(scanPaths, { rejectRootSymlinks: Boolean(explicitScanPaths) })) {
     const source = await readFile(file, "utf8");
     for (const key of scanEnvKeys(source)) {
       record(entries, key, { codeOnly: true });
@@ -58,6 +63,9 @@ export function scanEnvKeys(source) {
   collectMatches(keys, source, /\bimport\.meta\.env\[\s*(["'`])([A-Za-z_][A-Za-z0-9_]*)\1\s*\]/g, 2);
 
   for (const match of source.matchAll(/\{([^}]+)\}\s*=\s*process\.env\b/g)) {
+    for (const key of destructuredKeys(match[1])) keys.add(key);
+  }
+  for (const match of source.matchAll(/\{([^}]+)\}\s*=\s*import\.meta\.env\b/g)) {
     for (const key of destructuredKeys(match[1])) keys.add(key);
   }
 
@@ -148,7 +156,7 @@ function resolveAll(cwd, paths) {
 
 async function exists(path) {
   try {
-    await stat(path);
+    await lstat(path);
     return true;
   } catch (error) {
     if (error.code === "ENOENT") return false;
@@ -156,32 +164,60 @@ async function exists(path) {
   }
 }
 
-async function sourceFiles(paths) {
+async function readEnvFile(path) {
+  let info;
+  try {
+    info = await lstat(path);
+  } catch (error) {
+    if (error.code === "ENOENT") throw new Error(`${path} does not exist`);
+    throw error;
+  }
+  if (info.isSymbolicLink()) throw new Error(`${path} is a symlink; refusing to read`);
+  if (!info.isFile()) throw new Error(`${path} is not a file`);
+  if (info.size > MAX_ENV_FILE_BYTES) throw new Error(`${path} is too large for env inference: ${info.size} > ${MAX_ENV_FILE_BYTES} bytes`);
+  return readFile(path, "utf8");
+}
+
+async function sourceFiles(paths, options = {}) {
   const out = [];
+  const state = { files: 0, bytes: 0 };
   for (const path of paths) {
-    await collectSourceFiles(out, path);
+    await collectSourceFiles(out, path, state, 0, options.rejectRootSymlinks);
   }
   return out.sort();
 }
 
-async function collectSourceFiles(out, path) {
+async function collectSourceFiles(out, path, state, depth, rejectSymlink) {
+  if (depth > MAX_SCAN_DEPTH) throw new Error(`${path} exceeds scan depth limit: ${depth} > ${MAX_SCAN_DEPTH}`);
+
   let info;
   try {
-    info = await stat(path);
+    info = await lstat(path);
   } catch (error) {
     if (error.code === "ENOENT") return;
     throw error;
   }
 
+  if (info.isSymbolicLink()) {
+    if (rejectSymlink) throw new Error(`${path} is a symlink; refusing to scan`);
+    return;
+  }
+
   if (info.isDirectory()) {
     if (SKIP_DIRS.has(basename(path))) return;
     for (const entry of await readdir(path)) {
-      await collectSourceFiles(out, join(path, entry));
+      await collectSourceFiles(out, join(path, entry), state, depth + 1, false);
     }
     return;
   }
 
-  if (info.isFile() && SOURCE_EXTENSIONS.has(extname(path))) out.push(path);
+  if (!info.isFile() || !SOURCE_EXTENSIONS.has(extname(path))) return;
+  if (info.size > MAX_SOURCE_FILE_BYTES) throw new Error(`${path} is too large for source inference: ${info.size} > ${MAX_SOURCE_FILE_BYTES} bytes`);
+  state.files += 1;
+  state.bytes += info.size;
+  if (state.files > MAX_SOURCE_FILES) throw new Error(`source scan found too many files: ${state.files} > ${MAX_SOURCE_FILES}`);
+  if (state.bytes > MAX_SOURCE_BYTES) throw new Error(`source scan is too large: ${state.bytes} > ${MAX_SOURCE_BYTES} bytes`);
+  out.push(path);
 }
 
 function record(entries, key, source) {
