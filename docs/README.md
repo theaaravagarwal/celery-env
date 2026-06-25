@@ -9,7 +9,9 @@ Start here if you are new to Celery or new to typed env validation.
 3. [CLI](CLI.md): `init`, `generate`, and generation flags.
 4. [TypeScript](TYPESCRIPT.md): generated types and `InferEnv`.
 5. [Runtime Mode](RUNTIME.md): use Celery without generation.
-6. [Comparison](COMPARISON.md): when to choose Celery, Zod, Envalid, Envsafe, or runtime-only env validators.
-7. [Troubleshooting](TROUBLESHOOTING.md): common setup and generation issues.
-8. [Migration Guide](MIGRATION.md): add Celery to an existing project.
-9. [Benchmarks](BENCHMARKS.md): what is measured and what claims are safe.
+6. [Examples](EXAMPLES.md): Node service and Next.js-style schemas.
+7. [Comparison](COMPARISON.md): when to choose Celery, Zod, Envalid, Envsafe, or runtime-only env validators.
+8. [Troubleshooting](TROUBLESHOOTING.md): common setup and generation issues.
+9. [Migration Guide](MIGRATION.md): add Celery to an existing project.
+10. [Benchmarks](BENCHMARKS.md): what is measured and what claims are safe.
+11. [Release Checklist](RELEASE.md): maintainer publishing steps.

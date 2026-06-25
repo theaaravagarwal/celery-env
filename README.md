@@ -176,6 +176,7 @@ Metadata checked with `npm view` on 2026-06-25.
 - [Schema API](docs/SCHEMA.md)
 - [CLI](docs/CLI.md)
 - [TypeScript](docs/TYPESCRIPT.md)
+- [Examples](docs/EXAMPLES.md)
 - [Runtime Mode](docs/RUNTIME.md)
 - [Comparison](docs/COMPARISON.md)
 - [Troubleshooting](docs/TROUBLESHOOTING.md)

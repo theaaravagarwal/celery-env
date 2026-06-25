@@ -1,4 +1,4 @@
-import { bool, defineEnv, int, oneOf, str, url } from "../src/index.js";
+import { bool, defineEnv, int, oneOf, str, url } from "celery-env";
 
 export default defineEnv({
   NODE_ENV: oneOf(["development", "test", "production"], { default: "development" }),

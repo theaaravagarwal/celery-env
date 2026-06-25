@@ -17,6 +17,12 @@ bun add -d celery-env
 Generated validators do not need `celery-env` at runtime, so most apps install
 it as a dev dependency.
 
+Check the CLI version when debugging local installs:
+
+```sh
+npx celery-env --version
+```
+
 ## 2. Create A Schema
 
 Create `env.schema.mjs`:
@@ -75,7 +81,8 @@ Add a script so generation is repeatable:
 ```json
 {
   "scripts": {
-    "env:generate": "celery-env generate --schema env.schema.mjs --out src/env.mjs --types src/env.d.ts --example .env.example --minify --force"
+    "env:generate": "celery-env generate --schema env.schema.mjs --out src/env.mjs --types src/env.d.ts --example .env.example --minify --force",
+    "env:check": "npm run env:generate && git diff --exit-code src/env.mjs src/env.d.ts .env.example"
   }
 }
 ```
@@ -138,8 +145,7 @@ npm run env:generate
 In CI, verify generated files are current:
 
 ```sh
-npm run env:generate
-git diff --exit-code src/env.mjs src/env.d.ts .env.example
+npm run env:check
 ```
 
 ## Next Steps

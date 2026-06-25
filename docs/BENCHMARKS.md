@@ -89,6 +89,10 @@ The published package intentionally does not ship the local benchmark lab or
 competitor dependencies. Public docs keep the benchmark summary and claim rules
 so the npm package stays small and dependency-free.
 
+The local benchmark lab lives outside the published package. A refresh should
+rerun the benchmark corpus, then update only the summarized public tables and
+metadata in this document and the README.
+
 When refreshing claims, record:
 
 - `celery-env` version or commit;
