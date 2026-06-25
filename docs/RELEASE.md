@@ -26,6 +26,13 @@ npm publish --access public
 If npm asks for browser or one-time-password authentication, finish that prompt
 in the browser and rerun the same command if needed.
 
+If npm reports a cache ownership or permission error, do not change package
+files to work around it. Use a temporary cache for the publish command:
+
+```sh
+npm --cache /tmp/celery-npm-cache publish --access public
+```
+
 ## After Publishing
 
 1. Verify npm:
