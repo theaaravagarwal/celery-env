@@ -19,6 +19,28 @@ Targets:
 | `next` | Next.js projects. |
 | `vite` | Vite projects and edge-style environments. |
 
+## Infer A Schema
+
+```sh
+npx celery-env infer --schema env.schema.mjs
+```
+
+Use `infer` when a project already has `.env` files or source code that reads
+env vars. It discovers `.env.example`, `.env`, `.env.local`, and common source
+directories by default.
+
+You can pass sources explicitly:
+
+```sh
+npx celery-env infer \
+  --schema env.schema.mjs \
+  --env .env.example \
+  --scan src
+```
+
+Inference is conservative. Ambiguous values become `str({ min: 1 })`, and local
+secret values are not copied into the generated schema.
+
 ## Generate
 
 ```sh
@@ -36,6 +58,8 @@ Use `generate` after editing `env.schema.mjs`.
 | Flag | Meaning |
 | --- | --- |
 | `--schema <file>` | Schema module to import. |
+| `--env <file>` | Env file to read for `infer`. Repeatable. |
+| `--scan <path>` | File or directory to scan for `infer`. Repeatable. |
 | `--out <file>` | Generated validator output path. |
 | `--types <file>` | Generated `.d.ts` output path. |
 | `--example <file>` | Generated `.env.example` output path. |

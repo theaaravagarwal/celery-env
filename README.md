@@ -44,7 +44,13 @@ bun add -d celery-env
 
 ## 60-Second Setup
 
-Create a schema:
+Infer a schema from existing env files and source references:
+
+```sh
+npx celery-env infer --schema env.schema.mjs
+```
+
+Or create a schema manually:
 
 ```js
 // env.schema.mjs
@@ -85,8 +91,8 @@ export const env = loadEnv(process.env);
 Celery validates the env object you pass. Load `.env` with your platform,
 shell, or `dotenv` before calling `loadEnv`.
 
-That is the main path: write `env.schema.mjs`, generate `src/env.mjs`, and use
-the typed result everywhere else.
+That is the main path: infer or write `env.schema.mjs`, generate `src/env.mjs`,
+and use the typed result everywhere else.
 
 ## When To Use Celery
 

@@ -16,6 +16,8 @@ if (args.version) {
 
 if (args.command === "init") {
   await init(args);
+} else if (args.command === "infer") {
+  await infer(args);
 } else {
   await generate(args);
 }
@@ -59,14 +61,24 @@ async function init(args) {
   await writeFile(schemaPath, source, { encoding: "utf8", flag: "wx" });
 }
 
+async function infer(args) {
+  if (!args.schema) usage(1);
+  const schemaPath = resolve(args.schema);
+  const { inferSchemaSource } = await import("./infer.js");
+  await mkdir(dirname(schemaPath), { recursive: true });
+  await writeOutput(schemaPath, await inferSchemaSource({ envFiles: args.envFiles, scanPaths: args.scanPaths }), args.force);
+}
+
 function parseArgs(argv) {
   const out = { command: "generate", functionName: "loadEnv" };
-  if (argv[0] === "generate" || argv[0] === "init") out.command = argv.shift();
+  if (argv[0] === "generate" || argv[0] === "init" || argv[0] === "infer") out.command = argv.shift();
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
     if (arg === "--help" || arg === "-h") out.help = true;
     else if (arg === "--version" || arg === "-v") out.version = true;
     else if (arg === "--schema") out.schema = argv[++i];
+    else if (arg === "--env") (out.envFiles ||= []).push(argv[++i]);
+    else if (arg === "--scan") (out.scanPaths ||= []).push(argv[++i]);
     else if (arg === "--target") out.target = argv[++i];
     else if (arg === "--out") out.out = argv[++i];
     else if (arg === "--types") out.types = argv[++i];
@@ -138,6 +150,7 @@ function usage(code) {
   console.log(`Usage:
   celery-env --schema env.schema.mjs --out src/env.mjs [--types src/env.d.ts]
   celery-env generate --schema env.schema.mjs --out src/env.mjs [--types src/env.d.ts] [--example .env.example] [--force] [--optimize speed]
+  celery-env infer --schema env.schema.mjs [--env .env.example] [--scan src] [--force]
   celery-env init --target node|next|vite --schema env.schema.mjs
   celery-env --version`);
   process.exit(code);
