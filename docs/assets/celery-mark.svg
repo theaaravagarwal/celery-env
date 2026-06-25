@@ -1,7 +1,29 @@
 <svg width="128" height="128" viewBox="0 0 128 128" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="title desc">
   <title id="title">celery-env mark</title>
-  <desc id="desc">A compact green celery-env leaf mark.</desc>
-  <rect width="128" height="128" rx="28" fill="#0F766E"/>
-  <path d="M71 19c-7 9-11 18-12 27 12-3 23-11 34-24 3 21-9 37-31 45 12 6 24 7 38 3-13 18-30 25-50 22-8-1-15-5-20-10 8-2 15-5 21-10-13-3-22-12-26-26 13 7 25 10 36 7-2-10 1-21 10-34Z" fill="#D9F99D"/>
-  <path d="M38 103c16-2 32-2 48 0" stroke="#ECFDF5" stroke-width="8" stroke-linecap="round"/>
+  <desc id="desc">A dark green terminal-inspired C mark with celery leaves.</desc>
+  <defs>
+    <linearGradient id="bg" x1="18" y1="10" x2="110" y2="118" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#064E3B"/>
+      <stop offset="1" stop-color="#022C22"/>
+    </linearGradient>
+    <linearGradient id="leaf" x1="38" y1="18" x2="94" y2="108" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ECFCCB"/>
+      <stop offset="0.48" stop-color="#86EFAC"/>
+      <stop offset="1" stop-color="#22C55E"/>
+    </linearGradient>
+    <filter id="shadow" x="13" y="16" width="102" height="99" color-interpolation-filters="sRGB" filterUnits="userSpaceOnUse">
+      <feDropShadow dx="0" dy="8" stdDeviation="7" flood-color="#011B16" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+  <rect width="128" height="128" rx="30" fill="url(#bg)"/>
+  <path d="M104 78c0 18-13 29-36 29H46c-14 0-24-10-24-24V54c0-23 15-37 40-37h42v61Z" fill="#0F766E" opacity="0.42"/>
+  <g filter="url(#shadow)">
+    <path d="M87 92c-7 7-16 11-27 11-23 0-39-16-39-39 0-24 17-40 41-40 11 0 20 4 27 11" stroke="url(#leaf)" stroke-width="15" stroke-linecap="round"/>
+    <path d="M69 24c4-10 12-15 24-15-1 12-8 20-21 24" fill="#BBF7D0"/>
+    <path d="M57 25c-2-10-8-17-19-20-2 12 3 21 16 28" fill="#4ADE80"/>
+    <path d="M66 30c2-11 9-20 21-25 1 14-5 24-19 32" fill="#86EFAC"/>
+  </g>
+  <path d="M48 57l13 9-13 9" stroke="#ECFDF5" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M70 77h24" stroke="#D9F99D" stroke-width="7" stroke-linecap="round"/>
+  <path d="M38 33h50" stroke="#ECFDF5" stroke-opacity="0.18" stroke-width="4" stroke-linecap="round"/>
 </svg>
