@@ -26,9 +26,9 @@ npx celery-env infer --schema env.schema.mjs
 ```
 
 Use `infer` when a project already has `.env` files or source code that reads
-env vars. It discovers `.env.example`, `.env`, `.env.local`, and common source
-directories by default. It writes a starter schema and refuses overwrite unless
-you pass `--force`.
+env vars. It discovers `.env.example`, `.env`, `.env.local`, common source
+directories, common config files, `scripts`, and `prisma` by default. It writes
+a starter schema and refuses overwrite unless you pass `--force`.
 
 You can pass sources explicitly:
 
@@ -39,12 +39,17 @@ npx celery-env infer \
   --scan src
 ```
 
-Inference is conservative. Ambiguous values become `str({ min: 1 })`. Only
-example, sample, or template env files can emit `example` metadata; local env
-values and secret-looking values are not copied into the generated schema.
-Safe example values can infer enums and string-list item enums.
+Inference is conservative starter-schema generation, not a replacement for
+review. Ambiguous values become `str({ min: 1 })`. Safe example values can
+infer enums and string-list item enums. A few common source defaults are also
+detected, such as `process.env.PORT ?? "3000"`, `Number(process.env.X ?? 60)`,
+and `process.env.DEBUG !== "false"`.
+
+Only example, sample, or template env files can emit `example` metadata. Local
+env values and secret-looking values are not copied into the generated schema.
 Review the result for project-specific constraints such as `requiredWhen`,
-`min`, `max`, or stricter URL protocols.
+optional values, conditional requirements, `min`, `max`, or stricter URL
+protocols.
 
 ## Generate
 

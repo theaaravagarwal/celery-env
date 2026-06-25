@@ -82,7 +82,7 @@ const [pack] = JSON.parse(output);
 const actualFiles = new Set(pack.files.map((file) => `package/${file.path}`));
 
 assert.deepEqual(actualFiles, expectedFiles, "npm package contents changed unexpectedly");
-assert.ok(pack.size < 32500, `packed tarball is too large: ${pack.size}`);
-assert.ok(pack.unpackedSize < 120000, `unpacked package is too large: ${pack.unpackedSize}`);
+assert.ok(pack.size < 33000, `packed tarball is too large: ${pack.size}`);
+assert.ok(pack.unpackedSize < 125000, `unpacked package is too large: ${pack.unpackedSize}`);
 
 console.log(`publish validation ok: ${pack.files.length} files, ${pack.size} packed bytes`);

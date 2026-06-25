@@ -5,7 +5,7 @@ const files = [
   ["src/index.js", 3700],
   ["src/compiler.js", 7500],
   ["src/cli.js", 2100],
-  ["src/infer.js", 4400]
+  ["src/infer.js", 5400]
 ];
 let failed = false;
 

@@ -64,9 +64,14 @@ async function init(args) {
 async function infer(args) {
   if (!args.schema) usage(1);
   const schemaPath = resolve(args.schema);
-  const { inferSchemaSource } = await import("./infer.js");
+  const { inferSchema } = await import("./infer.js");
   await mkdir(dirname(schemaPath), { recursive: true });
-  await writeOutput(schemaPath, await inferSchemaSource({ envFiles: args.envFiles, scanPaths: args.scanPaths }), args.force);
+  const result = await inferSchema({ envFiles: args.envFiles, scanPaths: args.scanPaths });
+  await writeOutput(schemaPath, result.source, args.force);
+  console.log(`Wrote ${schemaPath}
+Scanned ${result.envFileCount} env file(s) and ${result.sourceFileCount} source file(s).
+Found ${result.keyCount} environment variable(s).
+Next: review the schema, then run celery-env generate --schema ${schemaPath} --out src/env.mjs --types src/env.d.ts`);
 }
 
 function parseArgs(argv) {

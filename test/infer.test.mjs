@@ -6,7 +6,7 @@ import { join } from "node:path";
 import { pathToFileURL } from "node:url";
 import { describe, it } from "node:test";
 import { generateExample, generateValidator } from "../src/compiler.js";
-import { inferSchemaSource, parseEnvSource, scanEnvKeys } from "../src/infer.js";
+import { inferSchema, inferSchemaSource, parseEnvSource, scanEnvKeys } from "../src/infer.js";
 
 describe("env schema inference", () => {
   it("parses common .env syntax", () => {
@@ -63,17 +63,17 @@ describe("env schema inference", () => {
     const schema = await inferSchemaSource({ cwd: dir, envFiles: [".env.example", ".env.sample"], scanPaths: ["src"] });
 
     assert.match(schema, /import \{ bool, defineEnv, int, json, list, num, oneOf, str, url \}/);
-    assert.match(schema, /APP_ENV: oneOf\(\["production","staging"\], \{"example":"staging"\}\)/);
-    assert.match(schema, /LOG_LEVEL: oneOf\(\["info","warn"\], \{"example":"info"\}\)/);
-    assert.match(schema, /NODE_ENV: oneOf\(\["development","test","production"\], \{"default":"development"\}\)/);
-    assert.match(schema, /PORT: int\(\{"strict":true,"example":3000\}\)/);
-    assert.match(schema, /DEBUG: bool\(\{"example":true\}\)/);
-    assert.match(schema, /RATE: num\(\{"strict":true,"example":0.5\}\)/);
-    assert.match(schema, /PUBLIC_URL: url\(\{"protocols":\["https"\],"example":"https:\/\/example.com"\}\)/);
-    assert.match(schema, /FEATURES: list\(int\(\{"strict":true\}\), \{"example":\[1,2,3\]\}\)/);
-    assert.match(schema, /REGIONS: list\(oneOf\(\["fra","iad","sfo"\]\), \{"example":\["iad","sfo","fra"\]\}\)/);
-    assert.match(schema, /SETTINGS: json\(\{"example":\{"ok":true\}\}\)/);
-    assert.match(schema, /SESSION_SECRET: str\(\{"min":1\}\)/);
+    assert.match(schema, /APP_ENV: oneOf\(\["production", "staging"\], \{ example: "staging" \}\)/);
+    assert.match(schema, /LOG_LEVEL: oneOf\(\["trace", "debug", "info", "warn", "error", "fatal"\], \{ example: "info" \}\)/);
+    assert.match(schema, /NODE_ENV: oneOf\(\["development", "test", "production"\], \{ default: "development" \}\)/);
+    assert.match(schema, /PORT: int\(\{ strict: true, example: 3000 \}\)/);
+    assert.match(schema, /DEBUG: bool\(\{ example: true \}\)/);
+    assert.match(schema, /RATE: num\(\{ strict: true, example: 0.5 \}\)/);
+    assert.match(schema, /PUBLIC_URL: url\(\{ protocols: \["https"\], example: "https:\/\/example.com" \}\)/);
+    assert.match(schema, /FEATURES: list\(int\(\{ strict: true \}\), \{ example: \[1, 2, 3\] \}\)/);
+    assert.match(schema, /REGIONS: list\(oneOf\(\["fra", "iad", "sfo"\]\), \{ example: \["iad", "sfo", "fra"\] \}\)/);
+    assert.match(schema, /SETTINGS: json\(\{ example: \{ ok: true \} \}\)/);
+    assert.match(schema, /SESSION_SECRET: str\(\{ min: 1 \}\)/);
     assert.doesNotMatch(schema, /sk_should_not_be_emitted/);
     assert.doesNotMatch(schema, /ghp_should_not_be_emitted/);
     assert.doesNotMatch(schema, /eyJshouldNotBeEmitted/);
@@ -91,11 +91,11 @@ describe("env schema inference", () => {
 
     const schema = await inferSchemaSource({ cwd: dir });
 
-    assert.match(schema, /PUBLIC_URL: url\(\{"protocols":\["https"\]\}\)/);
+    assert.match(schema, /PUBLIC_URL: url\(\{ protocols: \["https"\] \}\)/);
     assert.match(schema, /FEATURE_FLAG: bool\(\)/);
-    assert.match(schema, /PORT: int\(\{"strict":true\}\)/);
-    assert.match(schema, /APP_ENV: str\(\{"min":1\}\)/);
-    assert.match(schema, /REGIONS: list\(str\(\{"min":1\}\)\)/);
+    assert.match(schema, /PORT: int\(\{ strict: true \}\)/);
+    assert.match(schema, /APP_ENV: str\(\{ min: 1 \}\)/);
+    assert.match(schema, /REGIONS: list\(str\(\{ min: 1 \}\)\)/);
     assert.doesNotMatch(schema, /local\.example/);
     assert.doesNotMatch(schema, /staging/);
     assert.doesNotMatch(schema, /"example"/);
@@ -124,6 +124,10 @@ describe("env schema inference", () => {
       "--scan", join(dir, "src")
     ], { cwd: process.cwd(), encoding: "utf8" });
     assert.equal(inferred.status, 0, inferred.stderr);
+    assert.match(inferred.stdout, /Wrote /);
+    assert.match(inferred.stdout, /Scanned 1 env file\(s\) and 1 source file\(s\)\./);
+    assert.match(inferred.stdout, /Found 4 environment variable\(s\)\./);
+    assert.match(inferred.stdout, /Next: review the schema/);
     assert.match(await readFile(schema, "utf8"), /SESSION_SECRET/);
 
     const generated = spawnSync(process.execPath, [
@@ -186,6 +190,67 @@ describe("env schema inference", () => {
     assert.notEqual(symlinked.status, 0);
     assert.match(symlinked.stderr, /symlink/);
     assert.equal(await readFile(target, "utf8"), "target");
+  }));
+
+  it("infers source defaults, named enums, and bool-like 1/0 values", async () => withTempDir("celery-infer-defaults-", async (dir) => {
+    await mkdir(join(dir, "src"), { recursive: true });
+    await writeFile(join(dir, ".env.example"), [
+      "BOT_PREFIX=!",
+      "COMMAND_SCOPE=guild",
+      "LOG_LEVEL=info",
+      "REGISTER_COMMANDS=1",
+      "FEATURE_FLAG=0",
+      "SHARD_ID=0"
+    ].join("\n"), "utf8");
+    await writeFile(join(dir, "src", "config.mjs"), [
+      "export const prefix = process.env.BOT_PREFIX ?? \"!\";",
+      "export const scope = process.env.COMMAND_SCOPE ?? \"guild\";",
+      "export const commands = process.env.REGISTER_COMMANDS !== \"false\";",
+      "export const level = process.env.LOG_LEVEL ?? \"info\";",
+      "export const heartbeat = Number(process.env.HEARTBEAT_INTERVAL_SECONDS ?? 60);",
+      "export const ratio = Number(process.env.LOAD_RATIO ?? .5);",
+      "export const optional = process.env.OWNER_USER_ID;"
+    ].join("\n"), "utf8");
+
+    const schema = await inferSchemaSource({ cwd: dir });
+
+    assert.match(schema, /BOT_PREFIX: str\(\{ min: 1, default: "!" \}\)/);
+    assert.match(schema, /COMMAND_SCOPE: oneOf\(\["global", "guild"\], \{ default: "guild" \}\)/);
+    assert.match(schema, /LOG_LEVEL: oneOf\(\["trace", "debug", "info", "warn", "error", "fatal"\], \{ default: "info" \}\)/);
+    assert.match(schema, /REGISTER_COMMANDS: bool\(\{ default: true \}\)/);
+    assert.match(schema, /FEATURE_FLAG: bool\(\{ example: false \}\)/);
+    assert.match(schema, /SHARD_ID: int\(\{ strict: true, example: 0 \}\)/);
+    assert.match(schema, /HEARTBEAT_INTERVAL_SECONDS: int\(\{ strict: true, default: 60 \}\)/);
+    assert.match(schema, /LOAD_RATIO: num\(\{ strict: true, default: 0.5 \}\)/);
+    assert.match(schema, /OWNER_USER_ID: str\(\{ min: 1 \}\)/);
+  }));
+
+  it("includes expanded default scan paths and exposes inference stats", async () => withTempDir("celery-infer-paths-", async (dir) => {
+    await writeFile(join(dir, ".env.example"), "PORT=3000\n", "utf8");
+    await mkdir(join(dir, "scripts"), { recursive: true });
+    await mkdir(join(dir, "prisma"), { recursive: true });
+    await writeFile(join(dir, "scripts", "seed.mjs"), "process.env.SEED_MODE;\n", "utf8");
+    await writeFile(join(dir, "prisma", "seed.ts"), "process.env.DATABASE_URL;\n", "utf8");
+    await writeFile(join(dir, "vite.config.mjs"), "process.env.VITE_HOST;\n", "utf8");
+
+    const result = await inferSchema({ cwd: dir });
+
+    assert.equal(result.envFileCount, 1);
+    assert.equal(result.sourceFileCount, 3);
+    assert.equal(result.keyCount, 4);
+    assert.match(result.source, /SEED_MODE/);
+    assert.match(result.source, /DATABASE_URL/);
+    assert.match(result.source, /VITE_HOST/);
+  }));
+
+  it("does not apply named enums when observed values disagree", async () => withTempDir("celery-infer-named-enum-", async (dir) => {
+    await writeFile(join(dir, ".env.example"), "COMMAND_SCOPE=guild\nLOG_LEVEL=info\n", "utf8");
+    await writeFile(join(dir, ".env.sample"), "COMMAND_SCOPE=team\nLOG_LEVEL=notice\n", "utf8");
+
+    const schema = await inferSchemaSource({ cwd: dir, envFiles: [".env.example", ".env.sample"] });
+
+    assert.match(schema, /COMMAND_SCOPE: oneOf\(\["guild", "team"\], \{ example: "guild" \}\)/);
+    assert.match(schema, /LOG_LEVEL: oneOf\(\["info", "notice"\], \{ example: "info" \}\)/);
   }));
 
   it("rejects symlinked env files and explicit scan roots", async () => withTempDir("celery-infer-links-", async (dir) => {

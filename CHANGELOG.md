@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.1.5
+
+- Made `celery-env infer` print a short success summary with scanned files,
+  discovered variables, and the next generate command.
+- Improved starter schemas with source fallback defaults, common enum hints,
+  bool-like `1`/`0` inference, expanded default scan paths, and more readable
+  generated schema formatting.
+
 ## 0.1.4
 
 - Improved `celery-env infer` to infer `oneOf(...)` from safe example/sample

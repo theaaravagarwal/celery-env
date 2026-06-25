@@ -6,11 +6,20 @@ const JS_IDENT = /^[$A-Z_a-z][$\w]*$/;
 const SOURCE_EXTENSIONS = new Set([".cjs", ".cts", ".js", ".jsx", ".mjs", ".mts", ".svelte", ".ts", ".tsx", ".vue"]);
 const SKIP_DIRS = new Set([".git", ".next", ".nuxt", ".output", ".tmp", "build", "coverage", "dist", "node_modules"]);
 const DEFAULT_ENV_FILES = [".env.example", ".env", ".env.local"];
-const DEFAULT_SCAN_PATHS = ["src", "app", "pages", "lib", "server"];
-const BOOL_VALUES = new Set(["true", "yes", "on", "false", "no", "off"]);
+const DEFAULT_SCAN_PATHS = ["src", "app", "pages", "lib", "server", "scripts", "prisma", ...["next", "vite", "astro"].flatMap((name) => configNames(name)), ...["server", "index"].flatMap((name) => configNames(name, ""))];
+const BOOL_VALUE = /^(?:true|yes|on|false|no|off)$/;
+const BOOLISH_KEY = /^(?:DEBUG|VERBOSE|(?:ENABLE|DISABLE|ENABLED|DISABLED|IS|HAS|USE|ALLOW|REGISTER)_.*|.*_(?:ENABLED|DISABLED|FLAG|FLAGS|ACTIVE))$/;
 const SECRET_KEY = /(?:SECRET|TOKEN|PASSWORD|PASS|PRIVATE|CREDENTIAL|AUTH|API_KEY|ACCESS_KEY)/i;
 const SECRET_VALUE = /(?:^sk_|^pk_|^gh[pousr]_|^xox[baprs]-|^eyJ|-----BEGIN |:\/\/[^/\s:@]+:[^/\s:@]+@|[A-Za-z0-9+/=_-]{32,})/;
 const ENUM_VALUE = /^[A-Za-z][A-Za-z0-9_.:-]{0,31}$/;
+const LOG_LEVELS = ["trace", "debug", "info", "warn", "error", "fatal"];
+const NAMED_ENUMS = {
+  COMMAND_SCOPE: ["global", "guild"],
+  LOGGER_LEVEL: LOG_LEVELS,
+  LOG_LEVEL: LOG_LEVELS,
+  NODE_ENV: ["development", "test", "production"],
+  VERCEL_ENV: ["development", "preview", "production"]
+};
 const MAX_ENV_FILE_BYTES = 256 * 1024;
 const MAX_SOURCE_FILE_BYTES = 1024 * 1024;
 const MAX_SOURCE_FILES = 2000;
@@ -18,6 +27,10 @@ const MAX_SOURCE_BYTES = 8 * 1024 * 1024;
 const MAX_SCAN_DEPTH = 32;
 
 export async function inferSchemaSource(options = {}) {
+  return (await inferSchema(options)).source;
+}
+
+export async function inferSchema(options = {}) {
   const cwd = resolve(options.cwd || process.cwd());
   const explicitEnvFiles = options.envFiles?.length;
   const explicitScanPaths = options.scanPaths?.length;
@@ -33,10 +46,11 @@ export async function inferSchemaSource(options = {}) {
     }
   }
 
-  for (const file of await sourceFiles(scanPaths, { rejectRootSymlinks: Boolean(explicitScanPaths) })) {
+  const scannedSources = await sourceFiles(scanPaths, { rejectRootSymlinks: Boolean(explicitScanPaths) });
+  for (const file of scannedSources) {
     const source = await readFile(file, "utf8");
-    for (const key of scanEnvKeys(source)) {
-      record(entries, key, { codeOnly: true });
+    for (const hint of scanEnvHints(source)) {
+      record(entries, hint.key, { defaults: hint.defaults });
     }
   }
 
@@ -44,7 +58,12 @@ export async function inferSchemaSource(options = {}) {
     throw new Error("No environment variables found; pass --env or --scan");
   }
 
-  return generateSchemaModule(entries);
+  return {
+    source: generateSchemaModule(entries),
+    envFileCount: envFiles.length,
+    sourceFileCount: scannedSources.length,
+    keyCount: entries.size
+  };
 }
 
 export function parseEnvSource(source) {
@@ -57,20 +76,33 @@ export function parseEnvSource(source) {
 }
 
 export function scanEnvKeys(source) {
-  const keys = new Set();
-  collectMatches(keys, source, /\bprocess\.env\.([A-Za-z_][A-Za-z0-9_]*)\b/g, 1);
-  collectMatches(keys, source, /\bimport\.meta\.env\.([A-Za-z_][A-Za-z0-9_]*)\b/g, 1);
-  collectMatches(keys, source, /\bprocess\.env\[\s*(["'`])([A-Za-z_][A-Za-z0-9_]*)\1\s*\]/g, 2);
-  collectMatches(keys, source, /\bimport\.meta\.env\[\s*(["'`])([A-Za-z_][A-Za-z0-9_]*)\1\s*\]/g, 2);
+  return scanEnvHints(source).map((hint) => hint.key);
+}
 
-  for (const match of source.matchAll(/\{([^}]+)\}\s*=\s*process\.env\b/g)) {
-    for (const key of destructuredKeys(match[1])) keys.add(key);
-  }
-  for (const match of source.matchAll(/\{([^}]+)\}\s*=\s*import\.meta\.env\b/g)) {
-    for (const key of destructuredKeys(match[1])) keys.add(key);
+function scanEnvHints(source) {
+  const hints = new Map();
+  collectMatches(hints, source, /\b(?:process\.env|import\.meta\.env)\.([A-Za-z_][A-Za-z0-9_]*)\b/g, 1);
+  collectMatches(hints, source, /\b(?:process\.env|import\.meta\.env)\[\s*(["'`])([A-Za-z_][A-Za-z0-9_]*)\1\s*\]/g, 2);
+
+  for (const match of source.matchAll(/\{([^}]+)\}\s*=\s*(?:process\.env|import\.meta\.env)\b/g)) {
+    for (const key of destructuredKeys(match[1])) addHint(hints, key);
   }
 
-  return [...keys].sort();
+  const ref = String.raw`\b(?:process\.env|import\.meta\.env)\.([A-Za-z_][A-Za-z0-9_]*)\s*`;
+  for (const match of source.matchAll(new RegExp(`${ref}\\?\\?\\s*(["'\`])([^"'\`\\\\]*(?:\\\\.[^"'\`\\\\]*)*)\\2`, "g"))) {
+    addHint(hints, match[1], unescapeQuoted(match[3]));
+  }
+  for (const match of source.matchAll(new RegExp(`${ref}\\?\\?\\s*([+-]?(?:\\d+\\.\\d*|\\.\\d+|\\d+)|true|false)`, "g"))) {
+    addHint(hints, match[1], match[2]);
+  }
+  for (const match of source.matchAll(new RegExp(`${ref}!==\\s*(["'])(?:false|0)\\2`, "g"))) {
+    addHint(hints, match[1], "true");
+  }
+  for (const match of source.matchAll(new RegExp(`${ref}===\\s*(["'])(?:true|1)\\2`, "g"))) {
+    addHint(hints, match[1], "false");
+  }
+
+  return [...hints.values()].sort((a, b) => a.key.localeCompare(b.key));
 }
 
 function parseEnvLine(line) {
@@ -127,8 +159,19 @@ function stripInlineComment(value) {
   return value;
 }
 
-function collectMatches(keys, source, pattern, group) {
-  for (const match of source.matchAll(pattern)) keys.add(match[group]);
+function collectMatches(hints, source, pattern, group) {
+  for (const match of source.matchAll(pattern)) addHint(hints, match[group]);
+}
+
+function addHint(hints, key, defaultValue) {
+  if (!ENV_NAME.test(key)) return;
+  const hint = hints.get(key) || { key, defaults: [] };
+  if (defaultValue !== undefined) hint.defaults.push(defaultValue);
+  hints.set(key, hint);
+}
+
+function configNames(name, infix = ".config") {
+  return ["js", "mjs", "ts"].map((ext) => `${name}${infix}.${ext}`);
 }
 
 function destructuredKeys(source) {
@@ -224,11 +267,11 @@ async function collectSourceFiles(out, path, state, depth, rejectSymlink) {
 function record(entries, key, source) {
   let entry = entries.get(key);
   if (!entry) {
-    entry = { key, values: [], code: false };
+    entry = { key, values: [], defaults: [] };
     entries.set(key, entry);
   }
-  if (source.codeOnly) entry.code = true;
-  else entry.values.push({ value: source.value, safeExamples: source.safeExamples });
+  if (source.defaults) entry.defaults.push(...source.defaults.filter((value) => !unsafe(key, value)));
+  if (source.value !== undefined) entry.values.push({ value: source.value, safeExamples: source.safeExamples });
 }
 
 function generateSchemaModule(entries) {
@@ -253,37 +296,42 @@ function generateSchemaModule(entries) {
 }
 
 function inferRule(entry) {
-  if (entry.key === "NODE_ENV") {
-    return { kind: "oneOf", values: ["development", "test", "production"], options: { default: "development" } };
-  }
-
   const samples = entry.values.filter((item) => item.value !== "");
-  if (!samples.length) return { kind: "str", options: { min: 1 } };
+  const defaults = cleanDefaults(entry);
+  const knownEnum = namedEnumRule(entry, samples, defaults);
+  if (knownEnum) return withExample(entry, withDefault(defaults, knownEnum));
+
+  const observations = samples.concat(defaults.map((value) => ({ value, safeExamples: false })));
+  if (!observations.length) return { kind: "str", options: { min: 1 } };
 
   const enumRule = sampleEnumRule(entry, samples);
-  if (enumRule) return withExample(entry, enumRule);
+  if (enumRule) return withExample(entry, withDefault(defaults, enumRule));
 
-  const kinds = samples.map((item) => inferValue(item.value, enumSafe(entry, item)));
+  const kinds = observations.map((item) => inferValue(entry.key, item.value, enumSafe(entry, item)));
   if (kinds.some((kind) => kind.kind === "str")) return stringRule(entry);
 
   const first = kinds[0].kind;
   if (!kinds.every((kind) => kind.kind === first)) return stringRule(entry);
 
   const rule = mergeRules(first, kinds);
-  return withExample(entry, rule);
+  return withExample(entry, withDefault(defaults, rule));
 }
 
-function inferValue(value, allowEnum) {
-  if (BOOL_VALUES.has(value)) return { kind: "bool" };
+function inferValue(key, value, allowEnum) {
+  if (isBoolValue(key, value)) return { kind: "bool" };
   if (strictInt(value)) return { kind: "int", options: { strict: true } };
   if (strictNumber(value)) return { kind: "num", options: { strict: true } };
   const jsonRule = inferJson(value);
   if (jsonRule) return jsonRule;
-  const listRule = inferList(value, allowEnum);
+  const listRule = inferList(key, value, allowEnum);
   if (listRule) return listRule;
   const urlRule = inferUrl(value);
   if (urlRule) return urlRule;
   return { kind: "str", options: { min: 1 } };
+}
+
+function isBoolValue(key, value) {
+  return BOOL_VALUE.test(value) || ((value === "1" || value === "0") && BOOLISH_KEY.test(key));
 }
 
 function inferJson(value) {
@@ -294,12 +342,12 @@ function inferJson(value) {
   } catch {}
 }
 
-function inferList(value, allowEnum) {
+function inferList(key, value, allowEnum) {
   if (!value.includes(",") || /^\s*[\[{]/.test(value)) return;
   const parts = value.split(",").map((part) => part.trim());
   if (parts.length < 2 || parts.some((part) => part === "")) return;
   const items = parts.map((part) => {
-    if (BOOL_VALUES.has(part)) return { kind: "bool" };
+    if (isBoolValue(key, part)) return { kind: "bool" };
     if (strictInt(part)) return { kind: "int", options: { strict: true } };
     if (strictNumber(part)) return { kind: "num", options: { strict: true } };
     const urlRule = inferUrl(part);
@@ -351,8 +399,9 @@ function mergeRules(kind, rules) {
 
 function stringRule(entry) {
   const rule = { kind: "str", options: { min: 1 } };
+  withDefault(cleanDefaults(entry), rule);
   const example = safeExample(entry, rule);
-  if (example !== undefined) rule.options.example = example;
+  if (example !== undefined && rule.options.default !== example) rule.options.example = example;
   return rule;
 }
 
@@ -364,7 +413,7 @@ function safeExample(entry, rule) {
 
 function withExample(entry, rule) {
   const example = safeExample(entry, rule);
-  if (example !== undefined) rule.options = { ...rule.options, example };
+  if (example !== undefined && rule.options?.default !== example) rule.options = { ...rule.options, example };
   return rule;
 }
 
@@ -375,6 +424,30 @@ function enumSafe(entry, item) {
 function sampleEnumRule(entry, samples) {
   const values = samples.every((item) => enumSafe(entry, item)) && enumValues(samples.map((item) => item.value));
   if (values && values.length > 1 && values.length <= 8) return { kind: "oneOf", values };
+}
+
+function namedEnumRule(entry, samples, defaults) {
+  const values = NAMED_ENUMS[entry.key];
+  if (!values) return;
+  const seen = samples.map((item) => item.value).concat(defaults);
+  if (seen.some((value) => !values.includes(value))) return;
+  if (entry.key !== "NODE_ENV" && !seen.length) return;
+  const options = entry.key === "NODE_ENV" ? { default: "development" } : undefined;
+  return { kind: "oneOf", values, options };
+}
+
+function cleanDefaults(entry) {
+  const values = [...new Set(entry.defaults.filter(Boolean))];
+  return values[1] ? [] : values;
+}
+
+function withDefault(defaults, rule) {
+  if (!defaults.length) return rule;
+  const value = exampleValue(defaults[0], rule);
+  if (value === undefined) return rule;
+  if (rule.kind === "oneOf" && !rule.values.includes(defaults[0])) return rule;
+  rule.options = { ...rule.options, default: value };
+  return rule;
 }
 
 function unsafe(key, value) {
@@ -415,6 +488,8 @@ function schemaKey(key) {
 }
 
 function literal(value) {
+  if (Array.isArray(value)) return `[${value.map(literal).join(", ")}]`;
+  if (value && typeof value === "object") return `{ ${Object.entries(value).map(([key, item]) => `${schemaKey(key)}: ${literal(item)}`).join(", ")} }`;
   return JSON.stringify(value);
 }
 
