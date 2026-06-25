@@ -161,14 +161,14 @@ Current npm package metadata:
 
 | Package | Version checked | Runtime deps | Unpacked npm size | Files |
 | --- | ---: | ---: | ---: | ---: |
-| `celery-env` | 0.1.0 | 0 | 81.9 kB | 20 |
+| `celery-env` | 0.1.1 | 0 | 94.1 kB | 20 |
 | `zod` | 4.4.3 | 0 | 4.56 MB | 718 |
 | `valibot` | 1.4.1 | 0 | 1.84 MB | 9 |
 | `envalid` | 8.2.0 | 1 | 88.8 kB | 39 |
 | `envsafe` | 2.0.3 | 0 | 91.4 kB | 27 |
 | `env-var` | 7.5.0 | 0 | 42.9 kB | 30 |
 
-Metadata checked with `npm view` on 2026-06-24.
+Metadata checked with `npm view` on 2026-06-25.
 
 ## Documentation
 

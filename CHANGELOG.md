@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.1.1
+
+- Generated validators now throw EnvError-shaped errors with an `errors` array.
+- Generated list validation now reports indexed keys such as `IDS[1]`.
+- Invalid JavaScript option shapes fail earlier with clearer TypeErrors.
+- Added TypeScript compile-time coverage for the public runtime API.
+
 ## 0.1.0
 
 - Initial public package shape.
