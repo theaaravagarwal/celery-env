@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.1.2
+
+- Refreshed the project logo and published brand asset.
+- Added `celery-env --version` and `celery-env -v` for CLI debugging.
+
 ## 0.1.1
 
 - Generated validators now throw EnvError-shaped errors with an `errors` array.

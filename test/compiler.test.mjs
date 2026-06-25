@@ -834,6 +834,16 @@ describe("generateValidator", () => {
     assert.match(await readFile(initSchema, "utf8"), /NEXT_PUBLIC_API_URL/);
   });
 
+  it("prints the CLI package version", async () => {
+    const pkg = JSON.parse(await readFile(join(process.cwd(), "package.json"), "utf8"));
+    const result = spawnSync(process.execPath, [
+      "src/cli.js",
+      "--version"
+    ], { cwd: process.cwd(), encoding: "utf8" });
+    assert.equal(result.status, 0, result.stderr);
+    assert.equal(result.stdout.trim(), pkg.version);
+  });
+
   it("requires --force for CLI generate overwrites and refuses symlink outputs", async () => {
     const dir = join(tmpdir(), `celery-env-cli-secure-${process.pid}-${Date.now()}`);
     const schema = join(dir, "env.schema.mjs");

@@ -45,6 +45,7 @@ Use `generate` after editing `env.schema.mjs`.
 | `--fail-fast` | Throw on the first error instead of aggregating errors. |
 | `--force` | Overwrite existing generated files. |
 | `--optimize speed` | Emit larger speed-prioritized code for supported cases. |
+| `--version`, `-v` | Print the installed CLI version. |
 
 ## Recommended App Command
 

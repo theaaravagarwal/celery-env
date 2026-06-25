@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 import { constants } from "node:fs";
-import { mkdir, open, writeFile } from "node:fs/promises";
+import { mkdir, open, readFile, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 
@@ -9,6 +9,10 @@ const NOFOLLOW = constants.O_NOFOLLOW || 0;
 const args = parseArgs(process.argv.slice(2));
 
 if (args.help) usage(0);
+if (args.version) {
+  console.log(await packageVersion());
+  process.exit(0);
+}
 
 if (args.command === "init") {
   await init(args);
@@ -61,6 +65,7 @@ function parseArgs(argv) {
   for (let i = 0; i < argv.length; i += 1) {
     const arg = argv[i];
     if (arg === "--help" || arg === "-h") out.help = true;
+    else if (arg === "--version" || arg === "-v") out.version = true;
     else if (arg === "--schema") out.schema = argv[++i];
     else if (arg === "--target") out.target = argv[++i];
     else if (arg === "--out") out.out = argv[++i];
@@ -124,10 +129,16 @@ export default defineEnv({
   throw new Error(`Unknown init target: ${target}`);
 }
 
+async function packageVersion() {
+  const pkg = JSON.parse(await readFile(new URL("../package.json", import.meta.url), "utf8"));
+  return pkg.version;
+}
+
 function usage(code) {
   console.log(`Usage:
   celery-env --schema env.schema.mjs --out src/env.mjs [--types src/env.d.ts]
   celery-env generate --schema env.schema.mjs --out src/env.mjs [--types src/env.d.ts] [--example .env.example] [--force] [--optimize speed]
-  celery-env init --target node|next|vite --schema env.schema.mjs`);
+  celery-env init --target node|next|vite --schema env.schema.mjs
+  celery-env --version`);
   process.exit(code);
 }

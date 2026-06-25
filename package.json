@@ -1,6 +1,6 @@
 {
   "name": "celery-env",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Type-safe process.env validation that generates zero-dependency standalone validators.",
   "type": "module",
   "types": "./src/index.d.ts",
